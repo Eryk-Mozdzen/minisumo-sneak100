@@ -1,0 +1,28 @@
+
+proximity sensors:
+	- address	3/6 output
+	- reflection	1 ADC
+
+line sensors:
+	- reflection 	4 ADC
+
+motors:
+	- fill		4 PWM
+	- driection	4 output
+	- encoders	4 timer
+
+interface:
+	- program	SWCLK, SWDIO
+	- button	RESET
+	- debug		1 UART
+	- rc		1 input
+	- user button	1 input
+	- user leds 	3 output
+	
+	- IMU		1 SPI		?
+	- bluetooth	1 UART		?
+	- start module	2 input		?
+	- debug/program	1 USB		?
+
+others:
+	- battery	1 ADC		?
