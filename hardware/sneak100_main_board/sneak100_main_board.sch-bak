@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Sheet
-S 4650 2900 1700 3100
+S 4750 2900 1700 3100
 U 60E048AE
 F0 "uController" 50
 F1 "uController.sch" 50
@@ -26,7 +26,7 @@ F0 "interface" 50
 F1 "interface.sch" 50
 $EndSheet
 $Sheet
-S 7400 2900 1300 950 
+S 7400 2900 1350 950 
 U 60E0499A
 F0 "motors" 50
 F1 "motors.sch" 50
@@ -38,10 +38,18 @@ F0 "power" 50
 F1 "power.sch" 50
 $EndSheet
 $Sheet
-S 7400 4250 1350 800 
+S 7400 4200 1350 1000
 U 60E049FE
 F0 "proximitySensors" 50
 F1 "proximitySensors.sch" 50
+F2 "TX_ADD0" I L 7400 4300 50 
+F3 "TX_ADD1" I L 7400 4400 50 
+F4 "TX_ADD2" I L 7400 4500 50 
+F5 "RX_ADD0" I L 7400 4800 50 
+F6 "RX_ADD1" I L 7400 4900 50 
+F7 "RX_ADD2" I L 7400 5000 50 
+F8 "RX_READ" O L 7400 5100 50 
+F9 "TX_ENABLE" I L 7400 4600 50 
 $EndSheet
 $Sheet
 S 7400 5500 1350 500 

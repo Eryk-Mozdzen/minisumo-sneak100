@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 7
+Sheet 3 7
 Title ""
 Date ""
 Rev ""
@@ -13,4 +13,273 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+$Comp
+L Switch:SW_Push SW?
+U 1 1 61053EFA
+P 1950 1650
+F 0 "SW?" H 1950 1935 50  0000 C CNN
+F 1 "SW_Push" H 1950 1844 50  0000 C CNN
+F 2 "" H 1950 1850 50  0001 C CNN
+F 3 "~" H 1950 1850 50  0001 C CNN
+	1    1950 1650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 61055001
+P 2200 1450
+F 0 "R?" H 2270 1496 50  0000 L CNN
+F 1 "4k7" H 2270 1405 50  0000 L CNN
+F 2 "" V 2130 1450 50  0001 C CNN
+F 3 "~" H 2200 1450 50  0001 C CNN
+	1    2200 1450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR?
+U 1 1 610558C1
+P 2200 1300
+F 0 "#PWR?" H 2200 1150 50  0001 C CNN
+F 1 "+3.3V" H 2215 1473 50  0000 C CNN
+F 2 "" H 2200 1300 50  0001 C CNN
+F 3 "" H 2200 1300 50  0001 C CNN
+	1    2200 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61055FD5
+P 1700 1700
+F 0 "#PWR?" H 1700 1450 50  0001 C CNN
+F 1 "GND" H 1705 1527 50  0000 C CNN
+F 2 "" H 1700 1700 50  0001 C CNN
+F 3 "" H 1700 1700 50  0001 C CNN
+	1    1700 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 61056486
+P 2200 1850
+F 0 "C?" H 2315 1896 50  0000 L CNN
+F 1 "100nF" H 2315 1805 50  0000 L CNN
+F 2 "" H 2238 1700 50  0001 C CNN
+F 3 "~" H 2200 1850 50  0001 C CNN
+	1    2200 1850
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 6105698D
+P 2200 2000
+F 0 "#PWR?" H 2200 1750 50  0001 C CNN
+F 1 "GND" H 2205 1827 50  0000 C CNN
+F 2 "" H 2200 2000 50  0001 C CNN
+F 3 "" H 2200 2000 50  0001 C CNN
+	1    2200 2000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1750 1650 1700 1650
+Wire Wire Line
+	1700 1650 1700 1700
+Wire Wire Line
+	2150 1650 2200 1650
+Wire Wire Line
+	2200 1650 2200 1700
+Wire Wire Line
+	2200 1650 2200 1600
+Connection ~ 2200 1650
+Wire Wire Line
+	2200 1650 2300 1650
+Text HLabel 2300 1650 2    50   Output ~ 0
+BUTTON1
+$Comp
+L Switch:SW_Push SW?
+U 1 1 6105C05B
+P 3250 1650
+F 0 "SW?" H 3250 1935 50  0000 C CNN
+F 1 "SW_Push" H 3250 1844 50  0000 C CNN
+F 2 "" H 3250 1850 50  0001 C CNN
+F 3 "~" H 3250 1850 50  0001 C CNN
+	1    3250 1650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6105C061
+P 3500 1450
+F 0 "R?" H 3570 1496 50  0000 L CNN
+F 1 "4k7" H 3570 1405 50  0000 L CNN
+F 2 "" V 3430 1450 50  0001 C CNN
+F 3 "~" H 3500 1450 50  0001 C CNN
+	1    3500 1450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR?
+U 1 1 6105C067
+P 3500 1300
+F 0 "#PWR?" H 3500 1150 50  0001 C CNN
+F 1 "+3.3V" H 3515 1473 50  0000 C CNN
+F 2 "" H 3500 1300 50  0001 C CNN
+F 3 "" H 3500 1300 50  0001 C CNN
+	1    3500 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 6105C06D
+P 3000 1700
+F 0 "#PWR?" H 3000 1450 50  0001 C CNN
+F 1 "GND" H 3005 1527 50  0000 C CNN
+F 2 "" H 3000 1700 50  0001 C CNN
+F 3 "" H 3000 1700 50  0001 C CNN
+	1    3000 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 6105C073
+P 3500 1850
+F 0 "C?" H 3615 1896 50  0000 L CNN
+F 1 "100nF" H 3615 1805 50  0000 L CNN
+F 2 "" H 3538 1700 50  0001 C CNN
+F 3 "~" H 3500 1850 50  0001 C CNN
+	1    3500 1850
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 6105C079
+P 3500 2000
+F 0 "#PWR?" H 3500 1750 50  0001 C CNN
+F 1 "GND" H 3505 1827 50  0000 C CNN
+F 2 "" H 3500 2000 50  0001 C CNN
+F 3 "" H 3500 2000 50  0001 C CNN
+	1    3500 2000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3050 1650 3000 1650
+Wire Wire Line
+	3000 1650 3000 1700
+Wire Wire Line
+	3450 1650 3500 1650
+Wire Wire Line
+	3500 1650 3500 1700
+Wire Wire Line
+	3500 1650 3500 1600
+Connection ~ 3500 1650
+Wire Wire Line
+	3500 1650 3600 1650
+Text HLabel 3600 1650 2    50   Output ~ 0
+BUTTON2
+$Comp
+L Device:LED D?
+U 1 1 6105F07D
+P 1900 2900
+F 0 "D?" H 1893 2645 50  0000 C CNN
+F 1 "LED" H 1893 2736 50  0000 C CNN
+F 2 "" H 1900 2900 50  0001 C CNN
+F 3 "~" H 1900 2900 50  0001 C CNN
+	1    1900 2900
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 61060DB0
+P 1600 2900
+F 0 "R?" V 1393 2900 50  0000 C CNN
+F 1 "300" V 1484 2900 50  0000 C CNN
+F 2 "" V 1530 2900 50  0001 C CNN
+F 3 "~" H 1600 2900 50  0001 C CNN
+	1    1600 2900
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61061E6F
+P 2050 2900
+F 0 "#PWR?" H 2050 2650 50  0001 C CNN
+F 1 "GND" V 2055 2772 50  0000 R CNN
+F 2 "" H 2050 2900 50  0001 C CNN
+F 3 "" H 2050 2900 50  0001 C CNN
+	1    2050 2900
+	0    -1   -1   0   
+$EndComp
+Text HLabel 1450 2900 0    50   Input ~ 0
+LED1
+Text Notes 2700 3550 0    50   ~ 0
+Green led current resistor calculations:\n\ntarget current: I = 5mA\ninput voltage: U = 3.3V\nforward voltage: Uf = 2V\n\nR = (U-Uf)/I\nR = (3.3 -2.9)/0.005 = 260ohm -> 300ohm
+$Comp
+L Device:LED D?
+U 1 1 61066928
+P 1900 3300
+F 0 "D?" H 1893 3045 50  0000 C CNN
+F 1 "LED" H 1893 3136 50  0000 C CNN
+F 2 "" H 1900 3300 50  0001 C CNN
+F 3 "~" H 1900 3300 50  0001 C CNN
+	1    1900 3300
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6106692E
+P 1600 3300
+F 0 "R?" V 1393 3300 50  0000 C CNN
+F 1 "300" V 1484 3300 50  0000 C CNN
+F 2 "" V 1530 3300 50  0001 C CNN
+F 3 "~" H 1600 3300 50  0001 C CNN
+	1    1600 3300
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61066934
+P 2050 3300
+F 0 "#PWR?" H 2050 3050 50  0001 C CNN
+F 1 "GND" V 2055 3172 50  0000 R CNN
+F 2 "" H 2050 3300 50  0001 C CNN
+F 3 "" H 2050 3300 50  0001 C CNN
+	1    2050 3300
+	0    -1   -1   0   
+$EndComp
+Text HLabel 1450 3300 0    50   Input ~ 0
+LED2
+$Comp
+L Device:LED D?
+U 1 1 61067344
+P 1900 3700
+F 0 "D?" H 1893 3445 50  0000 C CNN
+F 1 "LED" H 1893 3536 50  0000 C CNN
+F 2 "" H 1900 3700 50  0001 C CNN
+F 3 "~" H 1900 3700 50  0001 C CNN
+	1    1900 3700
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6106734A
+P 1600 3700
+F 0 "R?" V 1393 3700 50  0000 C CNN
+F 1 "300" V 1484 3700 50  0000 C CNN
+F 2 "" V 1530 3700 50  0001 C CNN
+F 3 "~" H 1600 3700 50  0001 C CNN
+	1    1600 3700
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 61067350
+P 2050 3700
+F 0 "#PWR?" H 2050 3450 50  0001 C CNN
+F 1 "GND" V 2055 3572 50  0000 R CNN
+F 2 "" H 2050 3700 50  0001 C CNN
+F 3 "" H 2050 3700 50  0001 C CNN
+	1    2050 3700
+	0    -1   -1   0   
+$EndComp
+Text HLabel 1450 3700 0    50   Input ~ 0
+LED3
 $EndSCHEMATC

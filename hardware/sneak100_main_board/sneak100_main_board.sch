@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Sheet
-S 4650 2900 1700 3100
+S 4750 2900 1700 3100
 U 60E048AE
 F0 "uController" 50
 F1 "uController.sch" 50

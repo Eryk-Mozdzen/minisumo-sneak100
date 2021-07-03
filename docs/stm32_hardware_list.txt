@@ -1,15 +1,15 @@
 
 proximity sensors:
 	- address	3/6 output
+	- tx enable	1 output
 	- reflection	1 ADC
 
 line sensors:
 	- reflection 	4 ADC
 
 motors:
-	- fill		4 PWM
-	- driection	4 output
-	- encoders	4 timer
+	- steer		4x2 PWM
+	- encoders	4x1 timer
 
 interface:
 	- program	SWCLK, SWDIO
