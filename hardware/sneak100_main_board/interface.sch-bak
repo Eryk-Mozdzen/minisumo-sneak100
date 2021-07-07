@@ -282,4 +282,30 @@ F 3 "" H 2050 3700 50  0001 C CNN
 $EndComp
 Text HLabel 1450 3700 0    50   Input ~ 0
 LED3
+$Comp
+L Connector_Generic:Conn_01x03 J?
+U 1 1 6106D8EA
+P 2950 4800
+F 0 "J?" H 3030 4842 50  0000 L CNN
+F 1 "Conn_01x03" H 3030 4751 50  0000 L CNN
+F 2 "" H 2950 4800 50  0001 C CNN
+F 3 "~" H 2950 4800 50  0001 C CNN
+	1    2950 4800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 610711F8
+P 2750 4900
+F 0 "#PWR?" H 2750 4650 50  0001 C CNN
+F 1 "GND" V 2755 4772 50  0000 R CNN
+F 2 "" H 2750 4900 50  0001 C CNN
+F 3 "" H 2750 4900 50  0001 C CNN
+	1    2750 4900
+	0    1    1    0   
+$EndComp
+Text HLabel 2750 4700 0    50   Input ~ 0
+USART1_TX
+Text HLabel 2750 4800 0    50   Output ~ 0
+USART1_RX
 $EndSCHEMATC
