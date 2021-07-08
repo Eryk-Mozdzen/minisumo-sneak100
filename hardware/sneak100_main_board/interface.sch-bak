@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 3 7
+Sheet 2 7
 Title ""
 Date ""
 Rev ""
@@ -283,10 +283,10 @@ $EndComp
 Text HLabel 1750 3900 0    50   Input ~ 0
 LED3
 $Comp
-L Connector_Generic:Conn_01x03 J2
+L Connector_Generic:Conn_01x03 J1
 U 1 1 6106D8EA
 P 3100 4650
-F 0 "J2" H 3180 4692 50  0000 L CNN
+F 0 "J1" H 3180 4692 50  0000 L CNN
 F 1 "Conn_01x03" H 3180 4601 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 3100 4650 50  0001 C CNN
 F 3 "~" H 3100 4650 50  0001 C CNN

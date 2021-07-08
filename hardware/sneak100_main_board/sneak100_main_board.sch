@@ -14,12 +14,6 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Sheet
-S 4750 1900 1700 3750
-U 60E048AE
-F0 "uController" 50
-F1 "uController.sch" 50
-$EndSheet
-$Sheet
 S 2550 3500 1300 2150
 U 60E0491A
 F0 "interface" 50
@@ -80,5 +74,11 @@ F2 "READ_LL" O L 7400 5250 50
 F3 "READ_LM" O L 7400 5350 50 
 F4 "READ_RM" O L 7400 5450 50 
 F5 "READ_RR" O L 7400 5550 50 
+$EndSheet
+$Sheet
+S 4900 1900 1500 3750
+U 6100FE40
+F0 "controller" 50
+F1 "controller.sch" 50
 $EndSheet
 $EndSCHEMATC
