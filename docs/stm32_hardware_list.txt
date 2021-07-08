@@ -1,28 +1,29 @@
 
 proximity sensors:
-	- address	3/6 output
+	- address	3 output
 	- tx enable	1 output
 	- reflection	1 ADC
 
 line sensors:
 	- reflection 	4 ADC
 
-motors:
+motors (4 timers):
 	- steer		4x2 PWM
-	- encoders	4x1 timer
+	- encoders	4x1 encoder mode
 
 interface:
 	- program	SWCLK, SWDIO
 	- button	RESET
 	- debug		1 UART
-	- rc		1 input
-	- user button	1 input
+	- rc		1 interrupt
+	- user button	1 interrupt
 	- user leds 	3 output
 	
-	- IMU		1 SPI		?
-	- bluetooth	1 UART		?
-	- start module	2 input		?
+	- IMU		1 SPI/I2C	ok
+	- OLED display	1 I2C		?
+	- bluetooth	1 UART		ok
+	- start module	2 input		ok
 	- debug/program	1 USB		?
 
 others:
-	- battery	1 ADC		?
+	- battery	1 ADC		ok
