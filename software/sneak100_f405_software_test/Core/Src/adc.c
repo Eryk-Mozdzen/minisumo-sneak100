@@ -139,7 +139,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     PC4     ------> ADC1_IN14
     */
     GPIO_InitStruct.Pin = LINE_LL_Pin|LINE_LM_Pin|LINE_RM_Pin|LINE_RR_Pin
-                          |BATTERY_VOLTAGE_Pin;
+                          |BATTERY_SENSE_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
@@ -190,7 +190,7 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
     PC4     ------> ADC1_IN14
     */
     HAL_GPIO_DeInit(GPIOC, LINE_LL_Pin|LINE_LM_Pin|LINE_RM_Pin|LINE_RR_Pin
-                          |BATTERY_VOLTAGE_Pin);
+                          |BATTERY_SENSE_Pin);
 
   /* USER CODE BEGIN ADC1_MspDeInit 1 */
 
