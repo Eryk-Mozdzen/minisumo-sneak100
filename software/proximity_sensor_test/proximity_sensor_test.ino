@@ -1,5 +1,3 @@
-#undef printf
-
 #include<stdio.h>
 #include<stdint.h>
 
@@ -13,8 +11,14 @@ int put_char(char c, FILE *fp) {
   return c;
 }
 
+uint16_t adc = 0;
+uint16_t analog = 0;
+float alpha = 0.1;
+
 void setup() {
   pinMode(A0, INPUT);
+  pinMode(A1, INPUT);
+  pinMode(13, OUTPUT);
 
   Serial.begin(115200);
   fdevopen(put_char, get_char);
@@ -22,11 +26,17 @@ void setup() {
 
 void loop() {
 
-  uint16_t adc = analogRead(A0);
+  uint16_t adc_curr = analogRead(A0);
+  analog = 0.9*analog + 0.1*analogRead(A1);
+  
+  adc = (1.f-alpha)*adc + alpha*adc_curr;
+
+  digitalWrite(13, (adc<analog));
+  
   float vol = (adc/1024.f)*5.f;
 
-  printf("ADC:\t%u\tVoltage:\t%s\tOutput:\t%u\n", adc, String(vol).c_str(), vol<3.25f);
+  printf("In:\t%u\tADC:\t%u\tVoltage:\t%s\tOutput:\t%u\n", analog, adc, String(vol).c_str(), (adc<analog));
 
-  delay(100);
+  delay(10);
 
 }

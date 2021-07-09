@@ -85,7 +85,7 @@ U 1 1 60E81972
 P 1800 1650
 F 0 "C4" H 1915 1696 50  0000 L CNN
 F 1 "100nF" H 1915 1605 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 1838 1500 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 1838 1500 50  0001 C CNN
 F 3 "~" H 1800 1650 50  0001 C CNN
 	1    1800 1650
 	1    0    0    -1  
@@ -129,7 +129,7 @@ U 1 1 60E87443
 P 2350 1650
 F 0 "C5" H 2465 1696 50  0000 L CNN
 F 1 "100nF" H 2465 1605 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 2388 1500 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 2388 1500 50  0001 C CNN
 F 3 "~" H 2350 1650 50  0001 C CNN
 	1    2350 1650
 	1    0    0    -1  
@@ -146,9 +146,7 @@ F 3 "" H 2350 1800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 2350 1500 1    50   Input ~ 0
-VIN
-Text GLabel 3100 2000 1    50   Input ~ 0
-VIN
+SUPPLY
 Wire Wire Line
 	3800 2250 4250 2250
 Wire Wire Line
@@ -288,7 +286,7 @@ U 1 1 60EAF5CC
 P 6500 1650
 F 0 "C6" H 6615 1696 50  0000 L CNN
 F 1 "100nF" H 6615 1605 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 6538 1500 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6538 1500 50  0001 C CNN
 F 3 "~" H 6500 1650 50  0001 C CNN
 	1    6500 1650
 	1    0    0    -1  
@@ -332,7 +330,7 @@ U 1 1 60EAF5E4
 P 7050 1650
 F 0 "C7" H 7165 1696 50  0000 L CNN
 F 1 "100nF" H 7165 1605 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 7088 1500 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7088 1500 50  0001 C CNN
 F 3 "~" H 7050 1650 50  0001 C CNN
 	1    7050 1650
 	1    0    0    -1  
@@ -348,10 +346,6 @@ F 3 "" H 7050 1800 50  0001 C CNN
 	1    7050 1800
 	1    0    0    -1  
 $EndComp
-Text GLabel 7050 1500 1    50   Input ~ 0
-VIN
-Text GLabel 7800 2000 1    50   Input ~ 0
-VIN
 Wire Wire Line
 	8500 2250 8950 2250
 Wire Wire Line
@@ -491,7 +485,7 @@ U 1 1 60EB4F22
 P 1700 4550
 F 0 "C8" H 1815 4596 50  0000 L CNN
 F 1 "100nF" H 1815 4505 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 1738 4400 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 1738 4400 50  0001 C CNN
 F 3 "~" H 1700 4550 50  0001 C CNN
 	1    1700 4550
 	1    0    0    -1  
@@ -535,7 +529,7 @@ U 1 1 60EB4F3A
 P 2250 4550
 F 0 "C9" H 2365 4596 50  0000 L CNN
 F 1 "100nF" H 2365 4505 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 2288 4400 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 2288 4400 50  0001 C CNN
 F 3 "~" H 2250 4550 50  0001 C CNN
 	1    2250 4550
 	1    0    0    -1  
@@ -551,10 +545,6 @@ F 3 "" H 2250 4700 50  0001 C CNN
 	1    2250 4700
 	1    0    0    -1  
 $EndComp
-Text GLabel 2250 4400 1    50   Input ~ 0
-VIN
-Text GLabel 3000 4900 1    50   Input ~ 0
-VIN
 Wire Wire Line
 	3700 5150 4150 5150
 Wire Wire Line
@@ -694,7 +684,7 @@ U 1 1 60EC1834
 P 6500 4600
 F 0 "C10" H 6615 4646 50  0000 L CNN
 F 1 "100nF" H 6615 4555 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 6538 4450 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6538 4450 50  0001 C CNN
 F 3 "~" H 6500 4600 50  0001 C CNN
 	1    6500 4600
 	1    0    0    -1  
@@ -738,7 +728,7 @@ U 1 1 60EC184C
 P 7050 4600
 F 0 "C11" H 7165 4646 50  0000 L CNN
 F 1 "100nF" H 7165 4555 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 7088 4450 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7088 4450 50  0001 C CNN
 F 3 "~" H 7050 4600 50  0001 C CNN
 	1    7050 4600
 	1    0    0    -1  
@@ -754,10 +744,6 @@ F 3 "" H 7050 4750 50  0001 C CNN
 	1    7050 4750
 	1    0    0    -1  
 $EndComp
-Text GLabel 7050 4450 1    50   Input ~ 0
-VIN
-Text GLabel 7800 4950 1    50   Input ~ 0
-VIN
 Wire Wire Line
 	8500 5200 8950 5200
 Wire Wire Line
@@ -827,4 +813,18 @@ Text HLabel 9050 4600 0    50   Output ~ 0
 RB_A
 Text HLabel 9050 4500 0    50   Output ~ 0
 RB_B
+Text GLabel 3100 2000 1    50   Input ~ 0
+SUPPLY
+Text GLabel 7800 2000 1    50   Input ~ 0
+SUPPLY
+Text GLabel 7050 1500 1    50   Input ~ 0
+SUPPLY
+Text GLabel 2250 4400 1    50   Input ~ 0
+SUPPLY
+Text GLabel 3000 4900 1    50   Input ~ 0
+SUPPLY
+Text GLabel 7050 4450 1    50   Input ~ 0
+SUPPLY
+Text GLabel 7800 4950 1    50   Input ~ 0
+SUPPLY
 $EndSCHEMATC

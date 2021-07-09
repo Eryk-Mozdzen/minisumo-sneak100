@@ -286,7 +286,7 @@
   )
 
   (module Connector_USB:USB_Mini-B_Lumberg_2486_01_Horizontal (layer F.Cu) (tedit 5AC6B535) (tstamp 60E79935)
-    (at 148 108)
+    (at 148 109.25)
     (descr "USB Mini-B 5-pin SMD connector, http://downloads.lumberg.com/datenblaetter/en/2486_01.pdf")
     (tags "USB USB_B USB_Mini connector")
     (path /60E0491A/60EF7556)

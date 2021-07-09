@@ -146,9 +146,7 @@ F 3 "" H 2350 1800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 2350 1500 1    50   Input ~ 0
-VIN
-Text GLabel 3100 2000 1    50   Input ~ 0
-VIN
+SUPPLY
 Wire Wire Line
 	3800 2250 4250 2250
 Wire Wire Line
@@ -348,10 +346,6 @@ F 3 "" H 7050 1800 50  0001 C CNN
 	1    7050 1800
 	1    0    0    -1  
 $EndComp
-Text GLabel 7050 1500 1    50   Input ~ 0
-VIN
-Text GLabel 7800 2000 1    50   Input ~ 0
-VIN
 Wire Wire Line
 	8500 2250 8950 2250
 Wire Wire Line
@@ -551,10 +545,6 @@ F 3 "" H 2250 4700 50  0001 C CNN
 	1    2250 4700
 	1    0    0    -1  
 $EndComp
-Text GLabel 2250 4400 1    50   Input ~ 0
-VIN
-Text GLabel 3000 4900 1    50   Input ~ 0
-VIN
 Wire Wire Line
 	3700 5150 4150 5150
 Wire Wire Line
@@ -754,10 +744,6 @@ F 3 "" H 7050 4750 50  0001 C CNN
 	1    7050 4750
 	1    0    0    -1  
 $EndComp
-Text GLabel 7050 4450 1    50   Input ~ 0
-VIN
-Text GLabel 7800 4950 1    50   Input ~ 0
-VIN
 Wire Wire Line
 	8500 5200 8950 5200
 Wire Wire Line
@@ -827,4 +813,18 @@ Text HLabel 9050 4600 0    50   Output ~ 0
 RB_A
 Text HLabel 9050 4500 0    50   Output ~ 0
 RB_B
+Text GLabel 3100 2000 1    50   Input ~ 0
+SUPPLY
+Text GLabel 7800 2000 1    50   Input ~ 0
+SUPPLY
+Text GLabel 7050 1500 1    50   Input ~ 0
+SUPPLY
+Text GLabel 2250 4400 1    50   Input ~ 0
+SUPPLY
+Text GLabel 3000 4900 1    50   Input ~ 0
+SUPPLY
+Text GLabel 7050 4450 1    50   Input ~ 0
+SUPPLY
+Text GLabel 7800 4950 1    50   Input ~ 0
+SUPPLY
 $EndSCHEMATC
