@@ -48,7 +48,6 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
-  __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, PROXIMITY_TX_ENABLE_Pin|USER_LED2_Pin|USER_LED3_Pin, GPIO_PIN_RESET);
@@ -64,6 +63,12 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PtPin */
+  GPIO_InitStruct.Pin = BOOT1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(BOOT1_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PCPin PCPin PCPin */
   GPIO_InitStruct.Pin = PROXIMITY_TX_ENABLE_Pin|USER_LED2_Pin|USER_LED3_Pin;
@@ -84,12 +89,6 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(USER_BUTTON_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PtPin */
-  GPIO_InitStruct.Pin = RECEIVER_OUT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(RECEIVER_OUT_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin PBPin */
   GPIO_InitStruct.Pin = PROXIMITY_ADD0_Pin|PROXIMITY_ADD1_Pin|PROXIMITY_ADD2_Pin;
