@@ -376,7 +376,7 @@ U 1 1 60EAF600
 P 9250 1650
 F 0 "J2" H 9330 1642 50  0000 L CNN
 F 1 "Conn_01x06" H 9330 1551 50  0000 L CNN
-F 2 "Connector_Phoenix_MSTB:PhoenixContact_MSTBA_2,5_6-G-5,08_1x06_P5.08mm_Horizontal" H 9250 1650 50  0001 C CNN
+F 2 "Connector_JST:JST_PH_S6B-PH-K_1x06_P2.00mm_Horizontal" H 9250 1650 50  0001 C CNN
 F 3 "~" H 9250 1650 50  0001 C CNN
 	1    9250 1650
 	1    0    0    -1  
@@ -575,7 +575,7 @@ U 1 1 60EB4F56
 P 4450 4550
 F 0 "J3" H 4530 4542 50  0000 L CNN
 F 1 "Conn_01x06" H 4530 4451 50  0000 L CNN
-F 2 "Connector_Phoenix_MSTB:PhoenixContact_MSTBA_2,5_6-G-5,08_1x06_P5.08mm_Horizontal" H 4450 4550 50  0001 C CNN
+F 2 "Connector_JST:JST_PH_S6B-PH-K_1x06_P2.00mm_Horizontal" H 4450 4550 50  0001 C CNN
 F 3 "~" H 4450 4550 50  0001 C CNN
 	1    4450 4550
 	1    0    0    -1  
@@ -774,7 +774,7 @@ U 1 1 60EC1868
 P 9250 4600
 F 0 "J4" H 9330 4592 50  0000 L CNN
 F 1 "Conn_01x06" H 9330 4501 50  0000 L CNN
-F 2 "Connector_Phoenix_MSTB:PhoenixContact_MSTBA_2,5_6-G-5,08_1x06_P5.08mm_Horizontal" H 9250 4600 50  0001 C CNN
+F 2 "Connector_JST:JST_PH_S6B-PH-K_1x06_P2.00mm_Horizontal" H 9250 4600 50  0001 C CNN
 F 3 "~" H 9250 4600 50  0001 C CNN
 	1    9250 4600
 	1    0    0    -1  
