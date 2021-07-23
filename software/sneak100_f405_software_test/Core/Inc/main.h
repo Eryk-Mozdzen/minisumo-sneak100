@@ -58,10 +58,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define MODULE_START_Pin GPIO_PIN_13
-#define MODULE_START_GPIO_Port GPIOC
-#define MODULE_KILL_Pin GPIO_PIN_14
-#define MODULE_KILL_GPIO_Port GPIOC
+#define RECEIVER_OUT_Pin GPIO_PIN_13
+#define RECEIVER_OUT_GPIO_Port GPIOC
 #define LINE_LL_Pin GPIO_PIN_0
 #define LINE_LL_GPIO_Port GPIOC
 #define LINE_LM_Pin GPIO_PIN_1
@@ -78,14 +76,16 @@ void Error_Handler(void);
 #define BOOT1_GPIO_Port GPIOB
 #define PROXIMITY_TX_ENABLE_Pin GPIO_PIN_8
 #define PROXIMITY_TX_ENABLE_GPIO_Port GPIOC
-#define USER_LED1_Pin GPIO_PIN_15
-#define USER_LED1_GPIO_Port GPIOA
-#define USER_LED2_Pin GPIO_PIN_10
-#define USER_LED2_GPIO_Port GPIOC
-#define USER_LED3_Pin GPIO_PIN_11
-#define USER_LED3_GPIO_Port GPIOC
-#define USER_BUTTON_Pin GPIO_PIN_12
-#define USER_BUTTON_GPIO_Port GPIOC
+#define USER_LED_RUN_Pin GPIO_PIN_15
+#define USER_LED_RUN_GPIO_Port GPIOA
+#define USER_LED_ERROR_Pin GPIO_PIN_10
+#define USER_LED_ERROR_GPIO_Port GPIOC
+#define USER_BUTTON_L_Pin GPIO_PIN_11
+#define USER_BUTTON_L_GPIO_Port GPIOC
+#define USER_BUTTON_C_Pin GPIO_PIN_12
+#define USER_BUTTON_C_GPIO_Port GPIOC
+#define USER_BUTTON_R_Pin GPIO_PIN_2
+#define USER_BUTTON_R_GPIO_Port GPIOD
 #define PROXIMITY_ADD0_Pin GPIO_PIN_3
 #define PROXIMITY_ADD0_GPIO_Port GPIOB
 #define PROXIMITY_ADD1_Pin GPIO_PIN_4

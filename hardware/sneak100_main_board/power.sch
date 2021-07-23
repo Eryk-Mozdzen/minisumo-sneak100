@@ -60,128 +60,49 @@ $EndComp
 Text GLabel 6200 2100 0    50   Input ~ 0
 SUPPLY
 $Comp
-L Device:LED D2
-U 1 1 60F0446D
-P 9500 4650
-F 0 "D2" V 9539 4532 50  0000 R CNN
-F 1 "LED" V 9448 4532 50  0000 R CNN
-F 2 "LED_SMD:LED_0603_1608Metric" H 9500 4650 50  0001 C CNN
-F 3 "~" H 9500 4650 50  0001 C CNN
-	1    9500 4650
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Device:R R6
-U 1 1 60F051F0
-P 9500 4350
-F 0 "R6" H 9570 4396 50  0000 L CNN
-F 1 "680" H 9570 4305 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 9430 4350 50  0001 C CNN
-F 3 "~" H 9500 4350 50  0001 C CNN
-	1    9500 4350
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR049
-U 1 1 60F05D55
-P 9500 4800
-F 0 "#PWR049" H 9500 4550 50  0001 C CNN
-F 1 "GND" H 9505 4627 50  0000 C CNN
-F 2 "" H 9500 4800 50  0001 C CNN
-F 3 "" H 9500 4800 50  0001 C CNN
-	1    9500 4800
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+5V #PWR046
-U 1 1 60F06197
-P 9500 4200
-F 0 "#PWR046" H 9500 4050 50  0001 C CNN
-F 1 "+5V" H 9515 4373 50  0000 C CNN
-F 2 "" H 9500 4200 50  0001 C CNN
-F 3 "" H 9500 4200 50  0001 C CNN
-	1    9500 4200
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:LED D3
-U 1 1 60F07A86
-P 9900 4650
-F 0 "D3" V 9939 4532 50  0000 R CNN
-F 1 "LED" V 9848 4532 50  0000 R CNN
-F 2 "LED_SMD:LED_0603_1608Metric" H 9900 4650 50  0001 C CNN
-F 3 "~" H 9900 4650 50  0001 C CNN
-	1    9900 4650
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Device:R R7
-U 1 1 60F07A8C
-P 9900 4350
-F 0 "R7" H 9970 4396 50  0000 L CNN
-F 1 "340" H 9970 4305 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 9830 4350 50  0001 C CNN
-F 3 "~" H 9900 4350 50  0001 C CNN
-	1    9900 4350
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR050
-U 1 1 60F07A92
-P 9900 4800
-F 0 "#PWR050" H 9900 4550 50  0001 C CNN
-F 1 "GND" H 9905 4627 50  0000 C CNN
-F 2 "" H 9900 4800 50  0001 C CNN
-F 3 "" H 9900 4800 50  0001 C CNN
-	1    9900 4800
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3.3V #PWR047
-U 1 1 60F07C02
-P 9900 4200
-F 0 "#PWR047" H 9900 4050 50  0001 C CNN
-F 1 "+3.3V" H 9915 4373 50  0000 C CNN
-F 2 "" H 9900 4200 50  0001 C CNN
-F 3 "" H 9900 4200 50  0001 C CNN
-	1    9900 4200
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:LED D1
-U 1 1 60F0A82A
-P 9100 4650
-F 0 "D1" V 9139 4532 50  0000 R CNN
-F 1 "LED" V 9048 4532 50  0000 R CNN
-F 2 "LED_SMD:LED_0603_1608Metric" H 9100 4650 50  0001 C CNN
-F 3 "~" H 9100 4650 50  0001 C CNN
-	1    9100 4650
+U 1 1 60F07A86
+P 9550 4650
+F 0 "D1" V 9589 4532 50  0000 R CNN
+F 1 "LED" V 9498 4532 50  0000 R CNN
+F 2 "LED_SMD:LED_0603_1608Metric" H 9550 4650 50  0001 C CNN
+F 3 "~" H 9550 4650 50  0001 C CNN
+	1    9550 4650
 	0    -1   -1   0   
 $EndComp
 $Comp
 L Device:R R5
-U 1 1 60F0A830
-P 9100 4350
-F 0 "R5" H 9170 4396 50  0000 L CNN
-F 1 "1.5k" H 9170 4305 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 9030 4350 50  0001 C CNN
-F 3 "~" H 9100 4350 50  0001 C CNN
-	1    9100 4350
+U 1 1 60F07A8C
+P 9550 4350
+F 0 "R5" H 9620 4396 50  0000 L CNN
+F 1 "360" H 9620 4305 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 9480 4350 50  0001 C CNN
+F 3 "~" H 9550 4350 50  0001 C CNN
+	1    9550 4350
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR048
-U 1 1 60F0A836
-P 9100 4800
-F 0 "#PWR048" H 9100 4550 50  0001 C CNN
-F 1 "GND" H 9105 4627 50  0000 C CNN
-F 2 "" H 9100 4800 50  0001 C CNN
-F 3 "" H 9100 4800 50  0001 C CNN
-	1    9100 4800
+L power:GND #PWR047
+U 1 1 60F07A92
+P 9550 4800
+F 0 "#PWR047" H 9550 4550 50  0001 C CNN
+F 1 "GND" H 9555 4627 50  0000 C CNN
+F 2 "" H 9550 4800 50  0001 C CNN
+F 3 "" H 9550 4800 50  0001 C CNN
+	1    9550 4800
 	1    0    0    -1  
 $EndComp
-Text GLabel 9100 4200 1    50   Input ~ 0
-SUPPLY
+$Comp
+L power:+3.3V #PWR046
+U 1 1 60F07C02
+P 9550 4200
+F 0 "#PWR046" H 9550 4050 50  0001 C CNN
+F 1 "+3.3V" H 9565 4373 50  0000 C CNN
+F 2 "" H 9550 4200 50  0001 C CNN
+F 3 "" H 9550 4200 50  0001 C CNN
+	1    9550 4200
+	1    0    0    -1  
+$EndComp
 Text Notes 5650 1600 0    100  ~ 20
 5V step-down converter
 $Comp
@@ -189,28 +110,28 @@ L Device:R R4
 U 1 1 60F0EDCE
 P 6500 4350
 F 0 "R4" H 6570 4396 50  0000 L CNN
-F 1 "R" H 6570 4305 50  0000 L CNN
+F 1 "16k" H 6570 4305 50  0000 L CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 6430 4350 50  0001 C CNN
 F 3 "~" H 6500 4350 50  0001 C CNN
 	1    6500 4350
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R8
+L Device:R R6
 U 1 1 60F10A9C
 P 6500 4750
-F 0 "R8" H 6570 4796 50  0000 L CNN
-F 1 "R" H 6570 4705 50  0000 L CNN
+F 0 "R6" H 6570 4796 50  0000 L CNN
+F 1 "10k" H 6570 4705 50  0000 L CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 6430 4750 50  0001 C CNN
 F 3 "~" H 6500 4750 50  0001 C CNN
 	1    6500 4750
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR051
+L power:GND #PWR048
 U 1 1 60F10E65
 P 6500 4900
-F 0 "#PWR051" H 6500 4650 50  0001 C CNN
+F 0 "#PWR048" H 6500 4650 50  0001 C CNN
 F 1 "GND" H 6505 4727 50  0000 C CNN
 F 2 "" H 6500 4900 50  0001 C CNN
 F 3 "" H 6500 4900 50  0001 C CNN
@@ -230,8 +151,8 @@ Text HLabel 6550 4550 2    50   Output ~ 0
 BATTERY_SENSE
 Text Notes 5850 3650 0    100  ~ 20
 Battery level sense
-Text Notes 8650 3700 0    100  ~ 20
-Power level indicators
+Text Notes 8850 3650 0    100  ~ 20
+Power level indicator
 $Comp
 L Device:R R2
 U 1 1 60F4ED8A
@@ -534,10 +455,10 @@ Text Notes 8900 1600 0    100  ~ 20
 3.3V LDO regulator
 Text Notes 1400 3400 0    50   ~ 10
 mosfety do wybrania!!!!!
-Text Notes 5000 4100 0    50   ~ 10
-Voltage divider calculations:
+Text Notes 5000 6150 0    50   ~ 10
+Voltage divider calculations:\n\nU_in max = 8.4V\nU_out max = 3.3V\n\nU_out = U_in * R2/(R1+R2)\nU_out * (R1+R2) = U_in * R2\nU_out * R1+ U_out * R2 = U_in * R2\nU_out * R1 = (U_in - U_out) * R2\nR1 = R2 * (U_in - U_out)/U_out\n\nassume R2 = 10k\n\nR1 = 10000 * (8.4 - 3.3)/3.3 = 15454 ohm -> 16kohm\n
 Text Notes 8800 6100 0    50   ~ 10
-Power leds current resistor calculations:\n\ntarget current: I = 5mA\ninput voltage: U1 = 3.3V, U2 = 5V, U3 = 8.4V\nforward voltage: Uf = 1.6V\n\nR = (U-Uf)/I\nR_3.3V = (3.3 -1.6)/0.005 = 340 ohm\nR_5V   = (5   -1.6)/0.005 = 680 ohm\nR_8.4V = (8.4 -1.6)/0.005 = 1360 -> 1.5k ohm
+Power leds current resistor calculations:\n\ntarget current: I = 5mA\ninput voltage: U1= 3.3V\nforward voltage: Uf = 1.6V\n\nR = (U-Uf)/I\nR_3.3V = (3.3 -1.6)/0.005 = 340 ohm -> 360 ohm
 Text Notes 5900 2400 0    50   ~ 10
 S9V11F5 - Pololu 2836
 $Comp

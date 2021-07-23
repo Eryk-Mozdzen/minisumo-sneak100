@@ -23,7 +23,6 @@
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
-#include "usb_otg.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -97,7 +96,6 @@ int main(void)
   MX_ADC1_Init();
   MX_ADC2_Init();
   MX_TIM8_Init();
-  MX_USB_OTG_FS_PCD_Init();
   MX_I2C3_Init();
   MX_TIM12_Init();
   /* USER CODE BEGIN 2 */
