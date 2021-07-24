@@ -177,7 +177,7 @@ U 1 1 60E9010F
 P 4550 1650
 F 0 "J1" H 4630 1642 50  0000 L CNN
 F 1 "Conn_01x06" H 4630 1551 50  0000 L CNN
-F 2 "Connector_JST:JST_PH_S6B-PH-K_1x06_P2.00mm_Horizontal" H 4550 1650 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal" H 4550 1650 50  0001 C CNN
 F 3 "~" H 4550 1650 50  0001 C CNN
 	1    4550 1650
 	1    0    0    -1  
@@ -208,9 +208,9 @@ F 3 "" H 4350 1750 50  0001 C CNN
 	1    4350 1750
 	0    -1   -1   0   
 $EndComp
-Text Label 4350 1950 2    50   ~ 0
-LF_OUT1
 Text Label 4350 1850 2    50   ~ 0
+LF_OUT1
+Text Label 4350 1950 2    50   ~ 0
 LF_OUT2
 Text HLabel 4350 1650 0    50   Output ~ 0
 LF_A
@@ -376,7 +376,7 @@ U 1 1 60EAF600
 P 9250 1650
 F 0 "J2" H 9330 1642 50  0000 L CNN
 F 1 "Conn_01x06" H 9330 1551 50  0000 L CNN
-F 2 "Connector_JST:JST_PH_S6B-PH-K_1x06_P2.00mm_Horizontal" H 9250 1650 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal" H 9250 1650 50  0001 C CNN
 F 3 "~" H 9250 1650 50  0001 C CNN
 	1    9250 1650
 	1    0    0    -1  
@@ -407,9 +407,9 @@ F 3 "" H 9050 1750 50  0001 C CNN
 	1    9050 1750
 	0    -1   -1   0   
 $EndComp
-Text Label 9050 1950 2    50   ~ 0
-RF_OUT1
 Text Label 9050 1850 2    50   ~ 0
+RF_OUT1
+Text Label 9050 1950 2    50   ~ 0
 RF_OUT2
 Text HLabel 9050 1650 0    50   Output ~ 0
 RF_A
@@ -575,7 +575,7 @@ U 1 1 60EB4F56
 P 4450 4550
 F 0 "J3" H 4530 4542 50  0000 L CNN
 F 1 "Conn_01x06" H 4530 4451 50  0000 L CNN
-F 2 "Connector_JST:JST_PH_S6B-PH-K_1x06_P2.00mm_Horizontal" H 4450 4550 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal" H 4450 4550 50  0001 C CNN
 F 3 "~" H 4450 4550 50  0001 C CNN
 	1    4450 4550
 	1    0    0    -1  
@@ -606,9 +606,9 @@ F 3 "" H 4250 4650 50  0001 C CNN
 	1    4250 4650
 	0    -1   -1   0   
 $EndComp
-Text Label 4250 4850 2    50   ~ 0
-LB_OUT1
 Text Label 4250 4750 2    50   ~ 0
+LB_OUT1
+Text Label 4250 4850 2    50   ~ 0
 LB_OUT2
 Text HLabel 4250 4550 0    50   Output ~ 0
 LB_A
@@ -774,7 +774,7 @@ U 1 1 60EC1868
 P 9250 4600
 F 0 "J4" H 9330 4592 50  0000 L CNN
 F 1 "Conn_01x06" H 9330 4501 50  0000 L CNN
-F 2 "Connector_JST:JST_PH_S6B-PH-K_1x06_P2.00mm_Horizontal" H 9250 4600 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal" H 9250 4600 50  0001 C CNN
 F 3 "~" H 9250 4600 50  0001 C CNN
 	1    9250 4600
 	1    0    0    -1  
@@ -805,9 +805,9 @@ F 3 "" H 9050 4700 50  0001 C CNN
 	1    9050 4700
 	0    -1   -1   0   
 $EndComp
-Text Label 9050 4900 2    50   ~ 0
-RB_OUT1
 Text Label 9050 4800 2    50   ~ 0
+RB_OUT1
+Text Label 9050 4900 2    50   ~ 0
 RB_OUT2
 Text HLabel 9050 4600 0    50   Output ~ 0
 RB_A
