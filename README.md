@@ -7,6 +7,5 @@
 
 To do:
 - check schematic
-- make more space in top hull
 - route everything
 - buy remaining parts

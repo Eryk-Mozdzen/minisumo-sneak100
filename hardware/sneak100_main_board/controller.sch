@@ -735,10 +735,10 @@ BOOT1
 Text Label 7850 1550 0    50   ~ 0
 BOOT1
 $Comp
-L power:GND #PWR085
+L power:GND #PWR086
 U 1 1 60F14427
 P 7800 1600
-F 0 "#PWR085" H 7800 1350 50  0001 C CNN
+F 0 "#PWR086" H 7800 1350 50  0001 C CNN
 F 1 "GND" H 7805 1427 50  0000 C CNN
 F 2 "" H 7800 1600 50  0001 C CNN
 F 3 "" H 7800 1600 50  0001 C CNN
@@ -761,33 +761,20 @@ Text Label 6400 3100 2    50   ~ 0
 RST
 NoConn ~ 3250 5400
 $Comp
-L power:+3.3V #PWR086
+L power:+3.3V #PWR085
 U 1 1 60FC5347
-P 6750 1650
-F 0 "#PWR086" H 6750 1500 50  0001 C CNN
-F 1 "+3.3V" V 6750 1750 50  0000 L CNN
-F 2 "" H 6750 1650 50  0001 C CNN
-F 3 "" H 6750 1650 50  0001 C CNN
-	1    6750 1650
-	0    -1   -1   0   
+P 6650 1400
+F 0 "#PWR085" H 6650 1250 50  0001 C CNN
+F 1 "+3.3V" V 6650 1500 50  0000 L CNN
+F 2 "" H 6650 1400 50  0001 C CNN
+F 3 "" H 6650 1400 50  0001 C CNN
+	1    6650 1400
+	0    1    1    0   
 $EndComp
 Text GLabel 6900 3300 2    50   Input ~ 0
 ST-LINK_3.3V
 Text GLabel 6900 3400 2    50   Input ~ 0
 ST-LINK_3.3V
-Text GLabel 6750 1550 0    50   Input ~ 0
-ST-LINK_3.3V
-$Comp
-L Connector_Generic:Conn_01x02 J10
-U 1 1 6106012F
-P 6950 1550
-F 0 "J10" H 7030 1542 50  0000 L CNN
-F 1 "Conn_01x02" H 7030 1451 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 6950 1550 50  0001 C CNN
-F 3 "~" H 6950 1550 50  0001 C CNN
-	1    6950 1550
-	1    0    0    -1  
-$EndComp
 Text Label 7850 1050 0    50   ~ 0
 BOOT0
 $Comp
@@ -811,4 +798,17 @@ Text HLabel 3250 3800 0    50   Input ~ 0
 USER_BUTTON_R
 NoConn ~ 4650 3400
 NoConn ~ 4650 3500
+$Comp
+L Jumper:Jumper_2_Open JP1
+U 1 1 60FDB1A1
+P 6450 1400
+F 0 "JP1" H 6450 1635 50  0000 C CNN
+F 1 "Jumper_2_Open" H 6450 1544 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x01_P2.54mm_Vertical" H 6450 1400 50  0001 C CNN
+F 3 "~" H 6450 1400 50  0001 C CNN
+	1    6450 1400
+	1    0    0    -1  
+$EndComp
+Text GLabel 6250 1400 0    50   Input ~ 0
+ST-LINK_3.3V
 $EndSCHEMATC
