@@ -129,7 +129,7 @@ F 3 "" H 6600 1650 50  0001 C CNN
 $EndComp
 Text HLabel 6000 1650 0    50   Input ~ 0
 LED_RUN
-Text Notes 7600 1650 0    50   ~ 0
+Text Notes 7600 1650 0    50   ~ 10
 Green led current resistor calculations:\n\ntarget current: I = 5mA\ninput voltage: U = 3.3V\nforward voltage: Uf = 2V\n\nR = (U-Uf)/I\nR = (3.3 -2)/0.005 = 260ohm -> 300ohm
 Text Notes 2250 1150 0    100  ~ 20
 user buttons
@@ -148,8 +148,6 @@ F 3 "~" H 3350 4450 50  0001 C CNN
 	1    3350 4450
 	1    0    0    -1  
 $EndComp
-NoConn ~ 3150 4250
-NoConn ~ 3150 4750
 Text HLabel 3150 4650 0    50   Input ~ 0
 BLUETOOTH_RX
 Text HLabel 3150 4550 0    50   Output ~ 0
@@ -475,7 +473,7 @@ F 3 "" H 6600 2100 50  0001 C CNN
 $EndComp
 Text HLabel 6000 2100 0    50   Input ~ 0
 LED_ERROR
-Text Notes 7600 2550 0    50   ~ 0
+Text Notes 7600 2550 0    50   ~ 10
 Red led current resistor calculations:\n\ntarget current: I = 5mA\ninput voltage: U = 3.3V\nforward voltage: Uf = 1.6V\n\nR = (U-Uf)/I\nR = (3.3 -1.6)/0.005 = 340ohm
 Text Notes 3000 3900 0    50   ~ 10
 HC-05 module
@@ -497,4 +495,8 @@ Wire Wire Line
 Connection ~ 9850 4500
 Wire Wire Line
 	9850 4500 9850 4550
+Text HLabel 3150 4250 0    50   Input ~ 0
+BLUETOOTH_EN
+Text HLabel 3150 4750 0    50   Output ~ 0
+BLUETOOTH_STATUS
 $EndSCHEMATC

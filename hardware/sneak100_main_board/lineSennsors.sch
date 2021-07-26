@@ -153,6 +153,8 @@ Text HLabel 3850 3450 0    50   Output ~ 0
 READ_RM
 Text HLabel 3850 3850 0    50   Output ~ 0
 READ_RR
-Text Notes 2950 2150 0    100  ~ 20
-QTR-1A sensors connection
+Text Notes 3550 1800 0    100  ~ 20
+Line sensors
+Text Notes 3800 2000 0    50   ~ 10
+4x QTR-1A
 $EndSCHEMATC
