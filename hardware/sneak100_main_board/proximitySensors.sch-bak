@@ -671,4 +671,6 @@ F 3 "~" H 8150 2850 50  0001 C CNN
 	1    8150 2850
 	1    0    0    -1  
 $EndComp
+Text Notes 5100 3950 0    50   ~ 0
+układ testowy, wymagane dalsze próby
 $EndSCHEMATC

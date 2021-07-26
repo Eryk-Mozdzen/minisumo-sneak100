@@ -661,8 +661,6 @@ Text HLabel 4650 2500 2    50   Output ~ 0
 USART2_TX
 Text HLabel 4650 2600 2    50   Input ~ 0
 USART2_RX
-NoConn ~ 4650 2700
-NoConn ~ 4650 2800
 Text HLabel 4650 2900 2    50   Input ~ 0
 LB_A
 Text HLabel 4650 3000 2    50   Input ~ 0
@@ -811,4 +809,8 @@ F 3 "~" H 6450 1400 50  0001 C CNN
 $EndComp
 Text GLabel 6250 1400 0    50   Input ~ 0
 ST-LINK_3.3V
+Text HLabel 4650 2700 2    50   Output ~ 0
+BLUETOOTH_EN
+Text HLabel 4650 2800 2    50   Input ~ 0
+BLUETOOTH_STATUS
 $EndSCHEMATC
