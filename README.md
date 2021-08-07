@@ -11,7 +11,7 @@ To do:
 - print plastic elements
 - buy HM blade
 
-- solder everthing
+- solder everything
 - program uC
 - TESTS
 

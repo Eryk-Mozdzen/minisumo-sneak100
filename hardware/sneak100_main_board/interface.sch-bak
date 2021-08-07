@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 7 7
+Sheet 5 7
 Title ""
 Date ""
 Rev ""
@@ -210,7 +210,7 @@ U 1 1 60F7F945
 P 9850 4700
 F 0 "C21" H 9968 4746 50  0000 L CNN
 F 1 "4.7uF" H 9968 4655 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm" H 9888 4550 50  0001 C CNN
+F 2 "Capacitor_Tantalum_SMD:CP_EIA-3216-18_Kemet-A" H 9888 4550 50  0001 C CNN
 F 3 "~" H 9850 4700 50  0001 C CNN
 	1    9850 4700
 	1    0    0    -1  
