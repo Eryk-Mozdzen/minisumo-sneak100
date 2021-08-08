@@ -54,10 +54,10 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, BLUETOOTH_EN_Pin|USER_LED_RUN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, PROXIMITY_TX_ENABLE_Pin|USER_LED_ERROR_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(USER_LED_ERROR_GPIO_Port, USER_LED_ERROR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, PROXIMITY_ADD0_Pin|PROXIMITY_ADD1_Pin|PROXIMITY_ADD2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, PROXIMITY_LL_Pin|PROXIMITY_FL_Pin|PROXIMITY_FR_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PCPin PCPin */
   GPIO_InitStruct.Pin = RECEIVER_OUT_Pin|USER_BUTTON_C_Pin;
@@ -78,24 +78,24 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BLUETOOTH_STATUS_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : PCPin PCPin */
+  GPIO_InitStruct.Pin = PROXIMITY_RR_Pin|USER_BUTTON_L_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = BOOT1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BOOT1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PCPin PCPin */
-  GPIO_InitStruct.Pin = PROXIMITY_TX_ENABLE_Pin|USER_LED_ERROR_Pin;
+  /*Configure GPIO pin : PtPin */
+  GPIO_InitStruct.Pin = USER_LED_ERROR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PtPin */
-  GPIO_InitStruct.Pin = USER_BUTTON_L_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(USER_BUTTON_L_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(USER_LED_ERROR_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = USER_BUTTON_R_Pin;
@@ -104,7 +104,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(USER_BUTTON_R_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin PBPin */
-  GPIO_InitStruct.Pin = PROXIMITY_ADD0_Pin|PROXIMITY_ADD1_Pin|PROXIMITY_ADD2_Pin;
+  GPIO_InitStruct.Pin = PROXIMITY_LL_Pin|PROXIMITY_FL_Pin|PROXIMITY_FR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
