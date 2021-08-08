@@ -653,9 +653,9 @@ Text Label 6400 3200 2    50   ~ 0
 SWCLK
 Text Notes 3550 1650 0    100  ~ 20
 uController
-Text HLabel 4650 2300 2    50   Input ~ 0
+Text HLabel 4650 4600 2    50   Input ~ 0
 RF_A
-Text HLabel 4650 2400 2    50   Input ~ 0
+Text HLabel 4650 4700 2    50   Input ~ 0
 RF_B
 Text HLabel 4650 2500 2    50   Output ~ 0
 USART2_TX
@@ -681,17 +681,17 @@ Text HLabel 4650 4400 2    50   Input ~ 0
 PROXIMITY_FL
 Text HLabel 4650 4500 2    50   Input ~ 0
 PROXIMITY_FR
-Text HLabel 4650 4600 2    50   Input ~ 0
+Text HLabel 4650 2300 2    50   Input ~ 0
 RB_A
-Text HLabel 4650 4700 2    50   Input ~ 0
+Text HLabel 4650 2400 2    50   Input ~ 0
 RB_B
-Text HLabel 4650 4800 2    50   Output ~ 0
-RB_IN1
-Text HLabel 4650 4900 2    50   Output ~ 0
-RB_IN2
 Text HLabel 4650 5000 2    50   Output ~ 0
-RF_IN1
+RB_IN1
 Text HLabel 4650 5100 2    50   Output ~ 0
+RB_IN2
+Text HLabel 4650 4800 2    50   Output ~ 0
+RF_IN1
+Text HLabel 4650 4900 2    50   Output ~ 0
 RF_IN2
 NoConn ~ 4650 5200
 NoConn ~ 4650 5300
