@@ -60,22 +60,22 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define RECEIVER_OUT_Pin GPIO_PIN_13
 #define RECEIVER_OUT_GPIO_Port GPIOC
-#define LINE_LL_Pin GPIO_PIN_0
-#define LINE_LL_GPIO_Port GPIOC
-#define LINE_LM_Pin GPIO_PIN_1
-#define LINE_LM_GPIO_Port GPIOC
-#define LINE_RM_Pin GPIO_PIN_2
-#define LINE_RM_GPIO_Port GPIOC
-#define LINE_RR_Pin GPIO_PIN_3
+#define LINE_RR_Pin GPIO_PIN_0
 #define LINE_RR_GPIO_Port GPIOC
+#define LINE_RM_Pin GPIO_PIN_1
+#define LINE_RM_GPIO_Port GPIOC
+#define LINE_LM_Pin GPIO_PIN_2
+#define LINE_LM_GPIO_Port GPIOC
+#define LINE_LL_Pin GPIO_PIN_3
+#define LINE_LL_GPIO_Port GPIOC
 #define BLUETOOTH_EN_Pin GPIO_PIN_4
 #define BLUETOOTH_EN_GPIO_Port GPIOA
 #define BLUETOOTH_STATUS_Pin GPIO_PIN_5
 #define BLUETOOTH_STATUS_GPIO_Port GPIOA
 #define BATTERY_SENSE_Pin GPIO_PIN_4
 #define BATTERY_SENSE_GPIO_Port GPIOC
-#define PROXIMITY_RR_Pin GPIO_PIN_5
-#define PROXIMITY_RR_GPIO_Port GPIOC
+#define PROXIMITY_FL_Pin GPIO_PIN_5
+#define PROXIMITY_FL_GPIO_Port GPIOC
 #define BOOT1_Pin GPIO_PIN_2
 #define BOOT1_GPIO_Port GPIOB
 #define USER_LED_RUN_Pin GPIO_PIN_15
@@ -90,8 +90,8 @@ void Error_Handler(void);
 #define USER_BUTTON_R_GPIO_Port GPIOD
 #define PROXIMITY_LL_Pin GPIO_PIN_3
 #define PROXIMITY_LL_GPIO_Port GPIOB
-#define PROXIMITY_FL_Pin GPIO_PIN_4
-#define PROXIMITY_FL_GPIO_Port GPIOB
+#define PROXIMITY_RR_Pin GPIO_PIN_4
+#define PROXIMITY_RR_GPIO_Port GPIOB
 #define PROXIMITY_FR_Pin GPIO_PIN_5
 #define PROXIMITY_FR_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
