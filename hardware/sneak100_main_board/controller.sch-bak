@@ -677,10 +677,8 @@ Text HLabel 4650 4100 2    50   Output ~ 0
 LB_IN2
 Text HLabel 4650 4300 2    50   Input ~ 0
 PROXIMITY_LL
-Text HLabel 4650 4400 2    50   Input ~ 0
+Text HLabel 3250 4500 0    50   Input ~ 0
 PROXIMITY_FL
-Text HLabel 4650 4500 2    50   Input ~ 0
-PROXIMITY_FR
 Text HLabel 4650 2300 2    50   Input ~ 0
 RB_A
 Text HLabel 4650 2400 2    50   Input ~ 0
@@ -711,8 +709,6 @@ Text HLabel 3250 4000 0    50   Input ~ 0
 LINE_RR
 Text HLabel 3250 4400 0    50   Input ~ 0
 BATTERY_SENSE
-Text HLabel 3250 4500 0    50   Input ~ 0
-PROXIMITY_RR
 Text HLabel 3250 4600 0    50   Input ~ 0
 LF_A
 Text HLabel 3250 4700 0    50   Input ~ 0
@@ -812,4 +808,8 @@ BLUETOOTH_EN
 Text HLabel 4650 2800 2    50   Input ~ 0
 BLUETOOTH_STATUS
 NoConn ~ 3250 4800
+Text HLabel 4650 4500 2    50   Input ~ 0
+PROXIMITY_FR
+Text HLabel 4650 4400 2    50   Input ~ 0
+PROXIMITY_RR
 $EndSCHEMATC
