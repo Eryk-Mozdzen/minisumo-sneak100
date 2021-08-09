@@ -19,7 +19,7 @@ U 1 1 60E05377
 P 4050 2550
 F 0 "J6" H 4130 2592 50  0000 L CNN
 F 1 "Conn_01x03" H 4130 2501 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4050 2550 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 4050 2550 50  0001 C CNN
 F 3 "~" H 4050 2550 50  0001 C CNN
 	1    4050 2550
 	1    0    0    -1  
@@ -30,7 +30,7 @@ U 1 1 60E06B30
 P 4050 2950
 F 0 "J7" H 4130 2992 50  0000 L CNN
 F 1 "Conn_01x03" H 4130 2901 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4050 2950 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 4050 2950 50  0001 C CNN
 F 3 "~" H 4050 2950 50  0001 C CNN
 	1    4050 2950
 	1    0    0    -1  
@@ -41,7 +41,7 @@ U 1 1 60E07495
 P 4050 3350
 F 0 "J8" H 4130 3392 50  0000 L CNN
 F 1 "Conn_01x03" H 4130 3301 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4050 3350 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 4050 3350 50  0001 C CNN
 F 3 "~" H 4050 3350 50  0001 C CNN
 	1    4050 3350
 	1    0    0    -1  
@@ -52,7 +52,7 @@ U 1 1 60E07950
 P 4050 3750
 F 0 "J9" H 4130 3792 50  0000 L CNN
 F 1 "Conn_01x03" H 4130 3701 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4050 3750 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 4050 3750 50  0001 C CNN
 F 3 "~" H 4050 3750 50  0001 C CNN
 	1    4050 3750
 	1    0    0    -1  

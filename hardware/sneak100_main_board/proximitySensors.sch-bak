@@ -21,7 +21,7 @@ AR Path="/60E04A74/610BA2A4" Ref="J?"  Part="1"
 AR Path="/60E049FE/610BA2A4" Ref="J11"  Part="1" 
 F 0 "J11" H 5130 3242 50  0000 L CNN
 F 1 "Conn_01x03" H 5130 3151 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 5050 3200 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Horizontal" H 5050 3200 50  0001 C CNN
 F 3 "~" H 5050 3200 50  0001 C CNN
 	1    5050 3200
 	1    0    0    -1  
@@ -34,7 +34,7 @@ AR Path="/60E04A74/610BA2AA" Ref="J?"  Part="1"
 AR Path="/60E049FE/610BA2AA" Ref="J12"  Part="1" 
 F 0 "J12" H 5130 3642 50  0000 L CNN
 F 1 "Conn_01x03" H 5130 3551 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 5050 3600 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Horizontal" H 5050 3600 50  0001 C CNN
 F 3 "~" H 5050 3600 50  0001 C CNN
 	1    5050 3600
 	1    0    0    -1  
@@ -47,7 +47,7 @@ AR Path="/60E04A74/610BA2B0" Ref="J?"  Part="1"
 AR Path="/60E049FE/610BA2B0" Ref="J13"  Part="1" 
 F 0 "J13" H 5130 4042 50  0000 L CNN
 F 1 "Conn_01x03" H 5130 3951 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 5050 4000 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Horizontal" H 5050 4000 50  0001 C CNN
 F 3 "~" H 5050 4000 50  0001 C CNN
 	1    5050 4000
 	1    0    0    -1  
@@ -60,7 +60,7 @@ AR Path="/60E04A74/610BA2B6" Ref="J?"  Part="1"
 AR Path="/60E049FE/610BA2B6" Ref="J14"  Part="1" 
 F 0 "J14" H 5130 4442 50  0000 L CNN
 F 1 "Conn_01x03" H 5130 4351 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 5050 4400 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Horizontal" H 5050 4400 50  0001 C CNN
 F 3 "~" H 5050 4400 50  0001 C CNN
 	1    5050 4400
 	1    0    0    -1  
@@ -181,4 +181,26 @@ Text Notes 4400 2450 0    100  ~ 20
 Proximity sensors
 Text Notes 4800 2650 0    50   ~ 10
 4x Proxima
+$Comp
+L Connector_Generic:Conn_02x03_Odd_Even J15
+U 1 1 6112C7F5
+P 6950 3250
+F 0 "J15" H 7000 3567 50  0000 C CNN
+F 1 "Conn_02x03_Odd_Even" H 7000 3476 50  0000 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_2x03_P2.54mm_Horizontal" H 6950 3250 50  0001 C CNN
+F 3 "~" H 6950 3250 50  0001 C CNN
+	1    6950 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_02x03_Odd_Even J16
+U 1 1 6112D481
+P 6950 3850
+F 0 "J16" H 7000 4167 50  0000 C CNN
+F 1 "Conn_02x03_Odd_Even" H 7000 4076 50  0000 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_2x03_P2.54mm_Horizontal" H 6950 3850 50  0001 C CNN
+F 3 "~" H 6950 3850 50  0001 C CNN
+	1    6950 3850
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
