@@ -5,8 +5,12 @@
   <img src="/docs/readme/Zrzut ekranu (252).png" width="49%" />
 </p>
 
+<p align="center">
+  <img src="/docs/readme/Zrzut ekranu (253).png" width="49%" />
+</p>
+
 To do:
-- route main pcb board
+- check pcb routes
 - buy remaining electronic components
 - print plastic elements
 - buy HM blade
