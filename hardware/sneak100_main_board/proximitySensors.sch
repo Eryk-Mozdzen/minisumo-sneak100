@@ -125,9 +125,9 @@ Text HLabel 5200 4250 0    50   Output ~ 0
 READ_FR
 Text HLabel 5700 4250 2    50   Output ~ 0
 READ_RR
-Text Notes 4400 2450 0    100  ~ 20
+Text Notes 4800 2750 0    100  ~ 20
 Proximity sensors
-Text Notes 4800 2650 0    50   ~ 10
+Text Notes 5200 2950 0    50   ~ 10
 4x Proxima
 $Comp
 L Connector_Generic:Conn_02x03_Odd_Even J11
