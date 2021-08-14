@@ -44,47 +44,18 @@ void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, MOTOR_FL_DIR_Pin|MOTOR_FR_DIR_Pin|MOTOR_BL_DIR_Pin|MOTOR_BR_DIR_Pin
-                          |PROXIMITY_TX_ADD0_Pin|PROXIMITY_TX_ADD1_Pin|PROXIMITY_TX_ADD2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, MOTOR_FL_DIR_Pin|MOTOR_FR_DIR_Pin|MOTOR_BL_DIR_Pin|MOTOR_BR_DIR_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, USER_LED0_Pin|USER_LED1_Pin|USER_LED2_Pin|PROXIMITY_RX_ADD0_Pin
-                          |PROXIMITY_RX_ADD1_Pin|PROXIMITY_RX_ADD2_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pins : PBPin PBPin PBPin PBPin
-                           PBPin PBPin PBPin */
-  GPIO_InitStruct.Pin = MOTOR_FL_DIR_Pin|MOTOR_FR_DIR_Pin|MOTOR_BL_DIR_Pin|MOTOR_BR_DIR_Pin
-                          |PROXIMITY_TX_ADD0_Pin|PROXIMITY_TX_ADD1_Pin|PROXIMITY_TX_ADD2_Pin;
+  /*Configure GPIO pins : PBPin PBPin PBPin PBPin */
+  GPIO_InitStruct.Pin = MOTOR_FL_DIR_Pin|MOTOR_FR_DIR_Pin|MOTOR_BL_DIR_Pin|MOTOR_BR_DIR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : PBPin PBPin PBPin */
-  GPIO_InitStruct.Pin = USER_BUTTON_Pin|SMODULE_STR_Pin|SMODULE_KILL_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PtPin */
-  GPIO_InitStruct.Pin = IR_RX_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(IR_RX_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : PCPin PCPin PCPin PCPin
-                           PCPin PCPin */
-  GPIO_InitStruct.Pin = USER_LED0_Pin|USER_LED1_Pin|USER_LED2_Pin|PROXIMITY_RX_ADD0_Pin
-                          |PROXIMITY_RX_ADD1_Pin|PROXIMITY_RX_ADD2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
 }
 
