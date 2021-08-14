@@ -29,4 +29,11 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>Sneak100</name>
+			<type>2</type>
+			<location>D:/Moje Wyczyny/My_Poor_Projects/Sneak100_MiniSumo/minisumo-sneak100/software/Sneak100</location>
+		</link>
+	</linkedResources>
 </projectDescription>
