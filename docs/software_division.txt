@@ -1,0 +1,18 @@
+
+
+sneak100_utilities:
+	- pid
+	- time base
+	- state machine
+	- RC5 decoder
+	- SSD1306 library
+	- memory?
+
+sneak100_hardware:
+	- motors + encoders
+	- line sensors
+	- proximity sensors
+	- power supply sense
+	- GUI (screen + buttons)
+	- bluetooth
+	- embedded start module

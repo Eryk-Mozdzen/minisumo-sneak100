@@ -2,12 +2,18 @@
 #define __PID_H__
 
 #include "tim.h"
+#include "time_base.h"
 #include <stdint.h>
 
 typedef struct {
-	TIM_HandleTypeDef *us_timer;
+    float Kp, Ki, Kd;
+    float intgral, prev_process_value;
+
+    TimeBase_StructTypeDef tbase;
 } PID_StructTypeDef;
 
-uint32_t __PID_GetTime(PID_StructTypeDef *);
+void PID_Init(PID_StructTypeDef *, TIM_HandleTypeDef *, float, float, float);
+void PID_Reset(PID_StructTypeDef *);
+float PID_Update(PID_StructTypeDef *, float, float);
 
 #endif
