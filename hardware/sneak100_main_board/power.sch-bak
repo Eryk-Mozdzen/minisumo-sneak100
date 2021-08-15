@@ -29,7 +29,7 @@ L Device:LED D1
 U 1 1 60F07A86
 P 9550 4650
 F 0 "D1" V 9589 4532 50  0000 R CNN
-F 1 "LED" V 9498 4532 50  0000 R CNN
+F 1 "RED_LED" V 9498 4532 50  0000 R CNN
 F 2 "LED_SMD:LED_0603_1608Metric" H 9550 4650 50  0001 C CNN
 F 3 "~" H 9550 4650 50  0001 C CNN
 	1    9550 4650
@@ -397,7 +397,7 @@ Text Notes 8900 1600 0    100  ~ 20
 Text Notes 5000 6150 0    50   ~ 10
 Voltage divider calculations:\n\nU_in max = 8.4V\nU_out max = 3V\n\nU_out = U_in * R2/(R1+R2)\nU_out * (R1+R2) = U_in * R2\nU_out * R1+ U_out * R2 = U_in * R2\nU_out * R1 = (U_in - U_out) * R2\nR1 = R2 * (U_in - U_out)/U_out\n\nassume R2 = 10k\n\nR1 = 10000 * (8.4 - 3)/3 = 18 kohm\n
 Text Notes 8800 6100 0    50   ~ 10
-Power leds current resistor calculations:\n\ntarget current: I = 5mA\ninput voltage: U1= 3.3V\nforward voltage: Uf = 1.6V\n\nR = (U-Uf)/I\nR_3.3V = (3.3 -1.6)/0.005 = 340 ohm -> 360 ohm
+Power red led current resistor calculations:\n\ntarget current: I = 5mA\ninput voltage: U1= 3.3V\nforward voltage: Uf = 1.6V\n\nR = (U-Uf)/I\nR_3.3V = (3.3 -1.6)/0.005 = 340 ohm -> 360 ohm
 $Comp
 L Device:C C13
 U 1 1 60FF72EC
