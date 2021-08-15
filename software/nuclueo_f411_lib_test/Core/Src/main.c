@@ -28,6 +28,10 @@
 
 #include <stdio.h>
 #include <string.h>
+
+#include "time_base.h"
+#include "pid.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -105,13 +109,19 @@ int main(void)
 
   HAL_TIM_Base_Start(&htim2);
 
+  TimeBase_StructTypeDef tbase;
+  //PID_StructTypeDef pid;
+
+  TimeBase_Init(&tbase, &htim2);
+  //PID_Init(&pid, &htim2, 1, 0, 0);
+
   while(1) {
 
-	  __HAL_TIM_SetCounter(&htim2, 0);
+	  //float output = PID_Update(&pid, 1, 0);
+
+	  printf("%f\n", TimeBase_GetScale(&tbase) * TimeBase_Restart(&tbase));
 
 	  HAL_Delay(1000);
-
-	  printf("%lu\n", __HAL_TIM_GetCounter(&htim2));
 
     /* USER CODE END WHILE */
 
