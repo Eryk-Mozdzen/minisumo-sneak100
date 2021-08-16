@@ -6,10 +6,6 @@ Sneak100:
 1	MODUŁ BLUETOOTH HC05			36	36
 1	US LM1117IMP-3.3 SOT223			1,50	1,50
 
-+ rezystorki
-+ kondensatorki
-+ ledziki, ceweczka
-
 2	Rez.SMD 1K(100szt) 0603 1%		3	3
 16	Rez.SMD 10K(100szt) 0603 1%		3	3		+10 z czujnika
 1	Rez.SMD 18K(100szt) 0603 1%		3	3
@@ -18,19 +14,22 @@ Sneak100:
 11	Rez.SMD 270R(100szt) 0603 1%		3	3		+10 z czujnika
 11	Rez.SMD 100R(100szt) 0603 1%		3	3		+10 z czujnika
 
-1	kond 33uF 0805 brak?
 18	Kond.SMD100nF(100szt) 0603 25V X7R	15,01	
 2	Kond.SMD2,2uF(100szt) 0603 10V X5R	6
 2	Kond.SMD22pF(100szt) 0603 50V COG 5%	5,01
 1	Kond.SMD1uF(100szt) 0603 16V X7R 10%	5,01
 1	Kond.SMD4,7uF(100szt) 0805 10V X7R	17
-13	Kond.tantal.SMD 4,7uF/16V A		0,50	1,50		+10 z czujnika
-4	Kond.tantal.SMD 22uF/10V A 10%		0,41	1,64		NIE PODOBA MI SIĘ TO
+13	Kond.tantal.SMD 4,7uF/16V A		0,50	6,50		+10 z czujnika
+5	Kond.tantal.SMD 47uF/20V D 10%		1,40	7
 
 1	dławik 4,7uH 0805/0603 brak?
 1	Dioda LED SMD 0603 RED			0,20	0,20
 1	Dioda LED SMD 0603 GREEN		0,25	0,25
 1	Dioda LED SMD 0603 YELLOW 80mcd		0,20	0,20
+
+	listwa goldpin raster 2,54mm żeńska kątowa
+	listwa goldpin raster 2,54mm żeńska kątowa podwójna
+10	Tulejka dys.z tworz.H= 4mm(100szt)	20
 
 Proxima:
 6	US NE555 ?				2,50	15

@@ -399,28 +399,17 @@ Voltage divider calculations:\n\nU_in max = 8.4V\nU_out max = 3V\n\nU_out = U_in
 Text Notes 8800 6100 0    50   ~ 10
 Power red led current resistor calculations:\n\ntarget current: I = 5mA\ninput voltage: U1= 3.3V\nforward voltage: Uf = 1.6V\n\nR = (U-Uf)/I\nR_3.3V = (3.3 -1.6)/0.005 = 340 ohm -> 360 ohm
 $Comp
-L Device:C C13
-U 1 1 60FF72EC
-P 6000 2400
-F 0 "C13" H 6115 2446 50  0000 L CNN
-F 1 "33uF" H 6115 2355 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 6038 2250 50  0001 C CNN
-F 3 "~" H 6000 2400 50  0001 C CNN
-	1    6000 2400
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR041
 U 1 1 60FF77C3
-P 6000 2550
-F 0 "#PWR041" H 6000 2300 50  0001 C CNN
-F 1 "GND" H 6005 2377 50  0000 C CNN
-F 2 "" H 6000 2550 50  0001 C CNN
-F 3 "" H 6000 2550 50  0001 C CNN
-	1    6000 2550
+P 5800 2550
+F 0 "#PWR041" H 5800 2300 50  0001 C CNN
+F 1 "GND" H 5805 2377 50  0000 C CNN
+F 2 "" H 5800 2550 50  0001 C CNN
+F 3 "" H 5800 2550 50  0001 C CNN
+	1    5800 2550
 	1    0    0    -1  
 $EndComp
-Text GLabel 5950 2200 0    50   Input ~ 0
+Text GLabel 5750 2200 0    50   Input ~ 0
 SUPPLY
 $Comp
 L Sneak100_kicad:S9V11F5 U6
@@ -460,12 +449,10 @@ Wire Wire Line
 Wire Wire Line
 	7100 2200 7100 2150
 Wire Wire Line
-	6250 2200 6000 2200
+	5800 2200 5800 2250
 Wire Wire Line
-	6000 2200 6000 2250
-Wire Wire Line
-	6000 2200 5950 2200
-Connection ~ 6000 2200
+	5800 2200 5750 2200
+Connection ~ 5800 2200
 Wire Wire Line
 	1500 2350 1800 2350
 Wire Wire Line
@@ -550,4 +537,19 @@ Connection ~ 3100 2150
 Wire Wire Line
 	3600 2350 3650 2350
 Connection ~ 3600 2350
+$Comp
+L Device:CP C13
+U 1 1 6125F08B
+P 5800 2400
+AR Path="/60E04AFA/6125F08B" Ref="C13"  Part="1" 
+AR Path="/60E0499A/6125F08B" Ref="C?"  Part="1" 
+F 0 "C13" H 5918 2446 50  0000 L CNN
+F 1 "47uF/20V" H 5918 2355 50  0000 L CNN
+F 2 "Capacitor_Tantalum_SMD:CP_EIA-7343-31_Kemet-D" H 5838 2250 50  0001 C CNN
+F 3 "~" H 5800 2400 50  0001 C CNN
+	1    5800 2400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5800 2200 6250 2200
 $EndSCHEMATC
