@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "i2c.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -29,8 +30,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "time_base.h"
-#include "pid.h"
+#include "sneak100_motors.h"
+#include "sneak100_display.h"
 
 /* USER CODE END Includes */
 
@@ -59,7 +60,7 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 
 int __io_putchar(int ch) {
-	HAL_UART_Transmit(&huart2, &ch, 1, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, (uint8_t*)&ch, 1, HAL_MAX_DELAY);
 	return ch;
 }
 
@@ -100,6 +101,8 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_TIM2_Init();
+  MX_TIM3_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -109,19 +112,13 @@ int main(void)
 
   HAL_TIM_Base_Start(&htim2);
 
-  TimeBase_StructTypeDef tbase;
-  //PID_StructTypeDef pid;
-
-  TimeBase_Init(&tbase, &htim2);
-  //PID_Init(&pid, &htim2, 1, 0, 0);
+  SNEAK100_Motors_Init();
 
   while(1) {
 
-	  //float output = PID_Update(&pid, 1, 0);
+	  printf("%f\n", Motor_GetPosition(&motorFL));
 
-	  printf("%f\n", TimeBase_GetScale(&tbase) * TimeBase_Restart(&tbase));
-
-	  HAL_Delay(1000);
+	  HAL_Delay(100);
 
     /* USER CODE END WHILE */
 

@@ -9,6 +9,8 @@ typedef struct {
     float Kp, Ki, Kd;
     float intgral, prev_process_value;
 
+    float delta_time, error, derivative;	// for debug
+
     TimeBase_StructTypeDef tbase;
 } PID_StructTypeDef;
 

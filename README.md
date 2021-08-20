@@ -10,14 +10,19 @@
 </p>
 
 To do:
-- check pcb routes
 - buy remaining electronic components
 - print plastic elements
-- buy HM blade
+- buy blade
 
-- solder everything
+- assembly everything
 - program uC
-- TESTS
+- TESTS/debug
 
 DEADLINE:
 	4 sep 2021 - Baltic Robot Battles, Gdansk, Poland
+
+Planned features:
+- GUI
+- dedicated bluetooth app
+- FreeRTOS
+- clever fight algorithms

@@ -92,6 +92,8 @@
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/nucleo_f411_lib_test/Sneak100/sneak100_utilities/Inc}&quot;"/>
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/nucleo_f411_lib_test/Sneak100/sneak100_hardware/Inc}&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/nucleo_f411_lib_test/Sneak100/sneak100_abstraction_layer/Inc}&quot;"/>
                                     								
                                 </option>
                                 								
@@ -151,11 +153,11 @@
                     					
                     <sourceEntries>
                         						
+                        <entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Sneak100"/>
+                        						
                         <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
                         						
                         <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
-                        						
-                        <entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Sneak100"/>
                         					
                     </sourceEntries>
                     				

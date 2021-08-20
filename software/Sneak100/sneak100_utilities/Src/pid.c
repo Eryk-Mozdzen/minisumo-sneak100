@@ -17,11 +17,11 @@ void PID_Reset(PID_StructTypeDef *pid) {
 }
 
 float PID_Update(PID_StructTypeDef *pid, float curr_process_value, float set_value) {
-    float delta_time = TimeBase_GetScale(&pid->tbase) * TimeBase_Restart(&pid->tbase);
+	pid->delta_time = TimeBase_GetScale(&pid->tbase) * TimeBase_Restart(&pid->tbase);
 
-    float error = curr_process_value - set_value;
-    float derivative = (curr_process_value - pid->prev_process_value)/delta_time;
-    pid->intgral +=error;
+    pid->error = curr_process_value - set_value;
+    pid->derivative = (curr_process_value - pid->prev_process_value)/pid->delta_time;
+    pid->intgral +=pid->error;
 
-    return pid->Kp * error + pid->Ki * pid->intgral + pid->Kd * derivative;
+    return pid->Kp * pid->error + pid->Ki * pid->intgral + pid->Kd * pid->derivative;
 }
