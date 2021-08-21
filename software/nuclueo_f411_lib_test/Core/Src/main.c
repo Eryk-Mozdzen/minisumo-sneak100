@@ -103,6 +103,7 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_I2C1_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -114,9 +115,20 @@ int main(void)
 
   SNEAK100_Motors_Init();
 
+  Motor_SetBreakMode(&motorFL, MODE_BREAK);
+
+  Motor_SetPosition(&motorFL, 5);
+
   while(1) {
 
-	  printf("%f\n", Motor_GetPosition(&motorFL));
+	  printf("%f\t%f\t%f\t%f\t%f\t", Encoder_GetPosition(&encoderFL), motorFL.pid.output, motorFL.pid.error, motorFL.pid.integral, motorFL.pid.derivative);
+	  //printf("%f\t%f\n", Encoder_GetPosition(&encoderFL), Encoder_GetVelocity(&encoderFL));
+
+	  printf("%lu\t%lu\n", htim1.Instance->CCR2, htim1.Instance->CCR3);
+
+	  //__Motor_SetPower(&motorFL, Motor_GetPosition(&motorFL));
+
+	  Motor_Update(&motorFL);
 
 	  HAL_Delay(100);
 

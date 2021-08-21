@@ -8,33 +8,72 @@
 #ifndef SNEAK100_ABSTRACTION_LAYER_INC_MOTOR_H_
 #define SNEAK100_ABSTRACTION_LAYER_INC_MOTOR_H_
 
-#include "tim.h"
+#include "stm32f4xx_hal.h"
 #include "pid.h"
+#include "math_tools.h"
+#include "encoder.h"
+#include <stdlib.h>
 #include <stdint.h>
 #include <assert.h>
+
+#define TIM_CHANNEL_N		0x001000000
+#define MOTOR_POWER_MAX		1024
 
 typedef enum {
 	MODE_POSITION_CONTROL,
 	MODE_VELOCITY_CONTROL
 } MotorControlMode_EnumTypeDef;
 
+typedef enum {
+	DIRECTION_CW,
+	DIRECTION_CC
+} MotorDirection_EnumTypeDef;
+
+typedef enum {
+	MODE_BREAK,
+	MODE_COAST
+} MotorBrakeMode_EnumTypeDef;
+
 typedef struct {
-	TIM_HandleTypeDef *motor_timer;
+	TIM_HandleTypeDef *timer_in1;
+	TIM_HandleTypeDef *timer_in2;
+	uint32_t channel_in1;
+	uint32_t channel_in2;
 
-	float position_set_value, velocity_set_value;
+	MotorDirection_EnumTypeDef direction;
 
-	MotorControlMode_EnumTypeDef mode;
-	TimeBase_StructTypeDef tbase;
+	TIM_HandleTypeDef *timer_tbase;
+	float pid_p;
+	float pid_i;
+	float pid_d;
+	float pid_iband;
+} MotorConfig_StructTypeDef;
+
+typedef struct {
+	TIM_HandleTypeDef *timer_in1;
+	TIM_HandleTypeDef *timer_in2;
+	uint32_t channel_in1;
+	uint32_t channel_in2;
+
+	MotorDirection_EnumTypeDef direction;
+	MotorBrakeMode_EnumTypeDef break_mode;
+	MotorControlMode_EnumTypeDef control_mode;
+
+	float position_set_value;
+	float velocity_set_value;
+
+	Encoder_StructTypeDef *encoder;
 	PID_StructTypeDef pid;
 } Motor_StructTypeDef;
 
-void Motor_Init(Motor_StructTypeDef *, TIM_HandleTypeDef *, TIM_HandleTypeDef *, TIM_HandleTypeDef *, uint16_t, float , float, float);
+void Motor_Init(Motor_StructTypeDef *, Encoder_StructTypeDef *, MotorConfig_StructTypeDef);
 void Motor_Update(Motor_StructTypeDef *);
-void Motor_SetMode(Motor_StructTypeDef *, MotorControlMode_EnumTypeDef);
+void Motor_SetControlMode(Motor_StructTypeDef *, MotorControlMode_EnumTypeDef);
+void Motor_SetBreakMode(Motor_StructTypeDef *, MotorBrakeMode_EnumTypeDef);
+
 void Motor_SetPosition(Motor_StructTypeDef *, float);
 void Motor_SetVelocity(Motor_StructTypeDef *, float);
 
-float Motor_GetPosition(Motor_StructTypeDef *);
-float Motor_GetVelocity(Motor_StructTypeDef *);
+void __Motor_SetPower(Motor_StructTypeDef *, int16_t);
 
 #endif /* SNEAK100_ABSTRACTION_LAYER_INC_MOTOR_H_ */

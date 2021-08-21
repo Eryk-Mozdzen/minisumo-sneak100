@@ -1,16 +1,17 @@
 #include "pid.h"
 
-void PID_Init(PID_StructTypeDef *pid, TIM_HandleTypeDef *htim, float Kp, float Ki, float Kd) {
+void PID_Init(PID_StructTypeDef *pid, TIM_HandleTypeDef *htim, float Kp, float Ki, float Kd, float integral_band) {
     pid->Kp = Kp;
     pid->Ki = Ki;
     pid->Kd = Kd;
+    pid->integral_band = integral_band;
 
     TimeBase_Init(&pid->tbase, htim);
     PID_Reset(pid);
 }
 
 void PID_Reset(PID_StructTypeDef *pid) {
-    pid->intgral = 0;
+    pid->integral = 0;
     pid->prev_process_value = 0;
 
     TimeBase_Start(&pid->tbase);
@@ -21,7 +22,15 @@ float PID_Update(PID_StructTypeDef *pid, float curr_process_value, float set_val
 
     pid->error = curr_process_value - set_value;
     pid->derivative = (curr_process_value - pid->prev_process_value)/pid->delta_time;
-    pid->intgral +=pid->error;
 
-    return pid->Kp * pid->error + pid->Ki * pid->intgral + pid->Kd * pid->derivative;
+    if(abs(pid->error)<pid->integral_band)
+    	pid->integral +=pid->error;
+    else
+    	pid->integral = 0;
+
+    pid->output = pid->Kp * pid->error + pid->Ki * pid->integral + pid->Kd * pid->derivative;
+
+    pid->prev_process_value = curr_process_value;
+
+    return pid->output;
 }
