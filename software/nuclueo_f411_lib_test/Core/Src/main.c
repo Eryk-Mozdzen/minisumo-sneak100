@@ -32,6 +32,7 @@
 
 #include "sneak100_motors.h"
 #include "sneak100_display.h"
+#include "sneak100_proximity.h"
 
 /* USER CODE END Includes */
 
@@ -115,6 +116,7 @@ int main(void)
 
   SNEAK100_Motors_Init();
   SNEAK100_Display_Init();
+  SNEAK100_ProximitySensors_Init();
 
   Motor_SetBreakMode(&motorFL, MODE_BREAK);
 
