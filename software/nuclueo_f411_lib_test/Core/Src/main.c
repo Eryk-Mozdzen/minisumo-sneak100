@@ -114,6 +114,7 @@ int main(void)
   HAL_TIM_Base_Start(&htim2);
 
   SNEAK100_Motors_Init();
+  SNEAK100_Display_Init();
 
   Motor_SetBreakMode(&motorFL, MODE_BREAK);
 
@@ -121,14 +122,19 @@ int main(void)
 
   while(1) {
 
-	  printf("%f\t%f\t%f\t%f\t%f\t", Encoder_GetPosition(&encoderFL), motorFL.pid.output, motorFL.pid.error, motorFL.pid.integral, motorFL.pid.derivative);
+	  //printf("%f\t%f\t%f\t%f\t%f\t", Encoder_GetPosition(&encoderFL), motorFL.pid.output, motorFL.pid.error, motorFL.pid.integral, motorFL.pid.derivative);
 	  //printf("%f\t%f\n", Encoder_GetPosition(&encoderFL), Encoder_GetVelocity(&encoderFL));
+	  printf("%f\n", motorFL.pid.delta_time);
 
-	  printf("%lu\t%lu\n", htim1.Instance->CCR2, htim1.Instance->CCR3);
+	  //printf("%lu\t%lu\n", htim1.Instance->CCR2, htim1.Instance->CCR3);
 
 	  //__Motor_SetPower(&motorFL, Motor_GetPosition(&motorFL));
 
 	  Motor_Update(&motorFL);
+
+	  gui.battery_voltage = 0.75f*gui.battery_voltage + 0.25*(7.4f + ((float)(rand()%1000)/1000.f)*(rand()%2 ? 1 : -1));
+
+	  SNEAK100_Display_Render();
 
 	  HAL_Delay(100);
 

@@ -10,9 +10,16 @@
 
 #include "i2c.h"
 #include "display.h"
+#include <stdio.h>
 
-extern Display_TypeDef oled;
+typedef struct {
+	float battery_voltage;
+} Sneak100_GUI_StructTypeDef;
+
+extern Display_StructTypeDef oled;
+extern Sneak100_GUI_StructTypeDef gui;
 
 void SNEAK100_Display_Init();
+void SNEAK100_Display_Render();
 
 #endif /* SNEAK100_HARDWARE_INC_SNEAK100_DISPLAY_H_ */
