@@ -24,7 +24,7 @@ void SNEAK100_Motors_Init() {
 	//Encoder_Init(&encoderFL, &htim3, &htim2, 360);
 	//Encoder_Init(&encoderFL, &htim3, &htim2, 360);
 
-	MotorConfig_StructTypeDef config = {0};
+	Motor_ConfigTypeDef config = {0};
 	config.timer_tbase = &htim2;
 	config.pid_p = MOTOR_PID_P;
 	config.pid_i = MOTOR_PID_I;

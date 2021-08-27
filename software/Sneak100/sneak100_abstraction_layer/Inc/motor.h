@@ -47,7 +47,7 @@ typedef struct {
 	float pid_i;
 	float pid_d;
 	float pid_iband;
-} MotorConfig_StructTypeDef;
+} Motor_ConfigTypeDef;
 
 typedef struct {
 	TIM_HandleTypeDef *timer_in1;
@@ -66,7 +66,7 @@ typedef struct {
 	PID_StructTypeDef pid;
 } Motor_StructTypeDef;
 
-void Motor_Init(Motor_StructTypeDef *, Encoder_StructTypeDef *, MotorConfig_StructTypeDef);
+void Motor_Init(Motor_StructTypeDef *, Encoder_StructTypeDef *, Motor_ConfigTypeDef);
 void Motor_Update(Motor_StructTypeDef *);
 void Motor_SetControlMode(Motor_StructTypeDef *, MotorControlMode_EnumTypeDef);
 void Motor_SetBreakMode(Motor_StructTypeDef *, MotorBrakeMode_EnumTypeDef);
