@@ -7,7 +7,7 @@
 
 #include "motor.h"
 
-void Motor_Init(Motor_StructTypeDef *motor, Encoder_StructTypeDef *encoder, MotorConfig_StructTypeDef config) {
+void Motor_Init(Motor_StructTypeDef *motor, Encoder_StructTypeDef *encoder, Motor_ConfigTypeDef config) {
 
 	motor->timer_in1 = config.timer_in1;
 	motor->timer_in2 = config.timer_in2;
