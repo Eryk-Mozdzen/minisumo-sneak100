@@ -21,7 +21,7 @@ typedef struct {
 	TimeBase_StructTypeDef tbase;
 } Encoder_StructTypeDef;
 
-void Encoder_Init(Encoder_StructTypeDef *, TIM_HandleTypeDef *, TIM_HandleTypeDef *, uint16_t);
+void Encoder_Init(Encoder_StructTypeDef *, TIM_HandleTypeDef *, uint16_t);
 void Encoder_Reset(Encoder_StructTypeDef *);
 
 float Encoder_GetPosition(Encoder_StructTypeDef *);

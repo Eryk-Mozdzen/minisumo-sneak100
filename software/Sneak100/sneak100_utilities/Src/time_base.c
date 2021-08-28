@@ -7,31 +7,34 @@
 
 #include "time_base.h"
 
-void TimeBase_Init(TimeBase_StructTypeDef *tbase, TIM_HandleTypeDef *htim) {
-	tbase->timer = htim;
-
-	tbase->time_start = __HAL_TIM_GetCounter(tbase->timer);
+void TimeBase_Init(TimeBase_StructTypeDef *tbase) {
+	tbase->time_start = HAL_GetTick();
 }
 
 void TimeBase_Start(TimeBase_StructTypeDef *tbase) {
-	tbase->time_start = __HAL_TIM_GetCounter(tbase->timer);
+	tbase->time_start = HAL_GetTick();
 }
 
 uint32_t TimeBase_Restart(TimeBase_StructTypeDef *tbase) {
-	uint32_t time_elapsed = __HAL_TIM_GetCounter(tbase->timer) - tbase->time_start;
+	uint32_t time_elapsed = HAL_GetTick() - tbase->time_start;
 
-	tbase->time_start = __HAL_TIM_GetCounter(tbase->timer);
+	tbase->time_start = HAL_GetTick();
 
 	return time_elapsed;
 }
 
 uint32_t TimeBase_GetTimeElapsed(TimeBase_StructTypeDef *tbase) {
-	return __HAL_TIM_GetCounter(tbase->timer) - tbase->time_start;
+	return HAL_GetTick() - tbase->time_start;
 }
 
 float TimeBase_GetScale(TimeBase_StructTypeDef *tbase) {
-	uint32_t PCS = tbase->timer->Instance->PSC;
-	uint32_t HCLK = HAL_RCC_GetHCLKFreq();
+	HAL_TickFreqTypeDef freq = HAL_GetTickFreq();
 
-	return (float)(PCS+1)/HCLK;
+	switch(freq) {
+		case HAL_TICK_FREQ_10HZ: 	return 0.1f;
+		case HAL_TICK_FREQ_100HZ: 	return 0.01f;
+		case HAL_TICK_FREQ_1KHZ: 	return 0.001f;
+	}
+
+	return 1;
 }

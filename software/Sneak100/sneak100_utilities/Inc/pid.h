@@ -16,7 +16,7 @@ typedef struct {
     TimeBase_StructTypeDef tbase;
 } PID_StructTypeDef;
 
-void PID_Init(PID_StructTypeDef *, TIM_HandleTypeDef *, float, float, float, float);
+void PID_Init(PID_StructTypeDef *, float, float, float, float);
 void PID_Reset(PID_StructTypeDef *);
 float PID_Update(PID_StructTypeDef *, float, float);
 

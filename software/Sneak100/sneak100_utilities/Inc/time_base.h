@@ -8,16 +8,14 @@
 #ifndef SNEAK100_UTILITIES_INC_TIME_BASE_H_
 #define SNEAK100_UTILITIES_INC_TIME_BASE_H_
 
-#include "tim.h"
+#include "stm32f4xx_hal.h"
 #include <stdint.h>
 
 typedef struct {
 	uint32_t time_start;
-
-	TIM_HandleTypeDef *timer;
 } TimeBase_StructTypeDef;
 
-void TimeBase_Init(TimeBase_StructTypeDef *, TIM_HandleTypeDef *);
+void TimeBase_Init(TimeBase_StructTypeDef *);
 void TimeBase_Start(TimeBase_StructTypeDef *);
 uint32_t TimeBase_Restart(TimeBase_StructTypeDef *);
 uint32_t TimeBase_GetTimeElapsed(TimeBase_StructTypeDef *);

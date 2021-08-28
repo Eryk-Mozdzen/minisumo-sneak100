@@ -19,13 +19,12 @@ Encoder_StructTypeDef encoderBR;
 
 void SNEAK100_Motors_Init() {
 
-	Encoder_Init(&encoderFL, &htim3, &htim2, 512);
-	//Encoder_Init(&encoderFL, &htim3, &htim2, 360);
-	//Encoder_Init(&encoderFL, &htim3, &htim2, 360);
-	//Encoder_Init(&encoderFL, &htim3, &htim2, 360);
+	Encoder_Init(&encoderFL, &htim3, 512);
+	//Encoder_Init(&encoderFL, &htim3, 360);
+	//Encoder_Init(&encoderFL, &htim3, 360);
+	//Encoder_Init(&encoderFL, &htim3, 360);
 
 	Motor_ConfigTypeDef config = {0};
-	config.timer_tbase = &htim2;
 	config.pid_p = MOTOR_PID_P;
 	config.pid_i = MOTOR_PID_I;
 	config.pid_d = MOTOR_PID_D;

@@ -8,6 +8,7 @@
 #ifndef SNEAK100_HARDWARE_INC_SNEAK100_MOTORS_H_
 #define SNEAK100_HARDWARE_INC_SNEAK100_MOTORS_H_
 
+#include "tim.h"
 #include "motor.h"
 
 #define MOTOR_PID_P			100.f

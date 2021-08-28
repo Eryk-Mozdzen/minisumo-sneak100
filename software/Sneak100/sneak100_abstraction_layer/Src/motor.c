@@ -18,7 +18,7 @@ void Motor_Init(Motor_StructTypeDef *motor, Encoder_StructTypeDef *encoder, Moto
 	motor->position_set_value = 0;
 	motor->velocity_set_value = 0;
 
-	PID_Init(&motor->pid, config.timer_tbase, config.pid_p, config.pid_i, config.pid_d, config.pid_iband);
+	PID_Init(&motor->pid, config.pid_p, config.pid_i, config.pid_d, config.pid_iband);
 
 	if(config.channel_in1 & TIM_CHANNEL_N)
 		HAL_TIMEx_PWMN_Start(motor->timer_in1, motor->channel_in1);
