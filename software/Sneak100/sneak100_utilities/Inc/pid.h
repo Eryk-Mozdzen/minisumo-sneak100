@@ -1,7 +1,7 @@
 #ifndef __PID_H__
 #define __PID_H__
 
-#include "tim.h"
+#include "stm32f4xx_hal.h"
 #include "time_base.h"
 #include <stdlib.h>
 #include <stdint.h>
