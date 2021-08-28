@@ -11,7 +11,7 @@ Bluetooth_StructTypeDef bluetooth;
 
 void SNEAK100_Bluetooth_Init() {
 
-	bluetooth.huart = huart6;
+	bluetooth.huart = &huart6;
 	bluetooth.EN_Port = BLUETOOTH_EN_GPIO_Port;
 	bluetooth.EN_Pin = BLUETOOTH_EN_Pin;
 	bluetooth.STATUS_Port = BLUETOOTH_STATUS_GPIO_Port;
@@ -21,7 +21,7 @@ void SNEAK100_Bluetooth_Init() {
 	Bluetooth_ConfigTypeDef config = {0};
 	config.name = "Sneak100";
 	config.password = "7777";
-	config.baudrate = 38400;
-	Bluetooth_SetConfig(&bluetooth, config);
+	config.baudrate = BAUDRATE_38400;
+	//Bluetooth_SetConfig(&bluetooth, config);
 
 }
