@@ -1,12 +1,12 @@
 #include "pid.h"
 
-void PID_Init(PID_StructTypeDef *pid, TIM_HandleTypeDef *htim, float Kp, float Ki, float Kd, float integral_band) {
+void PID_Init(PID_StructTypeDef *pid, float Kp, float Ki, float Kd, float integral_band) {
     pid->Kp = Kp;
     pid->Ki = Ki;
     pid->Kd = Kd;
     pid->integral_band = integral_band;
 
-    TimeBase_Init(&pid->tbase, htim);
+    TimeBase_Init(&pid->tbase);
     PID_Reset(pid);
 }
 

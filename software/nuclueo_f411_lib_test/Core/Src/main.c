@@ -108,7 +108,6 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  HAL_TIM_Base_Start(&htim2);
   UART_SetActive(&huart2);
 
   SNEAK100_Motors_Init();
@@ -126,7 +125,7 @@ int main(void)
 
 	  //printf("%f\t%f\t%f\t%f\t%f\t", Encoder_GetPosition(&encoderFL), motorFL.pid.output, motorFL.pid.error, motorFL.pid.integral, motorFL.pid.derivative);
 	  //printf("%f\t%f\n", Encoder_GetPosition(&encoderFL), Encoder_GetVelocity(&encoderFL));
-	  printf("%f\n", motorFL.pid.delta_time);
+	  //printf("%f\n", motorFL.pid.delta_time);
 
 	  /*char buffer[64] = {0};
 
@@ -146,7 +145,7 @@ int main(void)
 
 	  //__Motor_SetPower(&motorFL, Motor_GetPosition(&motorFL));
 
-	  Motor_Update(&motorFL);
+	  //Motor_Update(&motorFL);
 
 	  //gui.battery_voltage = 0.75f*gui.battery_voltage + 0.25*(7.4f + ((float)(rand()%1000)/1000.f)*(rand()%2 ? 1 : -1));
 

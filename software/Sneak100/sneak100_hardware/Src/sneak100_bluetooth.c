@@ -18,10 +18,12 @@ void SNEAK100_Bluetooth_Init() {
 	bluetooth.STATUS_Pin = BLUETOOTH_STATUS_Pin;
 	Bluetooth_Init(&bluetooth);
 
+#if 0
 	Bluetooth_ConfigTypeDef config = {0};
 	config.name = "Sneak100";
 	config.password = "7777";
 	config.baudrate = BAUDRATE_38400;
-	//Bluetooth_SetConfig(&bluetooth, config);
+	Bluetooth_SetConfig(&bluetooth, config);
+#endif
 
 }

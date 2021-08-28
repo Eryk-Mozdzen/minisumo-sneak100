@@ -42,7 +42,6 @@ typedef struct {
 
 	MotorDirection_EnumTypeDef direction;
 
-	TIM_HandleTypeDef *timer_tbase;
 	float pid_p;
 	float pid_i;
 	float pid_d;

@@ -7,12 +7,12 @@
 
 #include "encoder.h"
 
-void Encoder_Init(Encoder_StructTypeDef *encoder, TIM_HandleTypeDef *encoder_timer, TIM_HandleTypeDef *tbase_timer, uint16_t cpr) {
+void Encoder_Init(Encoder_StructTypeDef *encoder, TIM_HandleTypeDef *encoder_timer, uint16_t cpr) {
 	encoder->timer = encoder_timer;
 	encoder->cpr = cpr;
 
 	Encoder_Reset(encoder);
-	TimeBase_Init(&encoder->tbase, tbase_timer);
+	TimeBase_Init(&encoder->tbase);
 
 	HAL_TIM_Encoder_Start(encoder->timer, TIM_CHANNEL_ALL);
 }
