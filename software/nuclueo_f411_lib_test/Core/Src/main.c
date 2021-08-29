@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
@@ -66,6 +67,10 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+	Bluetooth_RxCpltCallback(&bluetooth, huart);
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -96,6 +101,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   MX_TIM3_Init();
   MX_I2C1_Init();
@@ -129,7 +135,7 @@ int main(void)
 
 	  char buffer[64] = {0};
 
-	  UART_SetActive(&huart2);
+	  /*UART_SetActive(&huart2);
 	  printf("Input: ");
 	  scanf("%s", buffer);
 	  //printf("%s\n", buffer);
@@ -139,7 +145,16 @@ int main(void)
 	  scanf("%s", buffer);
 
 	  UART_SetActive(&huart2);
-	  printf("HC-05: %s\n", buffer);
+	  printf("HC-05: %s\n", buffer);*/
+
+	  UART_SetActive(&huart2);
+
+	  if(Bluetooth_IsDataReady(&bluetooth)) {
+		  Bluetooth_ReadData(&bluetooth, (uint8_t *)buffer);
+		  printf("%s\n", buffer);
+	  }
+
+	  //printf("%64s\n", bluetooth.rx_buffer);
 
 	  //printf("%lu\t%lu\n", htim1.Instance->CCR2, htim1.Instance->CCR3);
 
@@ -155,7 +170,7 @@ int main(void)
 
 	  //printf("Status: %u\n", Bluetooth_GetStatus(&bluetooth));
 
-	  HAL_Delay(100);
+	  //HAL_Delay(100);
 
     /* USER CODE END WHILE */
 

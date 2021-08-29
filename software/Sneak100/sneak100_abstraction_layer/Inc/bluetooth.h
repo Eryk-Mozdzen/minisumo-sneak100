@@ -12,8 +12,12 @@
 #include "uart.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+
+#define BLUETOOTH_RX_BUFFER_SIZE	256
+#define BLUETOOTH_TX_BUFFER_SIZE	256
 
 typedef enum {
 	BAUDRATE_4800 = 4800,
@@ -41,6 +45,11 @@ typedef struct {
 
 	GPIO_TypeDef* STATUS_Port;
 	uint16_t STATUS_Pin;
+
+	uint8_t *rx_buffer;
+	uint8_t *tx_buffer;
+
+	uint16_t rx_flag;
 } Bluetooth_StructTypeDef;
 
 typedef struct {
@@ -53,6 +62,9 @@ void Bluetooth_Init(Bluetooth_StructTypeDef *);
 HAL_StatusTypeDef Bluetooth_SetConfig(Bluetooth_StructTypeDef *, Bluetooth_ConfigTypeDef);
 
 Bluetooth_StatusTypeDef Bluetooth_GetStatus(Bluetooth_StructTypeDef *);
+void Bluetooth_RxCpltCallback(Bluetooth_StructTypeDef *, UART_HandleTypeDef *);
+uint8_t Bluetooth_IsDataReady(Bluetooth_StructTypeDef *);
+void Bluetooth_ReadData(Bluetooth_StructTypeDef *, uint8_t *);
 
 HAL_StatusTypeDef __Bluetooth_WriteATParameter(Bluetooth_StructTypeDef *, const char *, ...);
 

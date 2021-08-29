@@ -9,6 +9,12 @@
 
 void Bluetooth_Init(Bluetooth_StructTypeDef *bluetooth) {
 
+	bluetooth->rx_buffer = (uint8_t *)malloc(BLUETOOTH_RX_BUFFER_SIZE * sizeof(uint8_t));
+	bluetooth->tx_buffer = (uint8_t *)malloc(BLUETOOTH_TX_BUFFER_SIZE * sizeof(uint8_t));
+
+	bluetooth->rx_flag = 0;
+
+	HAL_UART_Receive_DMA(bluetooth->huart, bluetooth->rx_buffer, 8);
 }
 
 HAL_StatusTypeDef Bluetooth_SetConfig(Bluetooth_StructTypeDef *bluetooth, Bluetooth_ConfigTypeDef config) {
@@ -34,6 +40,25 @@ HAL_StatusTypeDef Bluetooth_SetConfig(Bluetooth_StructTypeDef *bluetooth, Blueto
 
 Bluetooth_StatusTypeDef Bluetooth_GetStatus(Bluetooth_StructTypeDef *bluetooth) {
 	return HAL_GPIO_ReadPin(bluetooth->STATUS_Port, bluetooth->STATUS_Pin) ? STATUS_PAIRED : STATUS_WAITING_FOR_CONNECTION;
+}
+
+void Bluetooth_RxCpltCallback(Bluetooth_StructTypeDef *bluetooth, UART_HandleTypeDef *huart) {
+	if(huart!=bluetooth->huart)
+		return;
+
+	bluetooth->rx_flag = 1;
+
+	HAL_UART_Receive_DMA(bluetooth->huart, bluetooth->rx_buffer, 8);
+}
+
+uint8_t Bluetooth_IsDataReady(Bluetooth_StructTypeDef *bluetooth) {
+	return bluetooth->rx_flag;
+}
+
+void Bluetooth_ReadData(Bluetooth_StructTypeDef *bluetooth, uint8_t *buffer) {
+	memcpy(buffer, bluetooth->rx_buffer, 8);
+
+	bluetooth->rx_flag = 0;
 }
 
 HAL_StatusTypeDef __Bluetooth_WriteATParameter(Bluetooth_StructTypeDef *bluetooth, const char *format, ...) {
