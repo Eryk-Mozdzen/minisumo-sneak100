@@ -23,7 +23,9 @@ void SNEAK100_Bluetooth_Init() {
 	config.name = "Sneak100";
 	config.password = "7777";
 	config.baudrate = BAUDRATE_38400;
-	Bluetooth_SetConfig(&bluetooth, config);
+	if(Bluetooth_SetConfig(&bluetooth, config)!=HAL_OK) {
+		printf("Bluetooth configuration failed\n");
+	}
 #endif
 
 }
