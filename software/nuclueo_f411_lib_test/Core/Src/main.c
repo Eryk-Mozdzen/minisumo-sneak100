@@ -127,19 +127,19 @@ int main(void)
 	  //printf("%f\t%f\n", Encoder_GetPosition(&encoderFL), Encoder_GetVelocity(&encoderFL));
 	  //printf("%f\n", motorFL.pid.delta_time);
 
-	  /*char buffer[64] = {0};
+	  char buffer[64] = {0};
 
-	  //UART_SetActive(&huart2);
-	  //printf("Input: ");
-	  //scanf("%[^\n]", buffer);
+	  UART_SetActive(&huart2);
+	  printf("Input: ");
+	  scanf("%s", buffer);
 	  //printf("%s\n", buffer);
 
 	  UART_SetActive(bluetooth.huart);
-	  //printf("%s\r\n", buffer);
+	  printf("%s\r\n", buffer);
 	  scanf("%s", buffer);
 
 	  UART_SetActive(&huart2);
-	  printf("HC-05: %s\n", buffer);*/
+	  printf("HC-05: %s\n", buffer);
 
 	  //printf("%lu\t%lu\n", htim1.Instance->CCR2, htim1.Instance->CCR3);
 

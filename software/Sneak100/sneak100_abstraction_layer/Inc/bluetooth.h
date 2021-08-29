@@ -13,6 +13,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 
 typedef enum {
 	BAUDRATE_4800 = 4800,
@@ -25,7 +26,7 @@ typedef enum {
 	BAUDRATE_460800 = 460800,
 	BAUDRATE_921600 = 921600,
 	BAUDRATE_1382400 = 1382400
-} Bluetooth_BaudrateEnumTypeDef;
+} Bluetooth_BaudrateTypeDef;
 
 typedef enum {
 	STATUS_WAITING_FOR_CONNECTION,
@@ -45,12 +46,14 @@ typedef struct {
 typedef struct {
 	char *name;
 	char *password;
-	Bluetooth_BaudrateEnumTypeDef baudrate;
+	Bluetooth_BaudrateTypeDef baudrate;
 } Bluetooth_ConfigTypeDef;
 
 void Bluetooth_Init(Bluetooth_StructTypeDef *);
 HAL_StatusTypeDef Bluetooth_SetConfig(Bluetooth_StructTypeDef *, Bluetooth_ConfigTypeDef);
 
 Bluetooth_StatusTypeDef Bluetooth_GetStatus(Bluetooth_StructTypeDef *);
+
+HAL_StatusTypeDef __Bluetooth_WriteATParameter(Bluetooth_StructTypeDef *, const char *, ...);
 
 #endif /* SNEAK100_ABSTRACTION_LAYER_INC_BLUETOOTH_H_ */
