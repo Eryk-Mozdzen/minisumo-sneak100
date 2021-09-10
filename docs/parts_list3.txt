@@ -1,0 +1,8 @@
+
+Jacktronic:
+zamówienine
+2	Tranz.AO4407				3,80	7,60
+
+10	Kond.SMD4,7uF(100szt) 0603 16V X5R	12.00
+
+izolacyjne rurki termokurczliwe		opakowanie
