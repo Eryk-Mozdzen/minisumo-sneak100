@@ -20,6 +20,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "dma.h"
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
@@ -33,6 +34,7 @@
 #include "sneak100_display.h"
 #include "sneak100_proximity.h"
 #include "sneak100_bluetooth.h"
+#include "sneak100_adc.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -98,6 +100,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
@@ -116,6 +119,9 @@ int main(void)
   //SNEAK100_Motors_Init();
   //SNEAK100_ProximitySensors_Init();
   //SNEAK100_Display_Init();
+  SNEAK100_ADC_Init();
+
+  SENAK100_LineSensors_SetPolarity(DYHLO_AUTO);
 
   /* USER CODE END 2 */
 
@@ -130,6 +136,12 @@ int main(void)
 
 		  HAL_UART_Transmit(bluetooth.huart, buffer, strlen((char *)buffer), HAL_MAX_DELAY);
 	  }
+
+	  char buffer[64] = {0};
+	  sprintf(buffer, "%.2f\t%.2f\n", SNEAK100_ADC_GetSupplyVoltage(), SNEAK100_ADC_GetTemperature());
+	  HAL_UART_Transmit(bluetooth.huart, (uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+	  HAL_Delay(500);
 
 	  //gui.battery_voltage = rand()%1000/1000.f;
 
