@@ -10,14 +10,14 @@
 
 #include "stm32f4xx_hal.h"
 #include "uart.h"
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
 
-#define BLUETOOTH_RX_BUFFER_SIZE	256
-#define BLUETOOTH_TX_BUFFER_SIZE	256
+#define BLUETOOTH_RX_BUFFER_SIZE	64
 
 typedef enum {
 	BAUDRATE_4800 = 4800,
@@ -47,9 +47,9 @@ typedef struct {
 	uint16_t STATUS_Pin;
 
 	uint8_t *rx_buffer;
-	uint8_t *tx_buffer;
-
 	uint16_t rx_flag;
+
+	uint8_t rx_data_size;
 } Bluetooth_StructTypeDef;
 
 typedef struct {
@@ -66,6 +66,6 @@ void Bluetooth_RxCpltCallback(Bluetooth_StructTypeDef *, UART_HandleTypeDef *);
 uint8_t Bluetooth_IsDataReady(Bluetooth_StructTypeDef *);
 void Bluetooth_ReadData(Bluetooth_StructTypeDef *, uint8_t *);
 
-HAL_StatusTypeDef __Bluetooth_WriteATParameter(Bluetooth_StructTypeDef *, const char *, ...);
+HAL_StatusTypeDef __Bluetooth_WriteParameter(Bluetooth_StructTypeDef *, const char *, ...);
 
 #endif /* SNEAK100_ABSTRACTION_LAYER_INC_BLUETOOTH_H_ */

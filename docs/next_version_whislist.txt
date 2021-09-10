@@ -1,0 +1,11 @@
+
+version 1.1:
+	- MOSFET symbol fix
+	- display mounting holes
+	- ST-link 5V jumper with 3 pins
+	- power switch on/off silk layer text
+	- add HC-05 module power control MOSFET
+
+	- better STM32 pin usage?
+	- add additional UART?
+	
