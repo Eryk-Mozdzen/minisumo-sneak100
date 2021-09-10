@@ -10,7 +10,6 @@
 </p>
 
 To do:
-- buy remaining electronic components
 - print plastic elements
 - buy blade
 

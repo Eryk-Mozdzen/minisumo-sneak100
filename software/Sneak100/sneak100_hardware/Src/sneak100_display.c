@@ -12,7 +12,7 @@ Sneak100_GUI_StructTypeDef gui;
 
 void SNEAK100_Display_Init() {
 
-	Display_Init(&oled, &hi2c1);
+	Display_Init(&oled, &hi2c3);
 
 }
 
