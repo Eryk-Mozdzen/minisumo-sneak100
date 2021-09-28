@@ -4,7 +4,7 @@ ok	- MOSFET symbol fix
 	- display mounting holes
 ok	- ST-link 5V jumper with 3 pins
 ok	- power switch on/off silk layer text
-	- power led indicator in other place
+ok	- power led indicator in other place
 ?	- swap RC-5 receiver, decoder & state machine to external start module
 
 ok?	- add HC-05 module power control MOSFET?
