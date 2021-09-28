@@ -128,51 +128,40 @@ F 3 "" H 6600 1650 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 Text HLabel 6000 1650 0    50   Input ~ 0
-LED_RUN
+LED_GREEN
 Text Notes 7600 1650 0    50   ~ 10
 Green led current resistor calculations:\n\ntarget current: I = 5mA\ninput voltage: U = 3.3V\nforward voltage: Uf = 2V\n\nR = (U-Uf)/I\nR = (3.3 -2)/0.005 = 260ohm -> 300ohm
 Text Notes 2250 1150 0    100  ~ 20
 user buttons
 Text Notes 6000 1150 0    100  ~ 20
 user leds
-Text Notes 2550 3750 0    100  ~ 20
+Text Notes 3200 3750 0    100  ~ 20
 bluetooth module
 $Comp
 L Connector_Generic:Conn_01x06 J10
 U 1 1 60F1EA00
-P 3350 4450
-F 0 "J10" H 3430 4442 50  0000 L CNN
-F 1 "Conn_01x06" H 3430 4351 50  0000 L CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical" H 3350 4450 50  0001 C CNN
-F 3 "~" H 3350 4450 50  0001 C CNN
-	1    3350 4450
+P 4650 4600
+F 0 "J10" H 4730 4592 50  0000 L CNN
+F 1 "Conn_01x06" H 4730 4501 50  0000 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical" H 4650 4600 50  0001 C CNN
+F 3 "~" H 4650 4600 50  0001 C CNN
+	1    4650 4600
 	1    0    0    -1  
 $EndComp
-Text HLabel 3150 4650 0    50   Input ~ 0
+Text HLabel 4450 4800 0    50   Input ~ 0
 BLUETOOTH_RX
-Text HLabel 3150 4550 0    50   Output ~ 0
+Text HLabel 4450 4700 0    50   Output ~ 0
 BLUETOOTH_TX
 $Comp
 L power:GND #PWR076
 U 1 1 60F1FEEB
-P 3150 4450
-F 0 "#PWR076" H 3150 4200 50  0001 C CNN
-F 1 "GND" V 3155 4322 50  0000 R CNN
-F 2 "" H 3150 4450 50  0001 C CNN
-F 3 "" H 3150 4450 50  0001 C CNN
-	1    3150 4450
+P 4450 4600
+F 0 "#PWR076" H 4450 4350 50  0001 C CNN
+F 1 "GND" V 4455 4472 50  0000 R CNN
+F 2 "" H 4450 4600 50  0001 C CNN
+F 3 "" H 4450 4600 50  0001 C CNN
+	1    4450 4600
 	0    1    1    0   
-$EndComp
-$Comp
-L power:+5V #PWR075
-U 1 1 60F200B0
-P 3150 4350
-F 0 "#PWR075" H 3150 4200 50  0001 C CNN
-F 1 "+5V" V 3165 4478 50  0000 L CNN
-F 2 "" H 3150 4350 50  0001 C CNN
-F 3 "" H 3150 4350 50  0001 C CNN
-	1    3150 4350
-	0    -1   -1   0   
 $EndComp
 Text Notes 5550 3750 0    100  ~ 20
 OLED display
@@ -472,10 +461,10 @@ F 3 "" H 6600 2100 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 Text HLabel 6000 2100 0    50   Input ~ 0
-LED_ERROR
+LED_YELLOW
 Text Notes 7600 2550 0    50   ~ 10
 Yellow led current resistor calculations:\n\ntarget current: I = 5mA\ninput voltage: U = 3.3V\nforward voltage: Uf = 2V\n\nR = (U-Uf)/I\nR = (3.3 - 2)/0.005 = 260ohm - > 270ohm
-Text Notes 3000 3900 0    50   ~ 10
+Text Notes 3650 3900 0    50   ~ 10
 HC-05 module
 $Comp
 L Sneak100_kicad:SSD1306 U7
@@ -495,8 +484,119 @@ Wire Wire Line
 Connection ~ 9850 4500
 Wire Wire Line
 	9850 4500 9850 4550
-Text HLabel 3150 4250 0    50   Input ~ 0
+Text HLabel 4450 4400 0    50   Input ~ 0
 BLUETOOTH_EN
-Text HLabel 3150 4750 0    50   Output ~ 0
-BLUETOOTH_STATUS
+Text HLabel 4450 4900 0    50   Output ~ 0
+BLUETOOTH_ST
+$Comp
+L Connector_Generic:Conn_01x04 J14
+U 1 1 61651FB5
+P 1900 4550
+F 0 "J14" H 1980 4542 50  0000 L CNN
+F 1 "Conn_01x04" H 1980 4451 50  0000 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical" H 1900 4550 50  0001 C CNN
+F 3 "~" H 1900 4550 50  0001 C CNN
+	1    1900 4550
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR0114
+U 1 1 616570C5
+P 1700 4750
+F 0 "#PWR0114" H 1700 4600 50  0001 C CNN
+F 1 "+3.3V" V 1715 4878 50  0000 L CNN
+F 2 "" H 1700 4750 50  0001 C CNN
+F 3 "" H 1700 4750 50  0001 C CNN
+	1    1700 4750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:GND #PWR0115
+U 1 1 61657F63
+P 1700 4450
+F 0 "#PWR0115" H 1700 4200 50  0001 C CNN
+F 1 "GND" V 1705 4322 50  0000 R CNN
+F 2 "" H 1700 4450 50  0001 C CNN
+F 3 "" H 1700 4450 50  0001 C CNN
+	1    1700 4450
+	0    1    1    0   
+$EndComp
+Text HLabel 1700 4550 0    50   Output ~ 0
+DEBUG_TX
+Text HLabel 1700 4650 0    50   Input ~ 0
+DEBUG_RX
+Text Notes 1550 3700 0    100  ~ 20
+debug
+Text Notes 1450 3850 0    50   ~ 10
+USB-UART converter
+Text HLabel 3450 5300 0    50   Input ~ 0
+BLUETOOTH_PWR
+$Comp
+L Device:R R15
+U 1 1 616C6AA5
+P 3500 5100
+F 0 "R15" H 3570 5146 50  0000 L CNN
+F 1 "1k" H 3570 5055 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3430 5100 50  0001 C CNN
+F 3 "~" H 3500 5100 50  0001 C CNN
+	1    3500 5100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR0116
+U 1 1 616EC099
+P 3100 4450
+F 0 "#PWR0116" H 3100 4300 50  0001 C CNN
+F 1 "+5V" H 3115 4623 50  0000 C CNN
+F 2 "" H 3100 4450 50  0001 C CNN
+F 3 "" H 3100 4450 50  0001 C CNN
+	1    3100 4450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:AO3401A Q3
+U 1 1 616C1D1B
+P 3500 4600
+F 0 "Q3" V 3842 4600 50  0000 C CNN
+F 1 "AO3401A" V 3751 4600 50  0000 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 3700 4525 50  0001 L CIN
+F 3 "http://www.aosmd.com/pdfs/datasheet/AO3401A.pdf" H 3500 4600 50  0001 L CNN
+	1    3500 4600
+	0    1    -1   0   
+$EndComp
+Wire Wire Line
+	3700 4500 4450 4500
+$Comp
+L Device:R R14
+U 1 1 6173D1C1
+P 3100 4700
+F 0 "R14" H 3030 4654 50  0000 R CNN
+F 1 "10k" H 3030 4745 50  0000 R CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3030 4700 50  0001 C CNN
+F 3 "~" H 3100 4700 50  0001 C CNN
+	1    3100 4700
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	3100 4500 3100 4450
+Wire Wire Line
+	3300 4500 3100 4500
+Wire Wire Line
+	3100 4500 3100 4550
+Connection ~ 3100 4500
+Wire Wire Line
+	3100 4850 3100 4900
+Wire Wire Line
+	3100 4900 3500 4900
+Wire Wire Line
+	3500 4900 3500 4950
+Wire Wire Line
+	3500 4900 3500 4800
+Connection ~ 3500 4900
+Wire Wire Line
+	3450 5300 3500 5300
+Wire Wire Line
+	3500 5300 3500 5250
+Text Notes 3300 5550 0    50   ~ 0
+upewnić się że to jest ok
 $EndSCHEMATC
