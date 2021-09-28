@@ -642,7 +642,7 @@ Text HLabel 4650 4500 2    50   Input ~ 0
 LB_B
 Text HLabel 4650 4800 2    50   BiDi ~ 0
 I2C1_SCL
-Text HLabel 4650 5400 2    50   Output ~ 0
+Text HLabel 4650 5500 2    50   Output ~ 0
 USER_LED_GREEN
 Text HLabel 4650 3100 2    50   Output ~ 0
 LB_IN1
@@ -688,7 +688,7 @@ Text HLabel 4650 4300 2    50   Input ~ 0
 LF_B
 Text HLabel 4650 4900 2    50   BiDi ~ 0
 I2C1_SDA
-Text HLabel 4650 5500 2    50   Output ~ 0
+Text HLabel 4650 5400 2    50   Output ~ 0
 USER_LED_YELLOW
 Text HLabel 3250 5100 0    50   Input ~ 0
 USER_BUTTON_C
