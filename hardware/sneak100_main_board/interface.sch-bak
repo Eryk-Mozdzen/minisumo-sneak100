@@ -489,39 +489,17 @@ BLUETOOTH_EN
 Text HLabel 4450 4900 0    50   Output ~ 0
 BLUETOOTH_ST
 $Comp
-L Connector_Generic:Conn_01x04 J14
-U 1 1 61651FB5
-P 1900 4550
-F 0 "J14" H 1980 4542 50  0000 L CNN
-F 1 "Conn_01x04" H 1980 4451 50  0000 L CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical" H 1900 4550 50  0001 C CNN
-F 3 "~" H 1900 4550 50  0001 C CNN
-	1    1900 4550
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3.3V #PWR0114
-U 1 1 616570C5
-P 1700 4750
-F 0 "#PWR0114" H 1700 4600 50  0001 C CNN
-F 1 "+3.3V" V 1715 4878 50  0000 L CNN
-F 2 "" H 1700 4750 50  0001 C CNN
-F 3 "" H 1700 4750 50  0001 C CNN
-	1    1700 4750
-	0    -1   -1   0   
-$EndComp
-$Comp
 L power:GND #PWR0115
 U 1 1 61657F63
-P 1700 4450
-F 0 "#PWR0115" H 1700 4200 50  0001 C CNN
-F 1 "GND" V 1705 4322 50  0000 R CNN
-F 2 "" H 1700 4450 50  0001 C CNN
-F 3 "" H 1700 4450 50  0001 C CNN
-	1    1700 4450
+P 1700 4550
+F 0 "#PWR0115" H 1700 4300 50  0001 C CNN
+F 1 "GND" V 1705 4422 50  0000 R CNN
+F 2 "" H 1700 4550 50  0001 C CNN
+F 3 "" H 1700 4550 50  0001 C CNN
+	1    1700 4550
 	0    1    1    0   
 $EndComp
-Text HLabel 1700 4550 0    50   Output ~ 0
+Text HLabel 1700 4750 0    50   Output ~ 0
 DEBUG_TX
 Text HLabel 1700 4650 0    50   Input ~ 0
 DEBUG_RX
@@ -599,4 +577,15 @@ Wire Wire Line
 	3500 5300 3500 5250
 Text Notes 3300 5550 0    50   ~ 0
 upewnić się że to jest ok
+$Comp
+L Connector_Generic:Conn_01x03 J14
+U 1 1 6162801D
+P 1900 4650
+F 0 "J14" H 1980 4692 50  0000 L CNN
+F 1 "Conn_01x03" H 1980 4601 50  0000 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 1900 4650 50  0001 C CNN
+F 3 "~" H 1900 4650 50  0001 C CNN
+	1    1900 4650
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
