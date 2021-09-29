@@ -1,15 +1,13 @@
 
 version 1.1:
 ok	- MOSFET symbol fix
-	- display mounting holes
+ok	- display mounting holes
 ok	- ST-link 5V jumper with 3 pins
 ok	- power switch on/off silk layer text
 ok	- power led indicator in other place
-?	- swap RC-5 receiver, decoder & state machine to external start module
+pass	- swap RC-5 receiver, decoder & state machine to external start module
 
-ok?	- add HC-05 module power control MOSFET?
-ok	- better STM32 pin usage?
-ok	- add additional UART?
-ok	- reset button?
-	
-spst fsmsm
+ok?	- add HC-05 module power control MOSFET
+ok	- better STM32 pin usage
+ok	- add additional UART
+ok	- reset button

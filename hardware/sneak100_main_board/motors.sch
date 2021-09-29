@@ -4,8 +4,8 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 2 7
-Title "Sneak100 Main Board V1.0"
-Date "August 2021"
+Title "Sneak100 Main Board V1.1"
+Date "September 2021"
 Rev ""
 Comp ""
 Comment1 ""
