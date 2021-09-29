@@ -6,13 +6,12 @@
 </p>
 
 <p align="center">
-  <img src="/docs/readme/Zrzut ekranu (253).png" width="49%" />
+  <img src="/docs/readme/Zrzut ekranu (284).png" width="49%" />
 </p>
 
 ### To do:
 - print plastic elements
-- buy blade
-- fix schematic and board
+- buy & shape blade
 - order fixed board
 
 - assembly everything

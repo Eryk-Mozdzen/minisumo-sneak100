@@ -4,8 +4,8 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 5 7
-Title "Sneak100 Main Board V1.0"
-Date "August 2021"
+Title "Sneak100 Main Board V1.1"
+Date "September 2021"
 Rev ""
 Comp ""
 Comment1 ""
@@ -472,7 +472,7 @@ U 1 1 6101ACF5
 P 6100 4650
 F 0 "U7" H 6700 5000 50  0000 R CNN
 F 1 "SSD1306" H 6850 4900 50  0000 R CNN
-F 2 "sneak100_lib:SSD1306_module" H 5950 4600 50  0001 C CNN
+F 2 "sneak100_lib:SSD1306_module_screw" H 5950 4600 50  0001 C CNN
 F 3 "" H 5950 4600 50  0001 C CNN
 	1    6100 4650
 	1    0    0    -1  

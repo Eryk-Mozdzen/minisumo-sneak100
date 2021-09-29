@@ -4,8 +4,8 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 7 7
-Title "Sneak100 Main Board V1.0"
-Date "August 2021"
+Title "Sneak100 Main Board V1.1"
+Date "September 2021"
 Rev ""
 Comp ""
 Comment1 ""
@@ -648,7 +648,7 @@ Text HLabel 4650 3100 2    50   Output ~ 0
 LB_IN1
 Text HLabel 4650 3200 2    50   Output ~ 0
 LB_IN2
-Text HLabel 3250 4500 0    50   Input ~ 0
+Text HLabel 4650 4100 2    50   Input ~ 0
 PROXIMITY_LL
 Text HLabel 4650 4000 2    50   Input ~ 0
 PROXIMITY_FL
@@ -859,6 +859,6 @@ Connection ~ 9850 1500
 Wire Wire Line
 	9850 1500 9950 1500
 NoConn ~ 4650 2800
-NoConn ~ 4650 4100
 NoConn ~ 4650 4200
+NoConn ~ 3250 4500
 $EndSCHEMATC
