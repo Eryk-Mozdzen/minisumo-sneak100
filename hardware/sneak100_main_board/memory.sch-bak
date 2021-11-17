@@ -92,4 +92,6 @@ Text HLabel 6050 3800 2    50   Input ~ 0
 SCL
 Text HLabel 6050 3700 2    50   Input ~ 0
 SDA
+Text Notes 6350 4300 0    50   ~ 0
+write protect:\nlow -> normal operation\nhigh -> memory protected against write operations
 $EndSCHEMATC
