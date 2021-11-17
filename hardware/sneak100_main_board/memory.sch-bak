@@ -94,4 +94,8 @@ Text HLabel 6050 3700 2    50   Input ~ 0
 SDA
 Text Notes 6350 4300 0    50   ~ 0
 write protect:\nlow -> normal operation\nhigh -> memory protected against write operations
+Text Notes 4900 2950 0    100  ~ 20
+non-volatile memory
+Text Notes 5300 3100 0    50   ~ 10
+24C256 eeprom chip
 $EndSCHEMATC
