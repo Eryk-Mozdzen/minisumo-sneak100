@@ -16,7 +16,6 @@
 #include <stdint.h>
 #include <assert.h>
 
-#define TIM_CHANNEL_N		0x001000000
 #define MOTOR_POWER_MAX		1024
 
 typedef enum {
@@ -35,8 +34,7 @@ typedef enum {
 } MotorBrakeMode_EnumTypeDef;
 
 typedef struct {
-	TIM_HandleTypeDef *timer_in1;
-	TIM_HandleTypeDef *timer_in2;
+	TIM_HandleTypeDef *timer;
 	uint32_t channel_in1;
 	uint32_t channel_in2;
 
@@ -49,8 +47,7 @@ typedef struct {
 } Motor_ConfigTypeDef;
 
 typedef struct {
-	TIM_HandleTypeDef *timer_in1;
-	TIM_HandleTypeDef *timer_in2;
+	TIM_HandleTypeDef *timer;
 	uint32_t channel_in1;
 	uint32_t channel_in2;
 

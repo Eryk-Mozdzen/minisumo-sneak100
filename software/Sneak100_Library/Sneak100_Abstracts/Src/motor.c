@@ -9,26 +9,17 @@
 
 void Motor_Init(Motor_StructTypeDef *motor, Encoder_StructTypeDef *encoder, Motor_ConfigTypeDef config) {
 
-	motor->timer_in1 = config.timer_in1;
-	motor->timer_in2 = config.timer_in2;
+	motor->timer = config.timer;
 	motor->encoder = encoder;
 
-	motor->channel_in1 = config.channel_in1 & ~TIM_CHANNEL_N;
-	motor->channel_in2 = config.channel_in2 & ~TIM_CHANNEL_N;
+	motor->channel_in1 = config.channel_in1;
+	motor->channel_in2 = config.channel_in2;
 	motor->position_set_value = 0;
 	motor->velocity_set_value = 0;
 
 	PID_Init(&motor->pid, config.pid_p, config.pid_i, config.pid_d, config.pid_iband);
 
-	if(config.channel_in1 & TIM_CHANNEL_N)
-		HAL_TIMEx_PWMN_Start(motor->timer_in1, motor->channel_in1);
-	else
-		HAL_TIM_PWM_Start(motor->timer_in1, motor->channel_in1);
-
-	if(config.channel_in2 & TIM_CHANNEL_N)
-		HAL_TIMEx_PWMN_Start(motor->timer_in2, motor->channel_in2);
-	else
-		HAL_TIM_PWM_Start(motor->timer_in2, motor->channel_in2);
+	HAL_TIM_PWM_Start(motor->timer, motor->channel_in1 | motor->channel_in2);
 
 	Motor_SetControlMode(motor, MODE_POSITION_CONTROL);
 	Motor_SetBreakMode(motor, MODE_COAST);
@@ -97,7 +88,7 @@ void __Motor_SetPower(Motor_StructTypeDef *motor, int16_t power) {
 	if(motor->direction==DIRECTION_CC)
 		swap(&power_in1, &power_in2);
 
-	__HAL_TIM_SET_COMPARE(motor->timer_in1, motor->channel_in1, power_in1);
-	__HAL_TIM_SET_COMPARE(motor->timer_in2, motor->channel_in2, power_in2);
+	__HAL_TIM_SET_COMPARE(motor->timer, motor->channel_in1, power_in1);
+	__HAL_TIM_SET_COMPARE(motor->timer, motor->channel_in2, power_in2);
 }
 

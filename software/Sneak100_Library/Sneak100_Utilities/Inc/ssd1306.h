@@ -52,7 +52,7 @@ typedef struct {
     uint8_t Initialized;
 } SSD1306_t;
 
-__weak ssd1306_Write();
+__weak HAL_StatusTypeDef ssd1306_Write(uint16_t, void *, uint16_t);
 
 //
 //  Function definitions

@@ -19,7 +19,7 @@ void SNEAK100_Bluetooth_Init() {
 	bluetooth.rx_data_size = 8;
 	Bluetooth_Init(&bluetooth);
 
-#if 1
+#if 0
 	Bluetooth_ConfigTypeDef config = {0};
 	config.name = "Sneak100";
 	config.password = "7777";

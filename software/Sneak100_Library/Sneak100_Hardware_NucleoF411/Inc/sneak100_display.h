@@ -15,11 +15,16 @@
 typedef struct {
 	float battery_voltage;
 	float temperature;
+
+	uint16_t line[4];
+	float position[4];
+	float velocity[4];
 } Sneak100_GUI_StructTypeDef;
 
 extern Display_StructTypeDef oled;
 extern Sneak100_GUI_StructTypeDef gui;
 
+HAL_StatusTypeDef ssd1306_Write(uint16_t, void *, uint16_t);
 void Display_ErrorHandler(const char *, uint16_t);
 
 void SNEAK100_Display_Init();

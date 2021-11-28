@@ -105,6 +105,7 @@ int main(void)
   MX_ADC1_Init();
   MX_USART6_UART_Init();
   MX_TIM10_Init();
+  MX_TIM9_Init();
   /* USER CODE BEGIN 2 */
 
   UART_SetSTDIN(&huart2);
@@ -120,12 +121,13 @@ int main(void)
   }*/
 
   SNEAK100_ADC_Init();
-  //SNEAK100_Memory_Init();
+  SNEAK100_Memory_Init();
   SNEAK100_Display_Init();
-  //SNEAK100_Bluetooth_Init();
-  //SNEAK100_Motors_Init();
-  //SNEAK100_Proximity_Init();
+  SNEAK100_Bluetooth_Init();
+  SNEAK100_Motors_Init();
+  SNEAK100_Proximity_Init();
 
+  HAL_TIM_Base_Start_IT(&htim9);
   HAL_TIM_Base_Start_IT(&htim10);
 
   printf("\n");
@@ -146,11 +148,11 @@ int main(void)
 	  	  case 'd': HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET); break;
 	  	  case 'v': {
 	  		  float value = SNEAK100_Memory_ReadFloat(MEMORY_ADDRESS_VALUE);
-	  		  printf("value: %f\n", value);
-	  		  printf("value = ");
+	  		  printf("value -> %f\n", value);
+	  		  printf("value <- ");
 	  		  scanf("%f", &value);
 	  		  SNEAK100_Memory_WriteFloat(MEMORY_ADDRESS_VALUE, value);
-	  		  printf("value: %f\n", SNEAK100_Memory_ReadFloat(MEMORY_ADDRESS_VALUE));
+	  		  printf("value -> %f\n", SNEAK100_Memory_ReadFloat(MEMORY_ADDRESS_VALUE));
 	  	  } break;
 	  	  case 'm': {
 	  		printf("\nMenu:\n\
@@ -218,12 +220,6 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
-void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c) {
-	if(hi2c->Instance==I2C1) {
-		//SNEAK100_Display_Render();
-	}
-}
-
 /* USER CODE END 4 */
 
  /**
@@ -238,11 +234,27 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
 
-	if(htim->Instance==TIM10) {
+	if(htim->Instance==TIM9) {
 		gui.battery_voltage = SNEAK100_ADC_GetSupplyVoltage();
 		gui.temperature = SNEAK100_ADC_GetTemperature();
-		//gui.temperature = SNEAK100_Memory_ReadFloat(MEMORY_ADDRESS_VALUE);
 
+		gui.line[0] = *lineLL.read_src;
+		gui.line[1] = *lineLM.read_src;
+		gui.line[2] = *lineRM.read_src;
+		gui.line[3] = *lineRR.read_src;
+
+		gui.position[0] = Encoder_GetPosition(&encoderFL);
+		//gui.position[1] = Encoder_GetPosition(&encoderFR);
+		//gui.position[2] = Encoder_GetPosition(&encoderBL);
+		//gui.position[3] = Encoder_GetPosition(&encoderBR);
+
+		gui.velocity[0] = Encoder_GetVelocity(&encoderFL);
+		//gui.velocity[1] = Encoder_GetVelocity(&encoderFR);
+		//gui.velocity[2] = Encoder_GetVelocity(&encoderBL);
+		//gui.velocity[3] = Encoder_GetVelocity(&encoderBR);
+	}
+
+	if(htim->Instance==TIM10) {
 		SNEAK100_Display_Render();
 	}
 
