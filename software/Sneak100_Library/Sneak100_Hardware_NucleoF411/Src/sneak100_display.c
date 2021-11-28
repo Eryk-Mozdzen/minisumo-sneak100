@@ -11,7 +11,8 @@
 Display_StructTypeDef oled;
 Sneak100_GUI_StructTypeDef gui;
 
-void Display_ErrorHandler() {
+void Dsiplay_ErrorHandler(const char *file, uint16_t line) {
+	printf("Error in %s: %u\n", file, line);
 	Error_Handler();
 }
 

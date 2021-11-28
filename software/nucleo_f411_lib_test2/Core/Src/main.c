@@ -34,6 +34,7 @@
 #include "sneak100_display.h"
 #include "sneak100_proximity.h"
 #include "sneak100_adc.h"
+#include "sneak100_memory.h"
 
 /* USER CODE END Includes */
 
@@ -109,13 +110,25 @@ int main(void)
   UART_SetSTDIN(&huart2);
   UART_SetSTDOUT(&huart2);
 
+  /*printf("\n");
+  uint8_t address = 0x00;
+  for(uint16_t i=0; i<256; i++) {
+	if(HAL_I2C_IsDeviceReady(&hi2c1, i, 1, 10)==HAL_OK) {
+		address = i;
+		printf("Found I2C device at: 0x%2X\n", address);
+	}
+  }*/
+
   SNEAK100_ADC_Init();
+  //SNEAK100_Memory_Init();
   SNEAK100_Display_Init();
-  SNEAK100_Bluetooth_Init();
-  SNEAK100_Motors_Init();
-  SNEAK100_Proximity_Init();
+  //SNEAK100_Bluetooth_Init();
+  //SNEAK100_Motors_Init();
+  //SNEAK100_Proximity_Init();
 
   HAL_TIM_Base_Start_IT(&htim10);
+
+  printf("\n");
 
   /* USER CODE END 2 */
 
@@ -132,21 +145,25 @@ int main(void)
 	  	  case 'c': HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET); break;
 	  	  case 'd': HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET); break;
 	  	  case 'v': {
-	  		  float value = 0.42;
-	  		  printf("Give new value: ");
+	  		  float value = SNEAK100_Memory_ReadFloat(MEMORY_ADDRESS_VALUE);
+	  		  printf("value: %f\n", value);
+	  		  printf("value = ");
 	  		  scanf("%f", &value);
-	  		  printf("Value: %f\n", value);
+	  		  SNEAK100_Memory_WriteFloat(MEMORY_ADDRESS_VALUE, value);
+	  		  printf("value: %f\n", SNEAK100_Memory_ReadFloat(MEMORY_ADDRESS_VALUE));
 	  	  } break;
 	  	  case 'm': {
 	  		printf("\nMenu:\n\
-	c - turn on led\n\
-	d - turn off led\n\
-	v - set value\n\
-	m - show menu\n\
+c - turn on led\n\
+d - turn off led\n\
+v - set value\n\
+m - show menu\n\
 	  			\n");
 	  	  } break;
 	  	  default: printf("Incorrect input\n"); break;
 	  }
+
+	  //gui.temperature = SNEAK100_Memory_ReadFloat(MEMORY_ADDRESS_VALUE);
 
     /* USER CODE END WHILE */
 
@@ -201,6 +218,12 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
+void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c) {
+	if(hi2c->Instance==I2C1) {
+		//SNEAK100_Display_Render();
+	}
+}
+
 /* USER CODE END 4 */
 
  /**
@@ -218,6 +241,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance==TIM10) {
 		gui.battery_voltage = SNEAK100_ADC_GetSupplyVoltage();
 		gui.temperature = SNEAK100_ADC_GetTemperature();
+		//gui.temperature = SNEAK100_Memory_ReadFloat(MEMORY_ADDRESS_VALUE);
 
 		SNEAK100_Display_Render();
 	}

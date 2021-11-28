@@ -11,18 +11,14 @@ void Display_Init(Display_StructTypeDef *display, I2C_HandleTypeDef *hi2c) {
 	display->hi2c = hi2c;
 
 	if(HAL_I2C_IsDeviceReady(display->hi2c, SSD1306_I2C_ADDR, 1, 100)!=HAL_OK)
-		Display_ErrorHandler();
+		Display_ErrorHandler(__FILE__, __LINE__);
 
 	ssd1306_Init(display->hi2c);
 }
 
-/*__attribute__((weak)) void Display_ErrorHandler() {
-	printf("xd");
-}*/
-
 void Display_Update(Display_StructTypeDef *display) {
 	if(HAL_I2C_IsDeviceReady(display->hi2c, SSD1306_I2C_ADDR, 1, 10)!=HAL_OK)
-		Display_ErrorHandler();
+		Display_ErrorHandler(__FILE__, __LINE__);
 
 	ssd1306_UpdateScreen(display->hi2c);
 }
