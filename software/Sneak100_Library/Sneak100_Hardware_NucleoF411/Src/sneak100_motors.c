@@ -19,7 +19,7 @@ Encoder_StructTypeDef encoderBR;
 
 void SNEAK100_Motors_Init() {
 
-	Encoder_Init(&encoderFL, &htim1, 512);
+	Encoder_Init(&encoderFL, &htim4, 512);
 	//Encoder_Init(&encoderFL, &htim3, 360);
 	//Encoder_Init(&encoderFL, &htim3, 360);
 	//Encoder_Init(&encoderFL, &htim3, 360);
@@ -30,16 +30,13 @@ void SNEAK100_Motors_Init() {
 	config.pid_d = MOTOR_PID_D;
 	config.pid_iband = MOTOR_PID_IBAND;
 
-	config.timer_in1 = &htim1;
-	config.timer_in2 = &htim1;
-	config.channel_in1 = TIM_CHANNEL_2;
-	config.channel_in2 = TIM_CHANNEL_3 | TIM_CHANNEL_N ;
+	config.timer = &htim1;
+	config.channel_in1 = TIM_CHANNEL_1;
+	config.channel_in2 = TIM_CHANNEL_2;
 	config.direction = DIRECTION_CW;
 	Motor_Init(&motorFL, &encoderFL, config);
 
-
-	//Motor_Init(&motorFR, &htim3, &htim3, &htim2, 512, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D);
-	//Motor_Init(&motorBL, &htim3, &htim3, &htim2, 512, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D);
-	//Motor_Init(&motorBR, &htim3, &htim3, &htim2, 512, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D);
-
+	//Motor_Init(&motorFR, &encoderFR, config);
+	//Motor_Init(&motorBL, &encoderBL, config);
+	//Motor_Init(&motorBR, &encoderBR, config);
 }
