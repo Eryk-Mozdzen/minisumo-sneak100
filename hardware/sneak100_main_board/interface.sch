@@ -575,8 +575,6 @@ Wire Wire Line
 	3450 5300 3500 5300
 Wire Wire Line
 	3500 5300 3500 5250
-Text Notes 3300 5550 0    50   ~ 0
-upewnić się że to jest ok
 $Comp
 L Connector_Generic:Conn_01x03 J14
 U 1 1 6162801D
