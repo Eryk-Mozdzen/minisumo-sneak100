@@ -19,7 +19,7 @@ typedef struct {
 void Display_Init(Display_StructTypeDef *, I2C_HandleTypeDef *);
 void Display_Update(Display_StructTypeDef *);
 
-__weak void Display_ErrorHandler();
+__weak void Display_ErrorHandler(const char *, uint16_t);
 
 void Display_DrawBitmap(Display_StructTypeDef *, uint16_t, uint16_t, const uint8_t*, uint16_t, uint16_t);
 void Display_DrawLine(Display_StructTypeDef *, uint16_t, uint16_t, uint16_t, uint16_t);

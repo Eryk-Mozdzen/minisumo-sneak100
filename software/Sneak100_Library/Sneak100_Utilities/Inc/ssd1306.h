@@ -52,6 +52,8 @@ typedef struct {
     uint8_t Initialized;
 } SSD1306_t;
 
+__weak ssd1306_Write();
+
 //
 //  Function definitions
 //

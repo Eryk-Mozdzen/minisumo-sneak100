@@ -20,7 +20,7 @@ typedef struct {
 extern Display_StructTypeDef oled;
 extern Sneak100_GUI_StructTypeDef gui;
 
-void Display_ErrorHandler();
+void Display_ErrorHandler(const char *, uint16_t);
 
 void SNEAK100_Display_Init();
 void SNEAK100_Display_Render();
