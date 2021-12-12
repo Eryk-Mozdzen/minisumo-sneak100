@@ -9,14 +9,15 @@
   <img src="/docs/readme/Zrzut ekranu (284).png" width="49%" />
 </p>
 
+### In progress:
+- assembly distance sensors
+- program uC
+- tests/DEBUG
+
 ### To do:
 - print plastic elements
-- buy & shape blade
-- order fixed board
-
-- assembly everything
-- program uC
-- TESTS/debug
+- shape blade
+- solder board
 
 ### DEADLINE:
 - 4 sep 2021 - Baltic Robot Battles, Gdansk, Poland (cancelled)
