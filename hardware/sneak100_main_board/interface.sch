@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 4 8
+Sheet 7 8
 Title "Sneak100 Main Board V1.1"
 Date "November 2021"
 Rev ""
@@ -499,9 +499,9 @@ F 3 "" H 1700 4550 50  0001 C CNN
 	1    1700 4550
 	0    1    1    0   
 $EndComp
-Text HLabel 1700 4750 0    50   Output ~ 0
+Text HLabel 1700 4750 0    50   Input ~ 0
 DEBUG_TX
-Text HLabel 1700 4650 0    50   Input ~ 0
+Text HLabel 1700 4650 0    50   Output ~ 0
 DEBUG_RX
 Text Notes 1550 3700 0    100  ~ 20
 debug
