@@ -7,16 +7,18 @@
 
 <p align="center">
   <img src="/docs/readme/Zrzut ekranu (284).png" width="49%" />
+  <img src="/docs/readme/main_board_v1.1.jpg" width="49%" />
 </p>
 
 ### In progress:
-- program uC
-- solder board
+- write and debug library
 - print plastic elements
 
 ### To do:
+- solder motor controllers and remaining connectors
 - shape blade
-- tests/DEBUG
+- create program structure
+- GUI
 
 ### DEADLINE:
 ```diff
@@ -27,7 +29,6 @@
 ```
 
 ### Planned features:
-- GUI
 - FreeRTOS
 - clever fight algorithms
 - dedicated bluetooth app
