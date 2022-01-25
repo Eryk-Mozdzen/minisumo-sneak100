@@ -34,6 +34,7 @@
 #include "sneak100_display.h"
 #include "sneak100_motors.h"
 #include "sneak100_proximity.h"
+#include "sneak100_memory.h"
 
 /* USER CODE END Includes */
 
@@ -111,6 +112,7 @@ int main(void)
 
   SNEAK100_ADC_Init();
   SNEAK100_Display_Init();
+  SNEAK100_Memory_Init();
 
   /* USER CODE END 2 */
 
@@ -125,21 +127,8 @@ int main(void)
 
 	  gui.battery_voltage = SNEAK100_ADC_GetSupplyVoltage();
 	  gui.temperature = SNEAK100_ADC_GetTemperature();
-	  gui.line[0] = 0;
-	  gui.line[1] = 0;
-	  gui.line[2] = 0;
-	  gui.line[3] = 0;
-	  gui.position[0] = 0;
-	  gui.position[1] = 0;
-	  gui.position[2] = 0;
-	  gui.position[3] = 0;
-	  gui.velocity[0] = 0;
-	  gui.velocity[1] = 0;
-	  gui.velocity[2] = 0;
-	  gui.velocity[3] = 0;
 
 	  SNEAK100_Display_Render();
-
 
     /* USER CODE END WHILE */
 
