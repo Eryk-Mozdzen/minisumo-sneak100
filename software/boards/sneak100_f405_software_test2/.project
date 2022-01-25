@@ -31,24 +31,24 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Sneak100_Abstracts</name>
-			<type>2</type>
-			<location>/home/emozdzen/Desktop/minisumo-sneak100/software/Sneak100_Library/Sneak100_Abstracts</location>
-		</link>
-		<link>
-			<name>Sneak100_Hardware_MainBoard_V1.1</name>
-			<type>2</type>
-			<location>/home/emozdzen/Desktop/minisumo-sneak100/software/Sneak100_Library/Sneak100_Hardware_MainBoard_V1.1</location>
-		</link>
-		<link>
-			<name>Sneak100_Utilities</name>
-			<type>2</type>
-			<location>/home/emozdzen/Desktop/minisumo-sneak100/software/Sneak100_Library/Sneak100_Utilities</location>
-		</link>
-		<link>
 			<name>external</name>
 			<type>2</type>
 			<location>/home/emozdzen/Desktop/minisumo-sneak100/software/external</location>
+		</link>
+		<link>
+			<name>libs</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/libs</locationURI>
+		</link>
+		<link>
+			<name>main_board_v1.1</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/boards_layout/main_board_v1.1</locationURI>
+		</link>
+		<link>
+			<name>utils</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/utils</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
