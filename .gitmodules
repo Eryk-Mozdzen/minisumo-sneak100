@@ -1,0 +1,3 @@
+[submodule "software/external/state-machine-c"]
+	path = software/external/state-machine-c
+	url = git@github.com:Eryk-Mozdzen/state-machine-c.git

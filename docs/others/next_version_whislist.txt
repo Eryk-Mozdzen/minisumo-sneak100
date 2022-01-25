@@ -11,3 +11,10 @@ ok?	- add HC-05 module power control MOSFET
 ok	- better STM32 pin usage
 ok	- add additional UART
 ok	- reset button
+
+version 1.2:
+	- power led not under screen
+	- use SWO interface for debug, use of real ST-LINK v2
+	- change polarity of battery input connector to flat side
+	- detachable screen
+	
