@@ -11,11 +11,11 @@
 </p>
 
 ### In progress:
-- write and debug library
-- print plastic elements
+- solder motor controllers and remaining connectors
+- write and debug library components
 
 ### To do:
-- solder motor controllers and remaining connectors
+- print plastic elements
 - shape blade
 - create program structure
 - GUI
