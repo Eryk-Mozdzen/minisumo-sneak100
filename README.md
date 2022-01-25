@@ -23,7 +23,7 @@
 ### DEADLINE:
 ```diff
 #  4 sep 2021 - Baltic Robot Battles, Gdansk, Poland (canceled)
-- 20 nov 2021 - EastROBO 2021,Bialystok, Poland (missed)
+- 20 nov 2021 - EastROBO 2021, Bialystok, Poland (missed)
 - 28 nov 2021 - ROBOmotion 2021, Rzeszow, Poland (missed)
 + 13 may 2022 - Baltic Robot Battles, Gdansk, Poland
 ```
