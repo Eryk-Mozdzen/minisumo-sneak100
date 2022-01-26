@@ -10,16 +10,25 @@
 
 #include "i2c.h"
 #include "display.h"
-#include <stdio.h>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
+
+#include "math_tools.h"
 #include "finite_state_machine.h"
 
 #define BUTTON_CLICK_TIME	100		// ms
 
 typedef enum {
 	GUI_STATE_DESKTOP,
-	GUI_STATE_OVERVIEW,
-	GUI_STATE_SETTINGS
+	GUI_STATE_VIEW_MOTORS,
+	GUI_STATE_VIEW_LINE,
+	GUI_STATE_VIEW_PROXIMITY,
+	GUI_STATE_VIEW_OTHERS,
+	GUI_STATE_SETTINGS,
+	GUI_STATE_CREDITS
 } GUI_States_EnumtypeDef;
 
 typedef enum {
