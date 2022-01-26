@@ -111,8 +111,36 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   SNEAK100_ADC_Init();
+  //SNEAK100_Motors_Init();
   SNEAK100_Display_Init();
   SNEAK100_Memory_Init();
+
+  HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_3);
+  HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_4);
+
+  //__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_3, 0);
+  //__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_4, 0);
+
+  //__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_3, 0);
+  //__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_4, 65535);
+
+  __HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_3, 65535);
+  __HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_4, 0);
+
+  //__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_3, 65535);
+  //__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_4, 65535);
+
+	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET);
+	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_RESET);
+
+	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET);
+	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_SET);
+
+	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET);
+	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_RESET);
+
+	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET);
+	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_SET);
 
   /* USER CODE END 2 */
 
@@ -123,19 +151,15 @@ int main(void)
 		gui.battery_voltage = SNEAK100_ADC_GetSupplyVoltage();
 		gui.temperature = SNEAK100_ADC_GetTemperature();
 
-		gui.line[0] = *lineLL.read_src;
-		gui.line[1] = *lineLM.read_src;
-		gui.line[2] = *lineRM.read_src;
-		gui.line[3] = *lineRR.read_src;
-
 	  SNEAK100_Display_Update();
+	  //Motor_Update(&motorFR);
+	  //Motor_SetVelocity(&motorFR, 1000);
+	  //__Motor_SetPower(&motorFR, -MOTOR_POWER_MAX);
 
 	  HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
 	  HAL_Delay(50);
 	  HAL_GPIO_TogglePin(USER_LED_YELLOW_GPIO_Port, USER_LED_YELLOW_Pin);
 	  HAL_Delay(50);
-
-	  //SNEAK100_Display_Render();
 
     /* USER CODE END WHILE */
 

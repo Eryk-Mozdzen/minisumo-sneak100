@@ -16,7 +16,7 @@
 #include <stdint.h>
 #include <assert.h>
 
-#define MOTOR_POWER_MAX		1024
+#define MOTOR_POWER_MAX		65535
 
 typedef enum {
 	MODE_POSITION_CONTROL,
@@ -70,6 +70,6 @@ void Motor_SetBreakMode(Motor_StructTypeDef *, MotorBrakeMode_EnumTypeDef);
 void Motor_SetPosition(Motor_StructTypeDef *, float);
 void Motor_SetVelocity(Motor_StructTypeDef *, float);
 
-void __Motor_SetPower(Motor_StructTypeDef *, int16_t);
+void __Motor_SetPower(Motor_StructTypeDef *, int32_t);
 
 #endif /* SNEAK100_ABSTRACTION_LAYER_INC_MOTOR_H_ */
