@@ -68,7 +68,7 @@ void Motor_SetVelocity(Motor_StructTypeDef *motor, float vel) {
 	motor->velocity_set_value = vel;
 }
 
-void __Motor_SetPower(Motor_StructTypeDef *motor, int16_t power) {
+void __Motor_SetPower(Motor_StructTypeDef *motor, int32_t power) {
 	power = MIN(MAX(-MOTOR_POWER_MAX, power), MOTOR_POWER_MAX);
 
 	uint16_t power_in1 = 0;
