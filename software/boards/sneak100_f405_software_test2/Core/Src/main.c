@@ -120,15 +120,22 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while(1) {
 
+		gui.battery_voltage = SNEAK100_ADC_GetSupplyVoltage();
+		gui.temperature = SNEAK100_ADC_GetTemperature();
+
+		gui.line[0] = *lineLL.read_src;
+		gui.line[1] = *lineLM.read_src;
+		gui.line[2] = *lineRM.read_src;
+		gui.line[3] = *lineRR.read_src;
+
+	  SNEAK100_Display_Update();
+
 	  HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
-	  HAL_Delay(250);
+	  HAL_Delay(50);
 	  HAL_GPIO_TogglePin(USER_LED_YELLOW_GPIO_Port, USER_LED_YELLOW_Pin);
-	  HAL_Delay(250);
+	  HAL_Delay(50);
 
-	  gui.battery_voltage = SNEAK100_ADC_GetSupplyVoltage();
-	  gui.temperature = SNEAK100_ADC_GetTemperature();
-
-	  SNEAK100_Display_Render();
+	  //SNEAK100_Display_Render();
 
     /* USER CODE END WHILE */
 
