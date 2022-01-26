@@ -60,6 +60,7 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define RECEIVER_OUT_Pin GPIO_PIN_13
 #define RECEIVER_OUT_GPIO_Port GPIOC
+#define RECEIVER_OUT_EXTI_IRQn EXTI15_10_IRQn
 #define PROXIMITY_RR_Pin GPIO_PIN_14
 #define PROXIMITY_RR_GPIO_Port GPIOC
 #define PROXIMITY_FR_Pin GPIO_PIN_15
@@ -112,10 +113,13 @@ void Error_Handler(void);
 #define MOTOR_LF_A_GPIO_Port GPIOA
 #define USER_BUTTON_L_Pin GPIO_PIN_10
 #define USER_BUTTON_L_GPIO_Port GPIOC
+#define USER_BUTTON_L_EXTI_IRQn EXTI15_10_IRQn
 #define USER_BUTTON_C_Pin GPIO_PIN_11
 #define USER_BUTTON_C_GPIO_Port GPIOC
+#define USER_BUTTON_C_EXTI_IRQn EXTI15_10_IRQn
 #define USER_BUTTON_R_Pin GPIO_PIN_12
 #define USER_BUTTON_R_GPIO_Port GPIOC
+#define USER_BUTTON_R_EXTI_IRQn EXTI15_10_IRQn
 #define MOTOR_LF_B_Pin GPIO_PIN_3
 #define MOTOR_LF_B_GPIO_Port GPIOB
 #define MOTOR_LB_A_Pin GPIO_PIN_4
