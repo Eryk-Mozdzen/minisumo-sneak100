@@ -24,6 +24,8 @@ typedef struct {
 void Encoder_Init(Encoder_StructTypeDef *, TIM_HandleTypeDef *, uint16_t);
 void Encoder_Reset(Encoder_StructTypeDef *);
 
+uint16_t Encoder_GetPositionRaw(Encoder_StructTypeDef *);
+
 float Encoder_GetPosition(Encoder_StructTypeDef *);
 float Encoder_GetVelocity(Encoder_StructTypeDef *);
 

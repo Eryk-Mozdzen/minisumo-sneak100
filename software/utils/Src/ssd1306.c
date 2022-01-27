@@ -12,8 +12,7 @@ static SSD1306_t SSD1306;
 //
 static uint8_t ssd1306_WriteCommand(I2C_HandleTypeDef *hi2c, uint8_t command)
 {
-	//return HAL_I2C_Mem_Write(hi2c, SSD1306_I2C_ADDR, 0x00, 1, &command, 1, 10);
-	return ssd1306_Write(0x00, &command, 1);
+	return HAL_I2C_Mem_Write(hi2c, SSD1306_I2C_ADDR, 0x00, 1, &command, 1, 10);
 }
 
 
@@ -109,8 +108,7 @@ void ssd1306_UpdateScreen(I2C_HandleTypeDef *hi2c)
         ssd1306_WriteCommand(hi2c, 0x00);
         ssd1306_WriteCommand(hi2c, 0x10);
 
-        //HAL_I2C_Mem_Write(hi2c, SSD1306_I2C_ADDR, 0x40, 1, &SSD1306_Buffer[SSD1306_WIDTH * i], SSD1306_WIDTH, 100);
-        ssd1306_Write(0x40, &SSD1306_Buffer[SSD1306_WIDTH * i], SSD1306_WIDTH);
+        HAL_I2C_Mem_Write(hi2c, SSD1306_I2C_ADDR, 0x40, 1, &SSD1306_Buffer[SSD1306_WIDTH * i], SSD1306_WIDTH, 100);
     }
 }
 

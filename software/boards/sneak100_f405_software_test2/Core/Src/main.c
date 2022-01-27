@@ -111,36 +111,10 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   SNEAK100_ADC_Init();
-  //SNEAK100_Motors_Init();
+  SNEAK100_Motors_Init();
   SNEAK100_Display_Init();
   SNEAK100_Memory_Init();
-
-  HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_3);
-  HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_4);
-
-  //__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_3, 0);
-  //__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_4, 0);
-
-  //__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_3, 0);
-  //__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_4, 65535);
-
-  __HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_3, 65535);
-  __HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_4, 0);
-
-  //__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_3, 65535);
-  //__HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_4, 65535);
-
-	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET);
-	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_RESET);
-
-	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET);
-	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_SET);
-
-	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET);
-	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_RESET);
-
-	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET);
-	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_SET);
+  SNEAK100_Proximity_Init();
 
   /* USER CODE END 2 */
 
@@ -148,18 +122,28 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while(1) {
 
-		gui.battery_voltage = SNEAK100_ADC_GetSupplyVoltage();
-		gui.temperature = SNEAK100_ADC_GetTemperature();
-
 	  SNEAK100_Display_Update();
-	  //Motor_Update(&motorFR);
-	  //Motor_SetVelocity(&motorFR, 1000);
-	  //__Motor_SetPower(&motorFR, -MOTOR_POWER_MAX);
+
+	  SNEAK100_Motors_Update();
+	  SNEAK100_Motors_SetSpeeds_1(100);
+	  //__Motor_SetPower(&motors[MOTOR_RF], MOTOR_POWER_MAX);
 
 	  HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
 	  HAL_Delay(50);
 	  HAL_GPIO_TogglePin(USER_LED_YELLOW_GPIO_Port, USER_LED_YELLOW_Pin);
 	  HAL_Delay(50);
+
+	  for(uint8_t i=0; i<4; i++) {
+		  gui.data.position[i] = Encoder_GetPositionRaw(&encoders[i]);
+		  gui.data.velocity[i] = Encoder_GetVelocity(&encoders[i]);
+		  gui.data.line[i] = *lines[i].read_src;
+		  gui.data.line_threshold[i] = lines[i].threshold;
+		  gui.data.line_polarity[i] = lines[i].polarity;
+		  gui.data.proximity[i] = ProximitySensor_GetState(&proximity[i]);
+	  }
+	  gui.data.line_state = SNEAK100_Line_GetState_ALL();
+	  gui.data.temperature = SNEAK100_ADC_GetTemperature();
+	  gui.data.battery = SNEAK100_ADC_GetSupplyVoltage();
 
     /* USER CODE END WHILE */
 

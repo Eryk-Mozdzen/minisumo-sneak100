@@ -14,12 +14,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdarg.h>
 
-#include "math_tools.h"
 #include "finite_state_machine.h"
 
-#define BUTTON_CLICK_TIME	100		// ms
+#define DISPLAY_LINE_1	12
+#define DISPLAY_LINE_2	22
+#define DISPLAY_LINE_3	32
+#define DISPLAY_LINE_4	42
 
 typedef enum {
 	GUI_STATE_DESKTOP,
@@ -39,28 +40,33 @@ typedef enum {
 
 typedef struct {
 	uint8_t pressed;
-	uint8_t chenged;
+	uint8_t changed;
 } GUI_ButtonState_StructTypeDef;
+
+typedef struct {
+	uint16_t position[4];
+	float velocity[4];
+	uint16_t line[4];
+	uint16_t line_threshold[4];
+	uint8_t line_polarity[4];
+	uint8_t line_state;
+	uint8_t proximity[4];
+
+	float temperature;
+	float battery;
+} RobotState_StructTypeDef;
 
 typedef struct {
 	FiniteStateMachine_t fsm;
 	GUI_ButtonState_StructTypeDef buttons[3];
+	Display_StructTypeDef display;
 
-	float battery_voltage;
-	float temperature;
-	uint16_t line[4];
-	float position[4];
-	float velocity[4];
+	RobotState_StructTypeDef data;
 } Sneak100_GUI_StructTypeDef;
 
-extern Display_StructTypeDef oled;
 extern Sneak100_GUI_StructTypeDef gui;
-
-HAL_StatusTypeDef ssd1306_Write(uint16_t, void *, uint16_t);
-void Display_ErrorHandler(const char *, uint16_t);
 
 void SNEAK100_Display_Init();
 void SNEAK100_Display_Update();
-void SNEAK100_Display_ReadInputs();
 
 #endif /* SNEAK100_HARDWARE_INC_SNEAK100_DISPLAY_H_ */

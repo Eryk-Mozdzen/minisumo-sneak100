@@ -20,7 +20,7 @@ void PID_Reset(PID_StructTypeDef *pid) {
 float PID_Update(PID_StructTypeDef *pid, float curr_process_value, float set_value) {
 	pid->delta_time = TimeBase_GetScale(&pid->tbase) * TimeBase_Restart(&pid->tbase);
 
-    pid->error = curr_process_value - set_value;
+    pid->error = set_value - curr_process_value;
     pid->derivative = (curr_process_value - pid->prev_process_value)/pid->delta_time;
 
     if(abs(pid->error)<pid->integral_band)

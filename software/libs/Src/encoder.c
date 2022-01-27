@@ -23,6 +23,10 @@ void Encoder_Reset(Encoder_StructTypeDef *encoder) {
 	__HAL_TIM_SET_COUNTER(encoder->timer, 0);
 }
 
+uint16_t Encoder_GetPositionRaw(Encoder_StructTypeDef *encoder) {
+	return __HAL_TIM_GET_COUNTER(encoder->timer);
+}
+
 float Encoder_GetPosition(Encoder_StructTypeDef *encoder) {
 	return ((float)((int16_t)__HAL_TIM_GET_COUNTER(encoder->timer)))/encoder->cpr;
 }

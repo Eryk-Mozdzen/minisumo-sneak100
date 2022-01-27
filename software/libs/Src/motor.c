@@ -19,7 +19,8 @@ void Motor_Init(Motor_StructTypeDef *motor, Encoder_StructTypeDef *encoder, Moto
 
 	PID_Init(&motor->pid, config.pid_p, config.pid_i, config.pid_d, config.pid_iband);
 
-	HAL_TIM_PWM_Start(motor->timer, motor->channel_in1 | motor->channel_in2);
+	HAL_TIM_PWM_Start(motor->timer, motor->channel_in1);
+	HAL_TIM_PWM_Start(motor->timer, motor->channel_in2);
 
 	Motor_SetControlMode(motor, MODE_POSITION_CONTROL);
 	Motor_SetBreakMode(motor, MODE_COAST);
@@ -31,16 +32,18 @@ void Motor_Update(Motor_StructTypeDef *motor) {
 		case MODE_POSITION_CONTROL: {
 			float curr_pos = Encoder_GetPosition(motor->encoder);
 
+			// between [-1; 1]
 			float output = PID_Update(&motor->pid, curr_pos, motor->position_set_value);
 
-			__Motor_SetPower(motor, output);
+			__Motor_SetPower(motor, output*MOTOR_POWER_MAX);
 		} break;
 		case MODE_VELOCITY_CONTROL: {
 			float curr_vel = Encoder_GetVelocity(motor->encoder);
 
+			// between [-1; 1]
 			float output = PID_Update(&motor->pid, curr_vel, motor->velocity_set_value);
 
-			__Motor_SetPower(motor, output);
+			__Motor_SetPower(motor, output*MOTOR_POWER_MAX);
 		} break;
 	}
 }
@@ -57,14 +60,10 @@ void Motor_SetBreakMode(Motor_StructTypeDef *motor, MotorBrakeMode_EnumTypeDef m
 }
 
 void Motor_SetPosition(Motor_StructTypeDef *motor, float pos) {
-	assert(motor->control_mode==MODE_POSITION_CONTROL);
-
 	motor->position_set_value = pos;
 }
 
 void Motor_SetVelocity(Motor_StructTypeDef *motor, float vel) {
-	assert(motor->control_mode==MODE_VELOCITY_CONTROL);
-
 	motor->velocity_set_value = vel;
 }
 

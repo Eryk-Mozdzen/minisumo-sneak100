@@ -12,9 +12,9 @@
 #include "pid.h"
 #include "math_tools.h"
 #include "encoder.h"
+
 #include <stdlib.h>
 #include <stdint.h>
-#include <assert.h>
 
 #define MOTOR_POWER_MAX		65535
 
@@ -72,4 +72,4 @@ void Motor_SetVelocity(Motor_StructTypeDef *, float);
 
 void __Motor_SetPower(Motor_StructTypeDef *, int32_t);
 
-#endif /* SNEAK100_ABSTRACTION_LAYER_INC_MOTOR_H_ */
+#endif

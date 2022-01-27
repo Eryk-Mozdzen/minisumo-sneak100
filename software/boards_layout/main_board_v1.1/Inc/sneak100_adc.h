@@ -18,10 +18,14 @@
 #define SUPPLY_VOLTAGE_DIVIDER_R1	18000.f
 #define SUPPLY_VOLTAGE_DIVIDER_R2	10000.f
 
-extern LineSensor_StructTypeDef lineLL;
-extern LineSensor_StructTypeDef lineLM;
-extern LineSensor_StructTypeDef lineRM;
-extern LineSensor_StructTypeDef lineRR;
+typedef enum {
+	LINE_LL,
+	LINE_LM,
+	LINE_RM,
+	LINE_RR
+} LineEnumtypeDef;
+
+extern LineSensor_StructTypeDef lines[4];
 
 void SNEAK100_ADC_Init();
 float SNEAK100_ADC_GetSupplyVoltage();
