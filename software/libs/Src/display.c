@@ -127,3 +127,25 @@ void Display_DrawText(Display_StructTypeDef *display, uint8_t x, uint8_t y, cons
 	ssd1306_SetCursor(x, y);
 	ssd1306_WriteString(buffer, Font_7x10, White);
 }
+
+void Display_InvertColors(Display_StructTypeDef *display, uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
+	if(x>=128 || y>=64)
+		return;
+
+	for(uint8_t i=0; i<w; i++) {
+		if(x+i>=128)
+			return;
+
+		for(uint8_t j=0; j<h; j++) {
+			if(y+j>=64)
+				continue;
+
+			ssd1306_DrawPixel(x+i, y+j, !ssd1306_GetPixel(x+i, y+j));
+		}
+	}
+}
+
+
+
+
+

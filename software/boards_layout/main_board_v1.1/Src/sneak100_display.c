@@ -12,16 +12,13 @@ Sneak100_GUI_StructTypeDef gui;
 
 static void SNEAK100_Display_ReadInputs();
 
-static uint8_t SNEAK100_Button_L_ClickEvent(void *);
-static uint8_t SNEAK100_Button_C_ClickEvent(void *);
-static uint8_t SNEAK100_Button_R_ClickEvent(void *);
-
-static void SNEAK100_Display_Render_Desktop(void *);
+static void SNEAK100_Display_Render_Menu(void *);
 static void SNEAK100_Display_Render_ViewMotors(void *);
 static void SNEAK100_Display_Render_ViewLine(void *);
 static void SNEAK100_Display_Render_ViewProximity(void *);
 static void SNEAK100_Display_Render_ViewOthers(void *);
 static void SNEAK100_Display_Render_Settings(void *);
+static void SNEAK100_Display_Render_Info(void *);
 static void SNEAK100_Display_Render_Credits(void *);
 
 static void __Display_DrawHeader(const char *);
@@ -36,36 +33,40 @@ void SNEAK100_Display_Init() {
 
 	FiniteStateMachine_Init(&gui.fsm, &gui);
 
-	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_DESKTOP,			NULL, &SNEAK100_Display_Render_Desktop,			NULL);
+	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_MENU,			NULL, &SNEAK100_Display_Render_Menu,			NULL);
 	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_VIEW_MOTORS,		NULL, &SNEAK100_Display_Render_ViewMotors,		NULL);
 	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_VIEW_LINE,		NULL, &SNEAK100_Display_Render_ViewLine,		NULL);
 	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_VIEW_PROXIMITY,	NULL, &SNEAK100_Display_Render_ViewProximity,	NULL);
 	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_VIEW_OTHERS,		NULL, &SNEAK100_Display_Render_ViewOthers,		NULL);
 	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_SETTINGS,		NULL, &SNEAK100_Display_Render_Settings,		NULL);
-	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_CREDITS,			NULL, &SNEAK100_Display_Render_Credits,		NULL);
+	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_INFO,			NULL, &SNEAK100_Display_Render_Info,			NULL);
+	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_CREDITS,			NULL, &SNEAK100_Display_Render_Credits,			NULL);
 
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_DESKTOP,		GUI_STATE_VIEW_MOTORS,		0, NULL, &SNEAK100_Button_L_ClickEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_DESKTOP,		GUI_STATE_SETTINGS,			0, NULL, &SNEAK100_Button_C_ClickEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_DESKTOP,		GUI_STATE_CREDITS,			0, NULL, &SNEAK100_Button_R_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_VIEW_MOTORS,		0, NULL, &__GUI_Menu_View_SelectEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_SETTINGS,			0, NULL, &__GUI_Menu_Settings_SelectEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_TEST,				0, NULL, &__GUI_Menu_Test_SelectEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_FIGHT,			0, NULL, &__GUI_Menu_Fight_SelectEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_INFO,				0, NULL, &__GUI_Menu_Info_SelectEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_CREDITS,			0, NULL, &__GUI_Menu_Credits_SelectEvent);
 
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_MOTORS,	GUI_STATE_VIEW_LINE,		0, NULL, &SNEAK100_Button_L_ClickEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_LINE,		GUI_STATE_VIEW_PROXIMITY,	0, NULL, &SNEAK100_Button_L_ClickEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_PROXIMITY,	GUI_STATE_VIEW_OTHERS,		0, NULL, &SNEAK100_Button_L_ClickEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_OTHERS,	GUI_STATE_VIEW_MOTORS,		0, NULL, &SNEAK100_Button_L_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_MOTORS,	GUI_STATE_VIEW_LINE,		0, NULL, &__Button_L_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_LINE,		GUI_STATE_VIEW_PROXIMITY,	0, NULL, &__Button_L_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_PROXIMITY,	GUI_STATE_VIEW_OTHERS,		0, NULL, &__Button_L_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_OTHERS,	GUI_STATE_VIEW_MOTORS,		0, NULL, &__Button_L_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_MOTORS,	GUI_STATE_VIEW_OTHERS,		0, NULL, &__Button_C_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_OTHERS,	GUI_STATE_VIEW_PROXIMITY,	0, NULL, &__Button_C_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_PROXIMITY,	GUI_STATE_VIEW_LINE,		0, NULL, &__Button_C_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_LINE,		GUI_STATE_VIEW_MOTORS,		0, NULL, &__Button_C_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_MOTORS,	GUI_STATE_MENU,				0, NULL, &__Button_R_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_LINE,		GUI_STATE_MENU,				0, NULL, &__Button_R_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_PROXIMITY,	GUI_STATE_MENU,				0, NULL, &__Button_R_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_OTHERS,	GUI_STATE_MENU,				0, NULL, &__Button_R_ClickEvent);
 
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_MOTORS,	GUI_STATE_VIEW_OTHERS,		0, NULL, &SNEAK100_Button_C_ClickEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_OTHERS,	GUI_STATE_VIEW_PROXIMITY,	0, NULL, &SNEAK100_Button_C_ClickEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_PROXIMITY,	GUI_STATE_VIEW_LINE,		0, NULL, &SNEAK100_Button_C_ClickEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_LINE,		GUI_STATE_VIEW_MOTORS,		0, NULL, &SNEAK100_Button_C_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_SETTINGS, 		GUI_STATE_MENU,				0, NULL, &__Button_R_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_INFO, 			GUI_STATE_MENU,				0, NULL, &__Button_R_ClickEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_CREDITS, 		GUI_STATE_MENU,				0, NULL, &__Button_R_ClickEvent);
 
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_MOTORS,	GUI_STATE_DESKTOP,			0, NULL, &SNEAK100_Button_R_ClickEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_LINE,		GUI_STATE_DESKTOP,			0, NULL, &SNEAK100_Button_R_ClickEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_PROXIMITY,	GUI_STATE_DESKTOP,			0, NULL, &SNEAK100_Button_R_ClickEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_OTHERS,	GUI_STATE_DESKTOP,			0, NULL, &SNEAK100_Button_R_ClickEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_SETTINGS, 		GUI_STATE_DESKTOP,			0, NULL, &SNEAK100_Button_R_ClickEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_CREDITS, 		GUI_STATE_DESKTOP,			0, NULL, &SNEAK100_Button_R_ClickEvent);
-
-	FiniteStateMachine_Start(&gui.fsm, GUI_STATE_DESKTOP);
+	FiniteStateMachine_Start(&gui.fsm, GUI_STATE_MENU);
 }
 
 void SNEAK100_Display_Update() {
@@ -101,33 +102,31 @@ void __Display_DrawFooter(const char *action_l, const char *action_c, const char
 	Display_DrawLine(&gui.display, 0, 52, 127, 52);
 }
 
-uint8_t SNEAK100_Button_L_ClickEvent(void *data) {
-	Sneak100_GUI_StructTypeDef *gui_ptr = (Sneak100_GUI_StructTypeDef *)data;
-
-	return (gui_ptr->buttons[BUTTON_L].pressed && gui_ptr->buttons[BUTTON_L].changed);
-}
-
-uint8_t SNEAK100_Button_C_ClickEvent(void *data) {
-	Sneak100_GUI_StructTypeDef *gui_ptr = (Sneak100_GUI_StructTypeDef *)data;
-
-	return (gui_ptr->buttons[BUTTON_C].pressed && gui_ptr->buttons[BUTTON_C].changed);
-}
-
-uint8_t SNEAK100_Button_R_ClickEvent(void *data) {
-	Sneak100_GUI_StructTypeDef *gui_ptr = (Sneak100_GUI_StructTypeDef *)data;
-
-	return (gui_ptr->buttons[BUTTON_R].pressed && gui_ptr->buttons[BUTTON_R].changed);
-}
-
-void SNEAK100_Display_Render_Desktop(void *data) {
+void SNEAK100_Display_Render_Menu(void *data) {
 	Sneak100_GUI_StructTypeDef *gui_ptr = (Sneak100_GUI_StructTypeDef *)data;
 
 	Display_Clear(&gui_ptr->display);
 
-	Display_DrawBitmap(&gui_ptr->display, 0, 0, bitmap_sneak100_128_64, 128, 64);
+	Display_DrawText(&gui_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_0 + 2, "view");
+	Display_DrawText(&gui_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_1 + 2, "settings");
+	Display_DrawText(&gui_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_2 + 2, "test");
+	Display_DrawText(&gui_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_3 + 2, "fight");
 
-	__Display_DrawHeader("Menu");
-	__Display_DrawFooter("view", "sett", "func");
+	Display_DrawText(&gui_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_0 + 2, "    ");
+	Display_DrawText(&gui_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_1 + 2, "    ");
+	Display_DrawText(&gui_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_2 + 2, "info");
+	Display_DrawText(&gui_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_3 + 2, "credits");
+
+	__Display_DrawFooter("up", "down", "sel");
+
+	Display_InvertColors(&gui_ptr->display, (gui_ptr->menu_selected<4) ? GUI_MENU_COL_0 : GUI_MENU_COL_1, (gui_ptr->menu_selected%4)*13, 64, 13);
+
+	if(gui_ptr->buttons[BUTTON_L].pressed && gui_ptr->buttons[BUTTON_L].changed)
+		gui_ptr->menu_selected--;
+	if(gui_ptr->buttons[BUTTON_C].pressed && gui_ptr->buttons[BUTTON_C].changed)
+		gui_ptr->menu_selected++;
+
+	gui_ptr->menu_selected %=8;
 
 	Display_Update(&gui_ptr->display);
 }
@@ -217,7 +216,20 @@ void SNEAK100_Display_Render_Settings(void *data) {
 	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_1, "mode: ");
 	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_2, "dyhlo: ");
 	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_3, "strategy: ");
-	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_4, "password: ");
+
+	Display_Update(&gui_ptr->display);
+}
+
+void SNEAK100_Display_Render_Info(void *data) {
+	Sneak100_GUI_StructTypeDef *gui_ptr = (Sneak100_GUI_StructTypeDef *)data;
+
+	Display_Clear(&gui_ptr->display);
+
+	__Display_DrawHeader("Info");
+	__Display_DrawFooter("", "", "esc");
+
+	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_1, "build: %s", __DATE__);
+	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_2, "pass: %s", "");
 
 	Display_Update(&gui_ptr->display);
 }

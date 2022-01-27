@@ -66,4 +66,6 @@ void ssd1306_DrawBitmap(uint8_t x, uint8_t y, const unsigned char* bitmap, uint8
 void ssd1306_SetCursor(uint8_t x, uint8_t y);
 void ssd1306_InvertColors(void);
 
+uint8_t ssd1306_GetPixel(uint8_t, uint8_t);
+
 #endif  // _SSD1306_H

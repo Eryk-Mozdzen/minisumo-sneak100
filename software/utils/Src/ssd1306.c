@@ -240,6 +240,13 @@ void ssd1306_InvertColors(void)
     SSD1306.Inverted = !SSD1306.Inverted;
 }
 
+uint8_t ssd1306_GetPixel(uint8_t x, uint8_t y) {
+	if(x>=SSD1306_WIDTH || y>=SSD1306_HEIGHT)
+		return Black;
+
+	return (SSD1306_Buffer[x + (y / 8) * SSD1306_WIDTH] & (1<<(y%8)))>0;
+}
+
 //
 //  Set cursor position
 //
