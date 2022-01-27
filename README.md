@@ -12,13 +12,13 @@
 
 ### In progress:
 - solder motor controllers and remaining connectors
-- write and debug library components
+- debug library
+- GUI
 
 ### To do:
 - print plastic elements
 - shape blade
 - create program structure
-- GUI
 
 ### DEADLINE:
 ```diff
