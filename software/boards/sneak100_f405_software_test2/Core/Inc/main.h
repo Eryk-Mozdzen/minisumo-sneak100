@@ -97,6 +97,10 @@ void Error_Handler(void);
 #define MOTOR_RB_IN1_GPIO_Port GPIOC
 #define MOTOR_RB_IN2_Pin GPIO_PIN_7
 #define MOTOR_RB_IN2_GPIO_Port GPIOC
+#define MOTOR_RF_IN1_Pin GPIO_PIN_8
+#define MOTOR_RF_IN1_GPIO_Port GPIOC
+#define MOTOR_RF_IN2_Pin GPIO_PIN_9
+#define MOTOR_RF_IN2_GPIO_Port GPIOC
 #define MOTOR_LB_IN1_Pin GPIO_PIN_8
 #define MOTOR_LB_IN1_GPIO_Port GPIOA
 #define MOTOR_LB_IN2_Pin GPIO_PIN_9

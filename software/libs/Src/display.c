@@ -23,6 +23,10 @@ void Display_Update(Display_StructTypeDef *display) {
 	ssd1306_UpdateScreen(display->hi2c);
 }
 
+void Display_Clear(Display_StructTypeDef *display) {
+	ssd1306_Fill(Black);
+}
+
 void Display_DrawBitmap(Display_StructTypeDef *display, uint16_t x, uint16_t y, const uint8_t *bitmap, uint16_t w, uint16_t h) {
 	ssd1306_DrawBitmap(x, y, bitmap, w, h, White);
 }
@@ -112,7 +116,14 @@ void Display_DrawLine(Display_StructTypeDef *display, uint16_t x0, uint16_t y0, 
 
 }
 
-void Display_WriteString(Display_StructTypeDef *display, uint16_t x, uint16_t y, FontDef font, char *str) {
+void Display_DrawText(Display_StructTypeDef *display, uint8_t x, uint8_t y, const char *format, ...) {
+	char buffer[32] = {0};
+
+	va_list args;
+	va_start(args, format);
+	vsprintf(buffer, format, args);
+	va_end(args);
+
 	ssd1306_SetCursor(x, y);
-	ssd1306_WriteString(str, font, White);
+	ssd1306_WriteString(buffer, Font_7x10, White);
 }

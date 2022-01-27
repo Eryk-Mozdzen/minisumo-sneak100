@@ -18,6 +18,7 @@ version 1.2:
 	- use SWO interface for debug, use of real ST-LINK v2
 	- change polarity of battery input connector to flat side
 	- detachable screen
+	- fix proximity sensor connector pinout and add labels
 	
 	- detachable IMU
 	- line sensor merged header

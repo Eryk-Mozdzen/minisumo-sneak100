@@ -11,10 +11,14 @@
 #include "proximity.h"
 #include "main.h"
 
-extern ProximitySensor_StructTypeDef proximityLL;
-extern ProximitySensor_StructTypeDef proximityFL;
-extern ProximitySensor_StructTypeDef proximityFR;
-extern ProximitySensor_StructTypeDef proximityRR;
+typedef enum {
+	PROXIMITY_LL,
+	PROXIMITY_FL,
+	PROXIMITY_FR,
+	PROXIMITY_RR
+} Proximity_EnumTypeDef;
+
+extern ProximitySensor_StructTypeDef proximity[4];
 
 void SNEAK100_Proximity_Init();
 

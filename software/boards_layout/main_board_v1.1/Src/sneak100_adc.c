@@ -17,19 +17,16 @@
  * */
 static uint16_t adc_dma_buffer[6] = {0};
 
-LineSensor_StructTypeDef lineLL;
-LineSensor_StructTypeDef lineLM;
-LineSensor_StructTypeDef lineRM;
-LineSensor_StructTypeDef lineRR;
+LineSensor_StructTypeDef lines[4];
 
 void SNEAK100_ADC_Init() {
 
 	HAL_ADC_Start_DMA(&hadc1, (uint32_t *)adc_dma_buffer, 6);
 
-	Line_Init(&lineLL, &adc_dma_buffer[3], LINE_THRESHOLD);
-	Line_Init(&lineLM, &adc_dma_buffer[2], LINE_THRESHOLD);
-	Line_Init(&lineRM, &adc_dma_buffer[1], LINE_THRESHOLD);
-	Line_Init(&lineRR, &adc_dma_buffer[0], LINE_THRESHOLD);
+	Line_Init(&lines[LINE_LL], &adc_dma_buffer[3], LINE_THRESHOLD);
+	Line_Init(&lines[LINE_LM], &adc_dma_buffer[2], LINE_THRESHOLD);
+	Line_Init(&lines[LINE_RM], &adc_dma_buffer[1], LINE_THRESHOLD);
+	Line_Init(&lines[LINE_RR], &adc_dma_buffer[0], LINE_THRESHOLD);
 }
 
 static float __SNEAK100_ADC_ConvertToVoltage(uint16_t read_raw) {
@@ -47,10 +44,10 @@ float SNEAK100_ADC_GetTemperature() {
 }
 
 void SENAK100_Line_SetPolarity(Line_Polarity_EnumTypeDef polarity) {
-	lineLL.polarity = polarity;
-	lineLM.polarity = polarity;
-	lineRM.polarity = polarity;
-	lineRR.polarity = polarity;
+	lines[LINE_LL].polarity = polarity;
+	lines[LINE_LM].polarity = polarity;
+	lines[LINE_RM].polarity = polarity;
+	lines[LINE_RR].polarity = polarity;
 
 	if(polarity==DYHLO_AUTO) {
 		SENAK100_Line_SetPolarity(DYHLO_WHITE_WITH_BLACK_CIRCUMFERENCE);
@@ -68,8 +65,8 @@ void SENAK100_Line_SetPolarity(Line_Polarity_EnumTypeDef polarity) {
 }
 
 uint8_t SNEAK100_Line_GetState_ALL() {
-	return (Line_GetState(&lineLL) << 3) |
-			(Line_GetState(&lineLM) << 2) |
-			(Line_GetState(&lineRM) << 1) |
-			(Line_GetState(&lineRR) << 0);
+	return (Line_GetState(&lines[LINE_LL]) << 3) |
+			(Line_GetState(&lines[LINE_LM]) << 2) |
+			(Line_GetState(&lines[LINE_RM]) << 1) |
+			(Line_GetState(&lines[LINE_RR]) << 0);
 }

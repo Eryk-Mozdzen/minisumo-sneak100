@@ -7,22 +7,19 @@
 
 #include "sneak100_proximity.h"
 
-ProximitySensor_StructTypeDef proximityLL;
-ProximitySensor_StructTypeDef proximityFL;
-ProximitySensor_StructTypeDef proximityFR;
-ProximitySensor_StructTypeDef proximityRR;
+ProximitySensor_StructTypeDef proximity[4];
 
 void SNEAK100_Proximity_Init() {
 
-	proximityLL.GPIOx = PROXIMITY_LL_GPIO_Port;
-	proximityLL.GPIO_Pin = PROXIMITY_LL_Pin;
+	proximity[PROXIMITY_LL].GPIOx = PROXIMITY_LL_GPIO_Port;
+	proximity[PROXIMITY_LL].GPIO_Pin = PROXIMITY_LL_Pin;
 
-	/*proximityFL.GPIOx = PROXIMITY_FL_GPIO_Port;
-	proximityFL.GPIO_Pin = PROXIMITY_FL_Pin;
+	proximity[PROXIMITY_FL].GPIOx = PROXIMITY_FL_GPIO_Port;
+	proximity[PROXIMITY_FL].GPIO_Pin = PROXIMITY_FL_Pin;
 
-	proximityFR.GPIOx = PROXIMITY_FR_GPIO_Port;
-	proximityFR.GPIO_Pin = PROXIMITY_FR_Pin;
+	proximity[PROXIMITY_FR].GPIOx = PROXIMITY_FR_GPIO_Port;
+	proximity[PROXIMITY_FR].GPIO_Pin = PROXIMITY_FR_Pin;
 
-	proximityRR.GPIOx = PROXIMITY_RR_GPIO_Port;
-	proximityRR.GPIO_Pin = PROXIMITY_RR_Pin;*/
+	proximity[PROXIMITY_RR].GPIOx = PROXIMITY_RR_GPIO_Port;
+	proximity[PROXIMITY_RR].GPIO_Pin = PROXIMITY_RR_Pin;
 }

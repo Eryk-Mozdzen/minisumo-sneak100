@@ -10,19 +10,24 @@
 
 #include "stm32f4xx_hal.h"
 #include "ssd1306.h"
+
 #include <stdint.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct {
 	I2C_HandleTypeDef *hi2c;
 } Display_StructTypeDef;
 
+__weak void Display_ErrorHandler(const char *, uint16_t);
+
 void Display_Init(Display_StructTypeDef *, I2C_HandleTypeDef *);
 void Display_Update(Display_StructTypeDef *);
 
-__weak void Display_ErrorHandler(const char *, uint16_t);
-
+void Display_Clear(Display_StructTypeDef *);
 void Display_DrawBitmap(Display_StructTypeDef *, uint16_t, uint16_t, const uint8_t*, uint16_t, uint16_t);
 void Display_DrawLine(Display_StructTypeDef *, uint16_t, uint16_t, uint16_t, uint16_t);
-void Display_WriteString(Display_StructTypeDef *, uint16_t, uint16_t, FontDef, char *);
+void Display_DrawText(Display_StructTypeDef *, uint8_t, uint8_t, const char *, ...);
 
 #endif /* SNEAK100_ABSTRACTION_LAYER_INC_DISPLAY_H_ */
