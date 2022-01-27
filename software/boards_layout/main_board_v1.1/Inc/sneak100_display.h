@@ -54,6 +54,10 @@ typedef struct {
 
 	float temperature;
 	float battery;
+
+	uint8_t rc5_toggle;
+	uint8_t rc5_address;
+	uint8_t rc5_command;
 } RobotState_StructTypeDef;
 
 typedef struct {

@@ -35,6 +35,7 @@
 #include "sneak100_motors.h"
 #include "sneak100_proximity.h"
 #include "sneak100_memory.h"
+#include "sneak100_rc5.h"
 
 /* USER CODE END Includes */
 
@@ -108,6 +109,7 @@ int main(void)
   MX_TIM5_Init();
   MX_DMA_Init();
   MX_ADC1_Init();
+  MX_TIM7_Init();
   /* USER CODE BEGIN 2 */
 
   SNEAK100_ADC_Init();
@@ -115,23 +117,13 @@ int main(void)
   SNEAK100_Display_Init();
   SNEAK100_Memory_Init();
   SNEAK100_Proximity_Init();
+  SNEAK100_RC5_Init();
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while(1) {
-
-	  SNEAK100_Display_Update();
-
-	  SNEAK100_Motors_Update();
-	  SNEAK100_Motors_SetSpeeds_1(100);
-	  //__Motor_SetPower(&motors[MOTOR_RF], MOTOR_POWER_MAX);
-
-	  HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
-	  HAL_Delay(50);
-	  HAL_GPIO_TogglePin(USER_LED_YELLOW_GPIO_Port, USER_LED_YELLOW_Pin);
-	  HAL_Delay(50);
 
 	  for(uint8_t i=0; i<4; i++) {
 		  gui.data.position[i] = Encoder_GetPositionRaw(&encoders[i]);
@@ -144,6 +136,24 @@ int main(void)
 	  gui.data.line_state = SNEAK100_Line_GetState_ALL();
 	  gui.data.temperature = SNEAK100_ADC_GetTemperature();
 	  gui.data.battery = SNEAK100_ADC_GetSupplyVoltage();
+
+	  RC5_Message_t message;
+	  if(DecoderRC5_GetMessage(&decoder_rc5, &message)) {
+		  gui.data.rc5_toggle = message.toggle;
+		  gui.data.rc5_address = message.address;
+		  gui.data.rc5_command = message.command;
+	  }
+
+	  SNEAK100_Display_Update();
+
+	  SNEAK100_Motors_Update();
+	  SNEAK100_Motors_SetSpeeds_1(100);
+	  //__Motor_SetPower(&motors[MOTOR_RF], MOTOR_POWER_MAX);
+
+	  HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
+	  HAL_Delay(50);
+	  HAL_GPIO_TogglePin(USER_LED_YELLOW_GPIO_Port, USER_LED_YELLOW_Pin);
+	  HAL_Delay(50);
 
     /* USER CODE END WHILE */
 
@@ -197,6 +207,10 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+	DecoderRC5_EXTI_Callback(&decoder_rc5, GPIO_Pin);
+}
+
 /* USER CODE END 4 */
 
  /**
@@ -210,6 +224,8 @@ void SystemClock_Config(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
+
+	DecoderRC5_PeriodElapsedCallback(&decoder_rc5, htim);
 
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM6) {

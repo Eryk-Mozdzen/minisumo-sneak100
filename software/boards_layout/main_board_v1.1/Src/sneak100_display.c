@@ -200,7 +200,7 @@ void SNEAK100_Display_Render_ViewOthers(void *data) {
 
 	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_1, "Temp: %.0f*C", gui_ptr->data.temperature);
 	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_2, "Batt: %.2fV", gui_ptr->data.battery);
-	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_3, "RC5:  ");
+	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_3, "RC5:  %u 0x%02X 0x%02X", gui_ptr->data.rc5_toggle, gui_ptr->data.rc5_address, gui_ptr->data.rc5_command);
 	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_4, "HC05: ");
 
 	Display_Update(&gui_ptr->display);
