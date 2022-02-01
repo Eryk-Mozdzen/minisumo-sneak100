@@ -13,13 +13,13 @@ ok	- add additional UART
 ok	- reset button
 
 version 1.2:
-	- power led not under screen
-	- capacitor footprint temperature rails
-	- use SWO interface for debug, use of real ST-LINK v2
+	- capacitor footprint termo relief
 	- change polarity of battery input connector to flat side
-	- detachable screen
-	- fix proximity sensor connector pinout and add labels
-	
-	- detachable IMU
+	- fix proximity sensor connector pinout and add pinout labels
 	- line sensor merged header
+	
+	- detachable screen
+	- detachable 9DOF / 9DOF onboard / 6DOF + 3DOF on board
+
+	- use SWO interface for debug, use of real ST-LINK v2, change programming connector to header goldpin
 	
