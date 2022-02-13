@@ -11,14 +11,12 @@
 </p>
 
 ### In progress:
-- solder motor controllers and remaining connectors
 - debug library
-- GUI
+- create program structure
 
 ### To do:
 - print plastic elements
 - shape blade
-- create program structure
 
 ### DEADLINE:
 ```diff
