@@ -11,8 +11,8 @@
 </p>
 
 ### In progress:
-- debug library
 - create program structure
+- GUI
 
 ### To do:
 - print plastic elements

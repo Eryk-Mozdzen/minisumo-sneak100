@@ -8,20 +8,44 @@
 #ifndef INC_SNEAK100_MEMORY_H_
 #define INC_SNEAK100_MEMORY_H_
 
-#include <stdio.h>
 #include "i2c.h"
 #include "memory.h"
 
-#define MEMORY_ADDRESS_VALUE	0x01
-
 extern Memory_StryctTypeDef memory;
 
-void Memory_ErrorHandler(const char *, uint16_t);
+#define SNEAK100_MEMORY_SETTINGS_ADDRESS	0x00
+
+typedef enum {
+	SETTINGS_MODE_MODULE,
+	SETTINGS_MODE_BUTTON,
+	SETTINGS_MODE_RC_RC5,
+	SETTINGS_MODE_RC_BLUETOOTH,
+	SETTINGS_MODE_NUM
+} Settings_Mode_EnumTypeDef;
+
+typedef enum {
+	SETTINGS_DYHLO_BLACK,
+	SETTINGS_DYHLO_WHITE,
+	SETTINGS_DYHLO_AUTO,
+	SETTINGS_DYHLO_NUM
+} Settings_Dyhlo_EnumTypeDef;
+
+typedef enum {
+	SETTINGS_STRATEGY_AGRESSIVE,
+	SETTINGS_STRATEGY_DEFENSIVE,
+	SETTINGS_STRATEGY_PASSIVE,
+	SETTINGS_STRATEGY_NUM
+} Settings_Strategy_EnumTypeDef;
+
+typedef struct {
+	Settings_Mode_EnumTypeDef mode;
+	Settings_Dyhlo_EnumTypeDef dyhlo;
+	Settings_Strategy_EnumTypeDef strategy;
+} RobotSettings_StructTypeDef;
 
 void SNEAK100_Memory_Init();
-uint8_t SNEAK100_Memory_ReadByte(uint16_t);
-void SNEAK100_Memory_WriteByte(uint16_t, uint8_t);
-float SNEAK100_Memory_ReadFloat(uint16_t);
-void SNEAK100_Memory_WriteFloat(uint16_t, float);
 
-#endif /* INC_SNEAK100_MEMORY_H_ */
+RobotSettings_StructTypeDef SNEAK100_Memory_ReadSettings();
+void SNEAK100_Memory_WriteSettings(RobotSettings_StructTypeDef);
+
+#endif

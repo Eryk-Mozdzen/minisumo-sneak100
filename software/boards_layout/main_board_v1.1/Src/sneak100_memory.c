@@ -9,31 +9,18 @@
 
 Memory_StryctTypeDef memory;
 
-void Memory_ErrorHandler(const char *file, uint16_t line) {
-	printf("Error in %s: %u\n", file, line);
-	Error_Handler();
-}
-
 void SNEAK100_Memory_Init() {
 	Memory_Init(&memory, &hi2c1, 0x00);
 }
 
-uint8_t SNEAK100_Memory_ReadByte(uint16_t address) {
-	uint8_t data;
-	Memory_Read(&memory, address, &data, 1);
-	return data;
+RobotSettings_StructTypeDef SNEAK100_Memory_ReadSettings() {
+	RobotSettings_StructTypeDef settings;
+
+	Memory_Read(&memory, SNEAK100_MEMORY_SETTINGS_ADDRESS, &settings, sizeof(RobotSettings_StructTypeDef));
+
+	return settings;
 }
 
-void SNEAK100_Memory_WriteByte(uint16_t address, uint8_t data) {
-	Memory_Write(&memory, address, &data, 1);
-}
-
-float SNEAK100_Memory_ReadFloat(uint16_t address) {
-	float data;
-	Memory_Read(&memory, address, &data, sizeof(float));
-	return data;
-}
-
-void SNEAK100_Memory_WriteFloat(uint16_t address, float data) {
-	Memory_Write(&memory, address, &data, sizeof(float));
+void SNEAK100_Memory_WriteSettings(RobotSettings_StructTypeDef settings) {
+	Memory_Write(&memory, SNEAK100_MEMORY_SETTINGS_ADDRESS, &settings, sizeof(RobotSettings_StructTypeDef));
 }

@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "sneak100_memory.h"
+#include "sneak100_display_def.h"
 #include "finite_state_machine.h"
 
 #define DISPLAY_LINE_1	12
@@ -46,17 +48,6 @@ typedef enum {
 	GUI_STATE_CREDITS
 } GUI_States_EnumtypeDef;
 
-typedef enum {
-	BUTTON_L,
-	BUTTON_C,
-	BUTTON_R
-} GUI_Button_EnumTypeDef;
-
-typedef struct {
-	uint8_t pressed;
-	uint8_t changed;
-} GUI_ButtonState_StructTypeDef;
-
 typedef struct {
 	uint16_t position[4];
 	float velocity[4];
@@ -78,10 +69,12 @@ typedef struct {
 	FiniteStateMachine_t fsm;
 	GUI_ButtonState_StructTypeDef buttons[3];
 	Display_StructTypeDef display;
+	Memory_StryctTypeDef *memory;
 
 	uint8_t menu_selected;
 
 	RobotState_StructTypeDef data;
+	RobotSettings_StructTypeDef settings;
 } Sneak100_GUI_StructTypeDef;
 
 extern Sneak100_GUI_StructTypeDef gui;
@@ -89,15 +82,4 @@ extern Sneak100_GUI_StructTypeDef gui;
 void SNEAK100_Display_Init();
 void SNEAK100_Display_Update();
 
-uint8_t __Button_L_ClickEvent(void *);
-uint8_t __Button_C_ClickEvent(void *);
-uint8_t __Button_R_ClickEvent(void *);
-
-uint8_t __GUI_Menu_View_SelectEvent(void *);
-uint8_t __GUI_Menu_Settings_SelectEvent(void *);
-uint8_t __GUI_Menu_Test_SelectEvent(void *);
-uint8_t __GUI_Menu_Fight_SelectEvent(void *);
-uint8_t __GUI_Menu_Info_SelectEvent(void *);
-uint8_t __GUI_Menu_Credits_SelectEvent(void *);
-
-#endif /* SNEAK100_HARDWARE_INC_SNEAK100_DISPLAY_H_ */
+#endif
