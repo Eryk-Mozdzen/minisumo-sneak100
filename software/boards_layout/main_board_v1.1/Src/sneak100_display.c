@@ -24,10 +24,15 @@ static void SNEAK100_Display_Render_Credits(void *);
 static void __Display_DrawHeader(const char *);
 static void __Display_DrawFooter(const char *, const char *, const char *);
 
+static void __Display_ReadSettings(void *);
+static void __Display_WriteSettings(void *);
+
 void SNEAK100_Display_Init() {
 	gui.buttons[BUTTON_L] = (const GUI_ButtonState_StructTypeDef){0, 0};
 	gui.buttons[BUTTON_C] = (const GUI_ButtonState_StructTypeDef){0, 0};
 	gui.buttons[BUTTON_R] = (const GUI_ButtonState_StructTypeDef){0, 0};
+
+	gui.memory = &memory;
 
 	Display_Init(&gui.display, &hi2c1);
 
@@ -38,16 +43,16 @@ void SNEAK100_Display_Init() {
 	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_VIEW_LINE,		NULL, &SNEAK100_Display_Render_ViewLine,		NULL);
 	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_VIEW_PROXIMITY,	NULL, &SNEAK100_Display_Render_ViewProximity,	NULL);
 	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_VIEW_OTHERS,		NULL, &SNEAK100_Display_Render_ViewOthers,		NULL);
-	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_SETTINGS,		NULL, &SNEAK100_Display_Render_Settings,		NULL);
+	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_SETTINGS,		&__Display_ReadSettings, &SNEAK100_Display_Render_Settings,		&__Display_WriteSettings);
 	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_INFO,			NULL, &SNEAK100_Display_Render_Info,			NULL);
 	FiniteStateMachine_DefineState(&gui.fsm, GUI_STATE_CREDITS,			NULL, &SNEAK100_Display_Render_Credits,			NULL);
 
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_VIEW_MOTORS,		0, NULL, &__GUI_Menu_View_SelectEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_SETTINGS,			0, NULL, &__GUI_Menu_Settings_SelectEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_TEST,				0, NULL, &__GUI_Menu_Test_SelectEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_FIGHT,			0, NULL, &__GUI_Menu_Fight_SelectEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_INFO,				0, NULL, &__GUI_Menu_Info_SelectEvent);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_CREDITS,			0, NULL, &__GUI_Menu_Credits_SelectEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_VIEW_MOTORS,		0, NULL, &__GUI_Menu_Option0_SelectEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_SETTINGS,			0, NULL, &__GUI_Menu_Option1_SelectEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_TEST,				0, NULL, &__GUI_Menu_Option2_SelectEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_FIGHT,			0, NULL, &__GUI_Menu_Option3_SelectEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_INFO,				0, NULL, &__GUI_Menu_Option6_SelectEvent);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,			GUI_STATE_CREDITS,			0, NULL, &__GUI_Menu_Option7_SelectEvent);
 
 	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_MOTORS,	GUI_STATE_VIEW_LINE,		0, NULL, &__Button_L_ClickEvent);
 	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_VIEW_LINE,		GUI_STATE_VIEW_PROXIMITY,	0, NULL, &__Button_L_ClickEvent);
@@ -211,11 +216,33 @@ void SNEAK100_Display_Render_Settings(void *data) {
 	Display_Clear(&gui_ptr->display);
 
 	__Display_DrawHeader("Settings");
-	__Display_DrawFooter("", "", "esc");
+	__Display_DrawFooter("opt", "down", "save");
 
-	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_1, "mode: ");
-	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_2, "dyhlo: ");
-	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_3, "strategy: ");
+	const char *mode[] = {"module", "button", "RC RC5", "RC BT"};
+	const char *dyhlo[] = {"black", "white", "auto"};
+	const char *strategy[] = {"agressive", "defense", "passive"};
+
+	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_1, "mode : %s", mode[gui_ptr->settings.mode]);
+	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_2, "dyhlo: %s", dyhlo[gui_ptr->settings.dyhlo]);
+	Display_DrawText(&gui_ptr->display, 0,  DISPLAY_LINE_3, "strat: %s", strategy[gui_ptr->settings.strategy]);
+
+	Display_InvertColors(&gui_ptr->display, 0, DISPLAY_LINE_1 + (DISPLAY_LINE_2 - DISPLAY_LINE_1)*gui_ptr->menu_selected - 1, 128, DISPLAY_LINE_2 - DISPLAY_LINE_1 + 1);
+
+	if(gui_ptr->buttons[BUTTON_C].pressed && gui_ptr->buttons[BUTTON_C].changed)
+		gui_ptr->menu_selected++;
+
+	if(gui_ptr->buttons[BUTTON_L].pressed && gui_ptr->buttons[BUTTON_L].changed && gui_ptr->menu_selected==0) {
+		gui_ptr->settings.mode++;
+		gui_ptr->settings.mode %=SETTINGS_MODE_NUM;
+	} else if(gui_ptr->buttons[BUTTON_L].pressed && gui_ptr->buttons[BUTTON_L].changed && gui_ptr->menu_selected==1) {
+		gui_ptr->settings.dyhlo++;
+		gui_ptr->settings.dyhlo %=SETTINGS_DYHLO_NUM;
+	} else if(gui_ptr->buttons[BUTTON_L].pressed && gui_ptr->buttons[BUTTON_L].changed && gui_ptr->menu_selected==2) {
+		gui_ptr->settings.strategy++;
+		gui_ptr->settings.strategy %=SETTINGS_STRATEGY_NUM;
+	}
+
+	gui_ptr->menu_selected %=3;
 
 	Display_Update(&gui_ptr->display);
 }
@@ -245,4 +272,24 @@ void SNEAK100_Display_Render_Credits(void *data) {
 	Display_DrawText(&gui_ptr->display, 0, 53, "by E.Mozdzen 2022");
 
 	Display_Update(&gui_ptr->display);
+}
+
+void __Display_ReadSettings(void *data) {
+	Sneak100_GUI_StructTypeDef *gui_ptr = (Sneak100_GUI_StructTypeDef *)data;
+
+	gui_ptr->settings = SNEAK100_Memory_ReadSettings();
+
+	// if settings in eeprom are invalid set default parameters
+	if(gui_ptr->settings.mode>=SETTINGS_MODE_NUM)
+		gui_ptr->settings.mode = SETTINGS_MODE_MODULE;
+	if(gui_ptr->settings.dyhlo>=SETTINGS_DYHLO_NUM)
+		gui_ptr->settings.dyhlo = SETTINGS_DYHLO_AUTO;
+	if(gui_ptr->settings.strategy>=SETTINGS_STRATEGY_NUM)
+		gui_ptr->settings.strategy = SETTINGS_STRATEGY_AGRESSIVE;
+}
+
+void __Display_WriteSettings(void *data) {
+	Sneak100_GUI_StructTypeDef *gui_ptr = (Sneak100_GUI_StructTypeDef *)data;
+
+	SNEAK100_Memory_WriteSettings(gui_ptr->settings);
 }

@@ -37,6 +37,8 @@
 #include "sneak100_memory.h"
 #include "sneak100_rc5.h"
 
+#include <math.h>
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -98,18 +100,18 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_ADC1_Init();
   MX_I2C1_Init();
+  MX_USART2_UART_Init();
+  MX_USART3_UART_Init();
+  MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
-  MX_TIM8_Init();
-  MX_USART2_UART_Init();
-  MX_TIM1_Init();
-  MX_USART3_UART_Init();
   MX_TIM5_Init();
-  MX_DMA_Init();
-  MX_ADC1_Init();
   MX_TIM7_Init();
+  MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
 
   SNEAK100_ADC_Init();
@@ -146,9 +148,12 @@ int main(void)
 
 	  SNEAK100_Display_Update();
 
-	  SNEAK100_Motors_Update();
-	  SNEAK100_Motors_SetSpeeds_1(100);
-	  //__Motor_SetPower(&motors[MOTOR_RF], MOTOR_POWER_MAX);
+	  //SNEAK100_Motors_Update();
+	  //SNEAK100_Motors_SetSpeeds_1(100);
+	  __Motor_SetPower(&motors[MOTOR_LF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
+	  __Motor_SetPower(&motors[MOTOR_LB], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
+	  __Motor_SetPower(&motors[MOTOR_RF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
+	  __Motor_SetPower(&motors[MOTOR_RB], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
 
 	  HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
 	  HAL_Delay(50);
