@@ -23,26 +23,28 @@
 #include "bluetooth.h"
 #include "rc5_decoder.h"
 
-#include "core_conf.h"
 #include "core_def.h"
+#include "core_conf.h"
 
 typedef struct {
 	Motor_t motors[4];
 	Encoder_t encoders[4];
-
-	LineSensor_t lines[4];
-	ProximitySensor_t proximity[4];
-
+	Line_t lines[4];
+	Proximity_t proximity[4];
 	Memory_t memory;
 	Display_t display;
-
 	DecoderRC5_t decoder_rc5;
 	Bluetooth_t bluetooth;
+
+	RobotState_t state;
+	RobotSettings_t settings;
 } Sneak100_t;
 
 extern Sneak100_t sneak100;
 
-void SNEAK100_Core_Init(Sneak100_t *);
+void SNEAK100_Core_Init();
+void SNEAK100_Core_ReadState();
+void SNEAK100_Core_ReadSettings();
 
 float SNEAK100_Core_GetTemperature();
 float SNEAK100_Core_GetSupplyVoltage();

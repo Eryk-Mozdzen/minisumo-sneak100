@@ -57,4 +57,29 @@ typedef struct {
 	Settings_Strategy_t strategy;
 } RobotSettings_t;
 
+typedef struct {
+	struct {
+		uint16_t position_raw;
+		float position;
+		float velocity;
+	} motor[4];
+
+	struct {
+		uint16_t value;
+		uint16_t threshold;
+		uint8_t polarity;
+		uint8_t state;
+	} line[4];
+
+	uint8_t proximity[4];
+
+	float temperature;
+	float battery;
+
+	struct {
+		RC5_Message_t message;
+		uint8_t seen;
+	} rc5;
+} RobotState_t;
+
 #endif

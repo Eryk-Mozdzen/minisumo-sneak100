@@ -11,6 +11,7 @@
 #include "stm32f4xx_hal.h"
 #include "ssd1306.h"
 
+#include <stdio.h>
 #include <stdint.h>
 #include <stdarg.h>
 #include <stdlib.h>
