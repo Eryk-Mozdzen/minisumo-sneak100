@@ -21,7 +21,6 @@ typedef struct {
 	FiniteStateMachine_t fsm;
 	GUI_ButtonState_StructTypeDef buttons[3];
 	Display_t *display;
-	Memory_t *memory;
 
 	uint8_t menu_selected;
 

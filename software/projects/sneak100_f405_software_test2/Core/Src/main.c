@@ -110,19 +110,11 @@ int main(void)
   MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
 
-  SNEAK100_Core_Init();
-  SNEAK100_Core_ReadSettings();
-  SNEAK100_GUI_Init();
+	SNEAK100_Core_Init();
+	SNEAK100_Core_ReadSettings();
+	SNEAK100_GUI_Init();
 
-  HAL_TIM_Base_Start_IT(&htim14);
-
-  /*Bluetooth_ConfigTypeDef config = {0};
-	config.name = "Sneak100";
-	config.password = "7777";
-	config.baudrate = BAUDRATE_38400;
-	if(Bluetooth_SetConfig(&sneak100->bluetooth, config)!=HAL_OK) {
-		HAL_GPIO_WritePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin, GPIO_PIN_SET);
-	}*/
+	HAL_TIM_Base_Start_IT(&htim14);
 
   /* USER CODE END 2 */
 
@@ -139,9 +131,9 @@ int main(void)
 	  __Motor_SetPower(&sneak100.motors[MOTOR_RF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
 	  __Motor_SetPower(&sneak100.motors[MOTOR_RB], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
 
-	  HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
+	  //HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
 	  HAL_Delay(50);
-	  HAL_GPIO_TogglePin(USER_LED_YELLOW_GPIO_Port, USER_LED_YELLOW_Pin);
+	  //HAL_GPIO_TogglePin(USER_LED_YELLOW_GPIO_Port, USER_LED_YELLOW_Pin);
 	  HAL_Delay(50);
 
     /* USER CODE END WHILE */
@@ -198,6 +190,10 @@ void SystemClock_Config(void)
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	DecoderRC5_EXTI_Callback(&sneak100.decoder_rc5, GPIO_Pin);
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+	Bluetooth_RxCpltCallback(&sneak100.bluetooth, huart);
 }
 
 /* USER CODE END 4 */
