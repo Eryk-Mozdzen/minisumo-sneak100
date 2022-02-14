@@ -12,13 +12,22 @@ Sneak100_t sneak100;
 static uint16_t adc_dma_buffer[6] = {0};
 
 void SNEAK100_Core_Init() {
+
+	Bluetooth_Init(&sneak100.bluetooth, &huart2, BLUETOOTH_EN_GPIO_Port, BLUETOOTH_EN_Pin, BLUETOOTH_ST_GPIO_Port, BLUETOOTH_ST_Pin, BLUETOOTH_PWR_GPIO_Port, BLUETOOTH_PWR_Pin);
+
+	Bluetooth_Config_t config = {0};
+	config.name = "Sneak112";
+	config.password = "7777";
+	config.baudrate = BAUDRATE_38400;
+	if(Bluetooth_SetConfig(&sneak100.bluetooth, config)!=HAL_OK) {
+		HAL_GPIO_WritePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin, GPIO_PIN_SET);
+	}
+
 	Display_Init(&sneak100.display, &hi2c1);
 
 	Memory_Init(&sneak100.memory, &hi2c1, 0x00);
 
 	DecoderRC5_Init(&sneak100.decoder_rc5, &htim7, RECEIVER_OUT_GPIO_Port, RECEIVER_OUT_Pin);
-
-	Bluetooth_Init(&sneak100.bluetooth, &huart2, BLUETOOTH_EN_GPIO_Port, BLUETOOTH_EN_Pin, BLUETOOTH_ST_GPIO_Port, BLUETOOTH_ST_Pin, BLUETOOTH_PWR_GPIO_Port, BLUETOOTH_PWR_Pin);
 
 	Encoder_Init(&sneak100.encoders[MOTOR_LF], &htim2, ENCODER_CPR*MOTOR_GEAR_RATIO);
 	Encoder_Init(&sneak100.encoders[MOTOR_LB], &htim3, ENCODER_CPR*MOTOR_GEAR_RATIO);
@@ -78,6 +87,43 @@ void SNEAK100_Core_ReadSettings() {
 		sneak100.settings.dyhlo = SETTINGS_DYHLO_AUTO;
 	if(sneak100.settings.strategy>=SETTINGS_STRATEGY_NUM)
 		sneak100.settings.strategy = SETTINGS_STRATEGY_AGRESSIVE;
+
+	SNEAK100_Core_ApplySettings();
+}
+
+void SNEAK100_Core_WriteSettings() {
+	Memory_Write(&sneak100.memory, MEMORY_SETTINGS_ADDRESS, &sneak100.settings, sizeof(RobotSettings_t));
+
+	SNEAK100_Core_ApplySettings();
+}
+
+void SNEAK100_Core_ApplySettings() {
+	if(sneak100.settings.dyhlo!=SETTINGS_DYHLO_AUTO) {
+		Line_SetPolarity(&sneak100.lines[LINE_LL], sneak100.settings.dyhlo);
+		Line_SetPolarity(&sneak100.lines[LINE_LM], sneak100.settings.dyhlo);
+		Line_SetPolarity(&sneak100.lines[LINE_RM], sneak100.settings.dyhlo);
+		Line_SetPolarity(&sneak100.lines[LINE_RR], sneak100.settings.dyhlo);
+
+		return;
+	}
+
+	uint8_t value = 0;
+	value +=Line_GetState(&sneak100.lines[LINE_LL]);
+	value +=Line_GetState(&sneak100.lines[LINE_LM]);
+	value +=Line_GetState(&sneak100.lines[LINE_RM]);
+	value +=Line_GetState(&sneak100.lines[LINE_RR]);
+
+	if(!value)
+		return;
+
+	Line_Polarity_t polarity = DYHLO_BLACK_WITH_WHITE_CIRCUMFERENCE;
+	if(value==4)
+		polarity = !Line_GetPolarity(&sneak100.lines[LINE_LL]);
+
+	Line_SetPolarity(&sneak100.lines[LINE_LL], polarity);
+	Line_SetPolarity(&sneak100.lines[LINE_LM], polarity);
+	Line_SetPolarity(&sneak100.lines[LINE_RM], polarity);
+	Line_SetPolarity(&sneak100.lines[LINE_RR], polarity);
 }
 
 float SNEAK100_Core_GetTemperature() {

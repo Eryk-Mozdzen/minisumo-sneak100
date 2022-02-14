@@ -32,7 +32,6 @@ void SNEAK100_GUI_Init() {
 	gui.buttons[BUTTON_R] = (const GUI_ButtonState_StructTypeDef){0};
 
 	gui.display = &sneak100.display;
-	gui.memory = &sneak100.memory;
 	gui.state = &sneak100.state;
 	gui.settings = &sneak100.settings;
 
@@ -276,7 +275,5 @@ void GUI_Render_Credits(void *data) {
 }
 
 void GUI_WriteSettings(void *data) {
-	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
-
-	Memory_Write(gui_ptr->memory, MEMORY_SETTINGS_ADDRESS, gui_ptr->settings, sizeof(RobotSettings_t));
+	SNEAK100_Core_WriteSettings();
 }

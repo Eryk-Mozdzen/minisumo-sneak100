@@ -44,9 +44,9 @@ HAL_StatusTypeDef Bluetooth_SetConfig(Bluetooth_t *bluetooth, Bluetooth_Config_t
 	// set values
 	HAL_StatusTypeDef status = HAL_OK;
 
-	if(__Bluetooth_WriteParameter(bluetooth, "AT+NAME=%s\r\n", config.name)==HAL_ERROR) 			status = HAL_ERROR;
-	if(__Bluetooth_WriteParameter(bluetooth, "AT+PSWD=\"%s\"\r\n", config.password)==HAL_ERROR) 	status = HAL_ERROR;
-	if(__Bluetooth_WriteParameter(bluetooth, "AT+UART=%u,0,0\r\n", config.baudrate)==HAL_ERROR) 	status = HAL_ERROR;
+	if(__Bluetooth_WriteParameter(bluetooth, "AT+NAME=%s\r\n", config.name)!=HAL_OK) 			status = HAL_ERROR;
+	if(__Bluetooth_WriteParameter(bluetooth, "AT+PSWD=\"%s\"\r\n", config.password)!=HAL_OK) 	status = HAL_ERROR;
+	if(__Bluetooth_WriteParameter(bluetooth, "AT+UART=%u,0,0\r\n", config.baudrate)!=HAL_OK) 	status = HAL_ERROR;
 
 	// exit AT mode
 	HAL_GPIO_WritePin(bluetooth->EN_Port, bluetooth->EN_Pin, GPIO_PIN_RESET);

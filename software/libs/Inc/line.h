@@ -12,8 +12,7 @@
 
 typedef enum {
 	DYHLO_BLACK_WITH_WHITE_CIRCUMFERENCE,
-	DYHLO_WHITE_WITH_BLACK_CIRCUMFERENCE,
-	DYHLO_AUTO
+	DYHLO_WHITE_WITH_BLACK_CIRCUMFERENCE
 } Line_Polarity_t;
 
 typedef struct {
@@ -24,6 +23,8 @@ typedef struct {
 
 void Line_Init(Line_t *, uint16_t *, uint16_t, Line_Polarity_t);
 
+Line_Polarity_t Line_GetPolarity(Line_t *);
+void Line_SetPolarity(Line_t *, Line_Polarity_t);
 uint8_t Line_GetState(Line_t *);
 
 #endif /* SNEAK100_ABSTRACTION_LAYER_INC_LINE_H_ */
