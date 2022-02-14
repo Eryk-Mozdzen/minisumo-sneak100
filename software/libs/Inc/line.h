@@ -20,10 +20,10 @@ typedef struct {
 	uint16_t *read_src;
 	uint16_t threshold;
 	Line_Polarity_t polarity;
-} LineSensor_t;
+} Line_t;
 
-void Line_Init(LineSensor_t *, uint16_t *, uint16_t, Line_Polarity_t);
+void Line_Init(Line_t *, uint16_t *, uint16_t, Line_Polarity_t);
 
-uint8_t Line_GetState(LineSensor_t *);
+uint8_t Line_GetState(Line_t *);
 
 #endif /* SNEAK100_ABSTRACTION_LAYER_INC_LINE_H_ */

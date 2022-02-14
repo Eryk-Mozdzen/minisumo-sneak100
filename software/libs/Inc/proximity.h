@@ -14,10 +14,10 @@
 typedef struct {
 	GPIO_TypeDef *GPIOx;
 	uint16_t GPIO_Pin;
-} ProximitySensor_t;
+} Proximity_t;
 
-void ProximitySensor_Init(ProximitySensor_t *, GPIO_TypeDef *, uint16_t);
+void Proximity_Init(Proximity_t *, GPIO_TypeDef *, uint16_t);
 
-uint8_t ProximitySensor_GetState(ProximitySensor_t *);
+uint8_t Proximity_GetState(Proximity_t *);
 
 #endif

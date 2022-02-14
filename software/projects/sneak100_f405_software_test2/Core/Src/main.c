@@ -18,7 +18,6 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-#include <gui.h>
 #include "main.h"
 #include "adc.h"
 #include "dma.h"
@@ -31,6 +30,7 @@
 /* USER CODE BEGIN Includes */
 
 #include "core.h"
+#include "gui.h"
 
 #include <math.h>
 
@@ -107,21 +107,22 @@ int main(void)
   MX_TIM5_Init();
   MX_TIM7_Init();
   MX_TIM8_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
 
-  SNEAK100_Core_Init(&sneak100);
+  SNEAK100_Core_Init();
+  SNEAK100_Core_ReadSettings();
+  SNEAK100_GUI_Init();
 
-#if 0
-	Bluetooth_ConfigTypeDef config = {0};
+  HAL_TIM_Base_Start_IT(&htim14);
+
+  /*Bluetooth_ConfigTypeDef config = {0};
 	config.name = "Sneak100";
 	config.password = "7777";
 	config.baudrate = BAUDRATE_38400;
 	if(Bluetooth_SetConfig(&sneak100->bluetooth, config)!=HAL_OK) {
 		HAL_GPIO_WritePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin, GPIO_PIN_SET);
-	}
-#endif
-
-  SNEAK100_GUI_Init();
+	}*/
 
   /* USER CODE END 2 */
 
@@ -129,26 +130,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while(1) {
 
-	  for(uint8_t i=0; i<4; i++) {
-		  gui.data.position[i] = Encoder_GetPositionRaw(&sneak100.encoders[i]);
-		  gui.data.velocity[i] = Encoder_GetVelocity(&sneak100.encoders[i]);
-		  gui.data.line[i] = *sneak100.lines[i].read_src;
-		  gui.data.line_threshold[i] = sneak100.lines[i].threshold;
-		  gui.data.line_polarity[i] = sneak100.lines[i].polarity;
-		  gui.data.line_state[i] = Line_GetState(&sneak100.lines[i]);
-		  gui.data.proximity[i] = ProximitySensor_GetState(&sneak100.proximity[i]);
-	  }
-	  gui.data.temperature = SNEAK100_Core_GetTemperature();
-	  gui.data.battery = SNEAK100_Core_GetSupplyVoltage();
-
-	  RC5_Message_t message;
-	  if(DecoderRC5_GetMessage(&sneak100.decoder_rc5, &message)) {
-		  gui.data.rc5_toggle = message.toggle;
-		  gui.data.rc5_address = message.address;
-		  gui.data.rc5_command = message.command;
-	  }
-
-	  SNEAK100_GUI_Update();
+	  SNEAK100_Core_ReadState();
 
 	  //SNEAK100_Motors_Update();
 	  //SNEAK100_Motors_SetSpeeds_1(100);
@@ -233,6 +215,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 
 	DecoderRC5_PeriodElapsedCallback(&sneak100.decoder_rc5, htim);
+
+	if(htim->Instance==TIM14) {
+		// 20 Hz
+		SNEAK100_GUI_Update();
+	}
 
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM6) {
