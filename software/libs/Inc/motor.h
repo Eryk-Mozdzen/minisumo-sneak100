@@ -10,13 +10,15 @@
 
 #include "stm32f4xx_hal.h"
 #include "pid.h"
-#include "math_tools.h"
 #include "encoder.h"
 
 #include <stdlib.h>
 #include <stdint.h>
 
 #define MOTOR_POWER_MAX		65535
+
+#define MIN(__A__, __B__) (((__A__)<=(__B__)) ? (__A__) : (__B__))
+#define MAX(__A__, __B__) (((__A__)>=(__B__)) ? (__A__) : (__B__))
 
 typedef enum {
 	MODE_POSITION_CONTROL,
