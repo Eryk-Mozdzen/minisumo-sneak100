@@ -55,7 +55,7 @@ typedef struct {
 	uint16_t line[4];
 	uint16_t line_threshold[4];
 	uint8_t line_polarity[4];
-	uint8_t line_state;
+	uint8_t line_state[4];
 	uint8_t proximity[4];
 
 	float temperature;
@@ -64,23 +64,23 @@ typedef struct {
 	uint8_t rc5_toggle;
 	uint8_t rc5_address;
 	uint8_t rc5_command;
-} RobotState_StructTypeDef;
+} RobotState_t;
 
 typedef struct {
 	FiniteStateMachine_t fsm;
 	GUI_ButtonState_StructTypeDef buttons[3];
-	Display_StructTypeDef *display;
-	Memory_StryctTypeDef *memory;
+	Display_t *display;
+	Memory_t *memory;
 
 	uint8_t menu_selected;
 
-	RobotState_StructTypeDef data;
-	RobotSettings_StructTypeDef settings;
-} Sneak100_GUI_StructTypeDef;
+	RobotState_t data;
+	RobotSettings_t settings;
+} Sneak100_GUI_t;
 
-extern Sneak100_GUI_StructTypeDef gui;
+extern Sneak100_GUI_t gui;
 
-void SNEAK100_Display_Init();
-void SNEAK100_Display_Update();
+void SNEAK100_GUI_Init();
+void SNEAK100_GUI_Update();
 
 #endif

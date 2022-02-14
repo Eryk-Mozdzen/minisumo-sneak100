@@ -109,9 +109,19 @@ int main(void)
   MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
 
-  SNEAK100_Init(&sneak100);
+  SNEAK100_Core_Init(&sneak100);
 
-  SNEAK100_Display_Init();
+#if 0
+	Bluetooth_ConfigTypeDef config = {0};
+	config.name = "Sneak100";
+	config.password = "7777";
+	config.baudrate = BAUDRATE_38400;
+	if(Bluetooth_SetConfig(&sneak100->bluetooth, config)!=HAL_OK) {
+		HAL_GPIO_WritePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin, GPIO_PIN_SET);
+	}
+#endif
+
+  SNEAK100_GUI_Init();
 
   /* USER CODE END 2 */
 
@@ -125,11 +135,11 @@ int main(void)
 		  gui.data.line[i] = *sneak100.lines[i].read_src;
 		  gui.data.line_threshold[i] = sneak100.lines[i].threshold;
 		  gui.data.line_polarity[i] = sneak100.lines[i].polarity;
+		  gui.data.line_state[i] = Line_GetState(&sneak100.lines[i]);
 		  gui.data.proximity[i] = ProximitySensor_GetState(&sneak100.proximity[i]);
 	  }
-	  //gui.data.line_state = SNEAK100_Line_GetState_ALL();
-	  //gui.data.temperature = SNEAK100_ADC_GetTemperature();
-	  //gui.data.battery = SNEAK100_ADC_GetSupplyVoltage();
+	  gui.data.temperature = SNEAK100_Core_GetTemperature();
+	  gui.data.battery = SNEAK100_Core_GetSupplyVoltage();
 
 	  RC5_Message_t message;
 	  if(DecoderRC5_GetMessage(&sneak100.decoder_rc5, &message)) {
@@ -138,7 +148,7 @@ int main(void)
 		  gui.data.rc5_command = message.command;
 	  }
 
-	  SNEAK100_Display_Update();
+	  SNEAK100_GUI_Update();
 
 	  //SNEAK100_Motors_Update();
 	  //SNEAK100_Motors_SetSpeeds_1(100);

@@ -16,11 +16,11 @@ typedef struct {
 	uint16_t address;
 
 	HAL_StatusTypeDef status;
-} Memory_StryctTypeDef;
+} Memory_t;
 
-void Memory_Init(Memory_StryctTypeDef *, I2C_HandleTypeDef *, uint8_t);
+void Memory_Init(Memory_t *, I2C_HandleTypeDef *, uint8_t);
 
-HAL_StatusTypeDef Memory_Read(Memory_StryctTypeDef *, uint16_t, void *, size_t);
-HAL_StatusTypeDef Memory_Write(Memory_StryctTypeDef *, uint16_t, void *, size_t);
+HAL_StatusTypeDef Memory_Read(Memory_t *, uint16_t, void *, size_t);
+HAL_StatusTypeDef Memory_Write(Memory_t *, uint16_t, void *, size_t);
 
 #endif /* INC_MEMORY_H_ */

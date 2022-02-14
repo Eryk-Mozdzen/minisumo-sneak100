@@ -12,10 +12,12 @@
 #include <stdint.h>
 
 typedef struct {
-	GPIO_TypeDef* GPIOx;
+	GPIO_TypeDef *GPIOx;
 	uint16_t GPIO_Pin;
-} ProximitySensor_StructTypeDef;
+} ProximitySensor_t;
 
-uint8_t ProximitySensor_GetState(ProximitySensor_StructTypeDef *);
+void ProximitySensor_Init(ProximitySensor_t *, GPIO_TypeDef *, uint16_t);
 
-#endif /* SNEAK100_ABSTRACTION_LAYER_INC_PROXIMITY_H_ */
+uint8_t ProximitySensor_GetState(ProximitySensor_t *);
+
+#endif
