@@ -13,21 +13,21 @@ typedef enum {
 	MOTOR_LB,
 	MOTOR_RF,
 	MOTOR_RB
-} Motor_EnumTypeDef;
+} Motor_Enum;
 
 typedef enum {
 	LINE_LL,
 	LINE_LM,
 	LINE_RM,
 	LINE_RR
-} LineEnumtypeDef;
+} Line_Enum;
 
 typedef enum {
 	PROXIMITY_LL,
 	PROXIMITY_FL,
 	PROXIMITY_FR,
 	PROXIMITY_RR
-} Proximity_EnumTypeDef;
+} Proximity_Enum;
 
 typedef enum {
 	SETTINGS_MODE_MODULE,
@@ -35,26 +35,26 @@ typedef enum {
 	SETTINGS_MODE_RC_RC5,
 	SETTINGS_MODE_RC_BLUETOOTH,
 	SETTINGS_MODE_NUM
-} Settings_Mode_EnumTypeDef;
+} Settings_Mode_t;
 
 typedef enum {
 	SETTINGS_DYHLO_BLACK,
 	SETTINGS_DYHLO_WHITE,
 	SETTINGS_DYHLO_AUTO,
 	SETTINGS_DYHLO_NUM
-} Settings_Dyhlo_EnumTypeDef;
+} Settings_Dyhlo_t;
 
 typedef enum {
 	SETTINGS_STRATEGY_AGRESSIVE,
 	SETTINGS_STRATEGY_DEFENSIVE,
 	SETTINGS_STRATEGY_PASSIVE,
 	SETTINGS_STRATEGY_NUM
-} Settings_Strategy_EnumTypeDef;
+} Settings_Strategy_t;
 
 typedef struct {
-	Settings_Mode_EnumTypeDef mode;
-	Settings_Dyhlo_EnumTypeDef dyhlo;
-	Settings_Strategy_EnumTypeDef strategy;
-} RobotSettings_StructTypeDef;
+	Settings_Mode_t mode;
+	Settings_Dyhlo_t dyhlo;
+	Settings_Strategy_t strategy;
+} RobotSettings_t;
 
-#endif /* INC_CORE_DEF_H_ */
+#endif

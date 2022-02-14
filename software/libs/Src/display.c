@@ -7,7 +7,7 @@
 
 #include "display.h"
 
-void Display_Init(Display_StructTypeDef *display, I2C_HandleTypeDef *hi2c) {
+void Display_Init(Display_t *display, I2C_HandleTypeDef *hi2c) {
 	display->hi2c = hi2c;
 
 	if(HAL_I2C_IsDeviceReady(display->hi2c, SSD1306_I2C_ADDR, 1, 100)!=HAL_OK)
@@ -16,22 +16,22 @@ void Display_Init(Display_StructTypeDef *display, I2C_HandleTypeDef *hi2c) {
 	ssd1306_Init(display->hi2c);
 }
 
-void Display_Update(Display_StructTypeDef *display) {
+void Display_Update(Display_t *display) {
 	if(HAL_I2C_IsDeviceReady(display->hi2c, SSD1306_I2C_ADDR, 1, 10)!=HAL_OK)
 		Display_ErrorHandler(__FILE__, __LINE__);
 
 	ssd1306_UpdateScreen(display->hi2c);
 }
 
-void Display_Clear(Display_StructTypeDef *display) {
+void Display_Clear(Display_t *display) {
 	ssd1306_Fill(Black);
 }
 
-void Display_DrawBitmap(Display_StructTypeDef *display, uint16_t x, uint16_t y, const uint8_t *bitmap, uint16_t w, uint16_t h) {
+void Display_DrawBitmap(Display_t *display, uint16_t x, uint16_t y, const uint8_t *bitmap, uint16_t w, uint16_t h) {
 	ssd1306_DrawBitmap(x, y, bitmap, w, h, White);
 }
 
-void Display_DrawLine(Display_StructTypeDef *display, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
+void Display_DrawLine(Display_t *display, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
 	int16_t dx, dy, sx, sy, err, e2, i, tmp;
 
 	/* Check for overflow */
@@ -116,7 +116,7 @@ void Display_DrawLine(Display_StructTypeDef *display, uint16_t x0, uint16_t y0, 
 
 }
 
-void Display_DrawText(Display_StructTypeDef *display, uint8_t x, uint8_t y, const char *format, ...) {
+void Display_DrawText(Display_t *display, uint8_t x, uint8_t y, const char *format, ...) {
 	char buffer[32] = {0};
 
 	va_list args;
@@ -128,7 +128,7 @@ void Display_DrawText(Display_StructTypeDef *display, uint8_t x, uint8_t y, cons
 	ssd1306_WriteString(buffer, Font_7x10, White);
 }
 
-void Display_InvertColors(Display_StructTypeDef *display, uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
+void Display_InvertColors(Display_t *display, uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
 	if(x>=128 || y>=64)
 		return;
 

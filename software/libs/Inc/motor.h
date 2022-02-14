@@ -23,55 +23,42 @@
 typedef enum {
 	MODE_POSITION_CONTROL,
 	MODE_VELOCITY_CONTROL
-} MotorControlMode_EnumTypeDef;
+} MotorControlMode_t;
 
 typedef enum {
 	DIRECTION_CW,
 	DIRECTION_CC
-} MotorDirection_EnumTypeDef;
+} MotorDirection_t;
 
 typedef enum {
 	MODE_BREAK,
 	MODE_COAST
-} MotorBrakeMode_EnumTypeDef;
+} MotorBrakeMode_t;
 
 typedef struct {
 	TIM_HandleTypeDef *timer;
 	uint32_t channel_in1;
 	uint32_t channel_in2;
 
-	MotorDirection_EnumTypeDef direction;
-
-	float pid_p;
-	float pid_i;
-	float pid_d;
-	float pid_iband;
-} Motor_ConfigTypeDef;
-
-typedef struct {
-	TIM_HandleTypeDef *timer;
-	uint32_t channel_in1;
-	uint32_t channel_in2;
-
-	MotorDirection_EnumTypeDef direction;
-	MotorBrakeMode_EnumTypeDef break_mode;
-	MotorControlMode_EnumTypeDef control_mode;
+	MotorDirection_t direction;
+	MotorBrakeMode_t break_mode;
+	MotorControlMode_t control_mode;
 
 	float position_set_value;
 	float velocity_set_value;
 
-	Encoder_StructTypeDef *encoder;
+	Encoder_t *encoder;
 	PID_StructTypeDef pid;
-} Motor_StructTypeDef;
+} Motor_t;
 
-void Motor_Init(Motor_StructTypeDef *, Encoder_StructTypeDef *, Motor_ConfigTypeDef);
-void Motor_Update(Motor_StructTypeDef *);
-void Motor_SetControlMode(Motor_StructTypeDef *, MotorControlMode_EnumTypeDef);
-void Motor_SetBreakMode(Motor_StructTypeDef *, MotorBrakeMode_EnumTypeDef);
+void Motor_Init(Motor_t*, Encoder_t *, TIM_HandleTypeDef *, uint32_t, uint32_t, MotorDirection_t, float, float, float, float);
+void Motor_Update(Motor_t *);
+void Motor_SetControlMode(Motor_t*, MotorControlMode_t);
+void Motor_SetBreakMode(Motor_t *, MotorBrakeMode_t);
 
-void Motor_SetPosition(Motor_StructTypeDef *, float);
-void Motor_SetVelocity(Motor_StructTypeDef *, float);
+void Motor_SetPosition(Motor_t *, float);
+void Motor_SetVelocity(Motor_t *, float);
 
-void __Motor_SetPower(Motor_StructTypeDef *, int32_t);
+void __Motor_SetPower(Motor_t *, int32_t);
 
 #endif

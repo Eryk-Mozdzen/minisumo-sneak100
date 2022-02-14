@@ -7,12 +7,12 @@
 
 #include "line.h"
 
-void Line_Init(LineSensor_StructTypeDef *line, uint16_t *read_src, uint16_t threshold) {
+void Line_Init(LineSensor_t *line, uint16_t *read_src, uint16_t threshold, Line_Polarity_t polarity) {
 	line->read_src = read_src;
 	line->threshold = threshold;
-	line->polarity = DYHLO_BLACK_WITH_WHITE_CIRCUMFERENCE;
+	line->polarity = polarity;
 }
 
-uint8_t Line_GetState(LineSensor_StructTypeDef *line) {
+uint8_t Line_GetState(LineSensor_t *line) {
 	return (*line->read_src<line->threshold)^line->polarity;
 }

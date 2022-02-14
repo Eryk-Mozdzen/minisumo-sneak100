@@ -27,21 +27,24 @@
 #include "core_def.h"
 
 typedef struct {
-	Motor_StructTypeDef motors[4];
-	Encoder_StructTypeDef encoders[4];
+	Motor_t motors[4];
+	Encoder_t encoders[4];
 
-	LineSensor_StructTypeDef lines[4];
-	ProximitySensor_StructTypeDef proximity[4];
+	LineSensor_t lines[4];
+	ProximitySensor_t proximity[4];
 
-	Memory_StryctTypeDef memory;
-	Display_StructTypeDef display;
+	Memory_t memory;
+	Display_t display;
 
 	DecoderRC5_t decoder_rc5;
-	Bluetooth_StructTypeDef bluetooth;
+	Bluetooth_t bluetooth;
 } Sneak100_t;
 
 extern Sneak100_t sneak100;
 
-void SNEAK100_Init(Sneak100_t *);
+void SNEAK100_Core_Init(Sneak100_t *);
+
+float SNEAK100_Core_GetTemperature();
+float SNEAK100_Core_GetSupplyVoltage();
 
 #endif

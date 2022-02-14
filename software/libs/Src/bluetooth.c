@@ -7,16 +7,25 @@
 
 #include "bluetooth.h"
 
-void Bluetooth_Init(Bluetooth_StructTypeDef *bluetooth) {
+void Bluetooth_Init(Bluetooth_t *bluetooth, UART_HandleTypeDef *huart,
+		GPIO_TypeDef *en_port, uint16_t en_pin, GPIO_TypeDef *st_port, uint16_t st_pin, GPIO_TypeDef *pwr_port, uint16_t pwr_pin) {
 
+	bluetooth->huart = huart;
+	bluetooth->EN_Port = en_port;
+	bluetooth->EN_Pin = en_pin;
+	bluetooth->ST_Port = st_port;
+	bluetooth->ST_Pin = st_pin;
+	bluetooth->PWR_Port = pwr_port;
+	bluetooth->PWR_Pin = pwr_pin;
+
+	bluetooth->rx_data_size = 8;
 	bluetooth->rx_buffer = (uint8_t *)malloc(BLUETOOTH_RX_BUFFER_SIZE * sizeof(uint8_t));
-
 	bluetooth->rx_flag = 0;
 
 	HAL_UART_Receive_IT(bluetooth->huart, bluetooth->rx_buffer, bluetooth->rx_data_size);
 }
 
-HAL_StatusTypeDef Bluetooth_SetConfig(Bluetooth_StructTypeDef *bluetooth, Bluetooth_ConfigTypeDef config) {
+HAL_StatusTypeDef Bluetooth_SetConfig(Bluetooth_t *bluetooth, Bluetooth_Config_t config) {
 
 	HAL_UART_AbortReceive_IT(bluetooth->huart);
 
@@ -50,11 +59,11 @@ HAL_StatusTypeDef Bluetooth_SetConfig(Bluetooth_StructTypeDef *bluetooth, Blueto
 	return status;
 }
 
-Bluetooth_StatusTypeDef Bluetooth_GetStatus(Bluetooth_StructTypeDef *bluetooth) {
-	return HAL_GPIO_ReadPin(bluetooth->STATUS_Port, bluetooth->STATUS_Pin) ? STATUS_PAIRED : STATUS_WAITING_FOR_CONNECTION;
+Bluetooth_Status_t Bluetooth_GetStatus(Bluetooth_t *bluetooth) {
+	return HAL_GPIO_ReadPin(bluetooth->ST_Port, bluetooth->ST_Pin) ? STATUS_PAIRED : STATUS_WAITING_FOR_CONNECTION;
 }
 
-void Bluetooth_RxCpltCallback(Bluetooth_StructTypeDef *bluetooth, UART_HandleTypeDef *huart) {
+void Bluetooth_RxCpltCallback(Bluetooth_t *bluetooth, UART_HandleTypeDef *huart) {
 	if(huart!=bluetooth->huart)
 		return;
 
@@ -63,17 +72,17 @@ void Bluetooth_RxCpltCallback(Bluetooth_StructTypeDef *bluetooth, UART_HandleTyp
 	HAL_UART_Receive_IT(bluetooth->huart, bluetooth->rx_buffer, bluetooth->rx_data_size);
 }
 
-uint8_t Bluetooth_IsDataReady(Bluetooth_StructTypeDef *bluetooth) {
+uint8_t Bluetooth_IsDataReady(Bluetooth_t *bluetooth) {
 	return bluetooth->rx_flag;
 }
 
-void Bluetooth_ReadData(Bluetooth_StructTypeDef *bluetooth, uint8_t *buffer) {
+void Bluetooth_ReadData(Bluetooth_t *bluetooth, uint8_t *buffer) {
 	memcpy(buffer, bluetooth->rx_buffer, bluetooth->rx_data_size);
 
 	bluetooth->rx_flag = 0;
 }
 
-HAL_StatusTypeDef __Bluetooth_WriteParameter(Bluetooth_StructTypeDef *bluetooth, const char *format, ...) {
+HAL_StatusTypeDef __Bluetooth_WriteParameter(Bluetooth_t *bluetooth, const char *format, ...) {
 	char buffer[64] = {0};
 
 	va_list argptr;

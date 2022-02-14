@@ -7,6 +7,11 @@
 
 #include "proximity.h"
 
-uint8_t ProximitySensor_GetState(ProximitySensor_StructTypeDef *sensor) {
+void ProximitySensor_Init(ProximitySensor_t *sensor, GPIO_TypeDef *port, uint16_t pin) {
+	sensor->GPIOx = port;
+	sensor->GPIO_Pin = pin;
+}
+
+uint8_t ProximitySensor_GetState(ProximitySensor_t *sensor) {
 	return !HAL_GPIO_ReadPin(sensor->GPIOx, sensor->GPIO_Pin);
 }

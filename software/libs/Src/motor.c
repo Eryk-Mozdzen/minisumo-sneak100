@@ -13,17 +13,19 @@ void swap(uint16_t *a, uint16_t *b) {
 	*b = tmp;
 }
 
-void Motor_Init(Motor_StructTypeDef *motor, Encoder_StructTypeDef *encoder, Motor_ConfigTypeDef config) {
+void Motor_Init(Motor_t *motor, Encoder_t *encoder,
+		TIM_HandleTypeDef *timer, uint32_t ch1, uint32_t ch2, MotorDirection_t dir,
+		float kp, float ki, float kd, float iband) {
 
-	motor->timer = config.timer;
+	motor->timer = timer;
 	motor->encoder = encoder;
 
-	motor->channel_in1 = config.channel_in1;
-	motor->channel_in2 = config.channel_in2;
+	motor->channel_in1 = ch1;
+	motor->channel_in2 = ch2;
 	motor->position_set_value = 0;
 	motor->velocity_set_value = 0;
 
-	PID_Init(&motor->pid, config.pid_p, config.pid_i, config.pid_d, config.pid_iband);
+	PID_Init(&motor->pid, kp, ki, kd, iband);
 
 	HAL_TIM_PWM_Start(motor->timer, motor->channel_in1);
 	HAL_TIM_PWM_Start(motor->timer, motor->channel_in2);
@@ -32,7 +34,7 @@ void Motor_Init(Motor_StructTypeDef *motor, Encoder_StructTypeDef *encoder, Moto
 	Motor_SetBreakMode(motor, MODE_COAST);
 }
 
-void Motor_Update(Motor_StructTypeDef *motor) {
+void Motor_Update(Motor_t *motor) {
 
 	switch(motor->control_mode) {
 		case MODE_POSITION_CONTROL: {
@@ -54,26 +56,26 @@ void Motor_Update(Motor_StructTypeDef *motor) {
 	}
 }
 
-void Motor_SetControlMode(Motor_StructTypeDef *motor, MotorControlMode_EnumTypeDef mode) {
+void Motor_SetControlMode(Motor_t *motor, MotorControlMode_t mode) {
 	motor->control_mode = mode;
 
 	motor->position_set_value = Encoder_GetPosition(motor->encoder);
 	motor->velocity_set_value = 0;
 }
 
-void Motor_SetBreakMode(Motor_StructTypeDef *motor, MotorBrakeMode_EnumTypeDef mode) {
+void Motor_SetBreakMode(Motor_t *motor, MotorBrakeMode_t mode) {
 	motor->break_mode = mode;
 }
 
-void Motor_SetPosition(Motor_StructTypeDef *motor, float pos) {
+void Motor_SetPosition(Motor_t *motor, float pos) {
 	motor->position_set_value = pos;
 }
 
-void Motor_SetVelocity(Motor_StructTypeDef *motor, float vel) {
+void Motor_SetVelocity(Motor_t *motor, float vel) {
 	motor->velocity_set_value = vel;
 }
 
-void __Motor_SetPower(Motor_StructTypeDef *motor, int32_t power) {
+void __Motor_SetPower(Motor_t *motor, int32_t power) {
 	power = MIN(MAX(-MOTOR_POWER_MAX, power), MOTOR_POWER_MAX);
 
 	uint16_t power_in1 = 0;

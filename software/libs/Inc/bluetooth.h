@@ -30,42 +30,45 @@ typedef enum {
 	BAUDRATE_460800 = 460800,
 	BAUDRATE_921600 = 921600,
 	BAUDRATE_1382400 = 1382400
-} Bluetooth_BaudrateTypeDef;
+} Bluetooth_Baudrate_t;
 
 typedef enum {
 	STATUS_WAITING_FOR_CONNECTION,
 	STATUS_PAIRED
-} Bluetooth_StatusTypeDef;
+} Bluetooth_Status_t;
+
+typedef struct {
+	char *name;
+	char *password;
+	Bluetooth_Baudrate_t baudrate;
+} Bluetooth_Config_t;
 
 typedef struct {
 	UART_HandleTypeDef *huart;
 
-	GPIO_TypeDef* EN_Port;
+	GPIO_TypeDef *EN_Port;
 	uint16_t EN_Pin;
 
-	GPIO_TypeDef* STATUS_Port;
-	uint16_t STATUS_Pin;
+	GPIO_TypeDef *ST_Port;
+	uint16_t ST_Pin;
+
+	GPIO_TypeDef *PWR_Port;
+	uint16_t PWR_Pin;
 
 	uint8_t *rx_buffer;
 	uint16_t rx_flag;
 
 	uint8_t rx_data_size;
-} Bluetooth_StructTypeDef;
+} Bluetooth_t;
 
-typedef struct {
-	char *name;
-	char *password;
-	Bluetooth_BaudrateTypeDef baudrate;
-} Bluetooth_ConfigTypeDef;
+void Bluetooth_Init(Bluetooth_t *, UART_HandleTypeDef *, GPIO_TypeDef *, uint16_t, GPIO_TypeDef *, uint16_t, GPIO_TypeDef *, uint16_t);
+HAL_StatusTypeDef Bluetooth_SetConfig(Bluetooth_t *, Bluetooth_Config_t);
 
-void Bluetooth_Init(Bluetooth_StructTypeDef *);
-HAL_StatusTypeDef Bluetooth_SetConfig(Bluetooth_StructTypeDef *, Bluetooth_ConfigTypeDef);
+Bluetooth_Status_t Bluetooth_GetStatus(Bluetooth_t *);
+void Bluetooth_RxCpltCallback(Bluetooth_t *, UART_HandleTypeDef *);
+uint8_t Bluetooth_IsDataReady(Bluetooth_t *);
+void Bluetooth_ReadData(Bluetooth_t *, uint8_t *);
 
-Bluetooth_StatusTypeDef Bluetooth_GetStatus(Bluetooth_StructTypeDef *);
-void Bluetooth_RxCpltCallback(Bluetooth_StructTypeDef *, UART_HandleTypeDef *);
-uint8_t Bluetooth_IsDataReady(Bluetooth_StructTypeDef *);
-void Bluetooth_ReadData(Bluetooth_StructTypeDef *, uint8_t *);
-
-HAL_StatusTypeDef __Bluetooth_WriteParameter(Bluetooth_StructTypeDef *, const char *, ...);
+HAL_StatusTypeDef __Bluetooth_WriteParameter(Bluetooth_t *, const char *, ...);
 
 #endif /* SNEAK100_ABSTRACTION_LAYER_INC_BLUETOOTH_H_ */
