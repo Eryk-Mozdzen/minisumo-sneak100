@@ -7,6 +7,12 @@
 
 #include "motor.h"
 
+void swap(uint16_t *a, uint16_t *b) {
+	uint16_t tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
 void Motor_Init(Motor_StructTypeDef *motor, Encoder_StructTypeDef *encoder, Motor_ConfigTypeDef config) {
 
 	motor->timer = config.timer;
