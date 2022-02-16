@@ -31,19 +31,19 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Sneak100_Abstracts</name>
+			<name>libs</name>
 			<type>2</type>
-			<location>D:/Moje Wyczyny/My_Poor_Projects/Sneak100_MiniSumo/minisumo-sneak100/software/Sneak100_Library/Sneak100_Abstracts</location>
+			<locationURI>WORKSPACE_LOC/libs</locationURI>
 		</link>
 		<link>
-			<name>Sneak100_Hardware_NucleoF411</name>
+			<name>state-machine-c</name>
 			<type>2</type>
-			<location>D:/Moje Wyczyny/My_Poor_Projects/Sneak100_MiniSumo/minisumo-sneak100/software/Sneak100_Library/Sneak100_Hardware_NucleoF411</location>
+			<locationURI>WORKSPACE_LOC/external/state-machine-c</locationURI>
 		</link>
 		<link>
-			<name>Sneak100_Utilities</name>
+			<name>utils</name>
 			<type>2</type>
-			<location>D:/Moje Wyczyny/My_Poor_Projects/Sneak100_MiniSumo/minisumo-sneak100/software/Sneak100_Library/Sneak100_Utilities</location>
+			<locationURI>WORKSPACE_LOC/utils</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

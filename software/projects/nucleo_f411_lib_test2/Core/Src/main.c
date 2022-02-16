@@ -29,12 +29,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-#include "sneak100_motors.h"
-#include "sneak100_bluetooth.h"
-#include "sneak100_display.h"
-#include "sneak100_proximity.h"
-#include "sneak100_adc.h"
-#include "sneak100_memory.h"
+#include "uart.h"
+#include "bluetooth.h"
 
 /* USER CODE END Includes */
 
@@ -61,6 +57,8 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+
+Bluetooth_t bluetooth;
 
 /* USER CODE END PFP */
 
@@ -120,15 +118,7 @@ int main(void)
 	}
   }*/
 
-  SNEAK100_ADC_Init();
-  SNEAK100_Memory_Init();
-  SNEAK100_Display_Init();
-  SNEAK100_Bluetooth_Init();
-  SNEAK100_Motors_Init();
-  SNEAK100_Proximity_Init();
-
-  HAL_TIM_Base_Start_IT(&htim9);
-  HAL_TIM_Base_Start_IT(&htim10);
+  Bluetooth_Init(&bluetooth, &huart6, BLUETOOTH_EN_GPIO_Port, BLUETOOTH_EN_Pin, BLUETOOTH_STATUS_GPIO_Port, BLUETOOTH_STATUS_Pin);
 
   printf("\n");
 
@@ -147,18 +137,23 @@ int main(void)
 	  	  case 'c': HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET); break;
 	  	  case 'd': HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET); break;
 	  	  case 'v': {
-	  		  float value = SNEAK100_Memory_ReadFloat(MEMORY_ADDRESS_VALUE);
-	  		  printf("value -> %f\n", value);
-	  		  printf("value <- ");
-	  		  scanf("%f", &value);
-	  		  SNEAK100_Memory_WriteFloat(MEMORY_ADDRESS_VALUE, value);
-	  		  printf("value -> %f\n", SNEAK100_Memory_ReadFloat(MEMORY_ADDRESS_VALUE));
+				Bluetooth_Config_t config = {0};
+
+				printf("BT name: ");
+				scanf("%s[^\n]", config.name);
+
+				printf("BT pass: ");
+				scanf("%s[^\n]", config.password);
+
+				config.baudrate = BLUETOOTH_BAUDRATE_38400;
+
+				printf("status: %s\n", Bluetooth_SetConfig(&bluetooth, config)==HAL_OK ? "Success" : "Failure");
 	  	  } break;
 	  	  case 'm': {
 	  		printf("\nMenu:\n\
 c - turn on led\n\
 d - turn off led\n\
-v - set value\n\
+v - set bluetooth config\n\
 m - show menu\n\
 	  			\n");
 	  	  } break;
@@ -220,6 +215,10 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+	Bluetooth_RxCpltCallback(&bluetooth, huart);
+}
+
 /* USER CODE END 4 */
 
  /**
@@ -235,27 +234,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 
 	if(htim->Instance==TIM9) {
-		gui.battery_voltage = SNEAK100_ADC_GetSupplyVoltage();
-		gui.temperature = SNEAK100_ADC_GetTemperature();
 
-		gui.line[0] = *lineLL.read_src;
-		gui.line[1] = *lineLM.read_src;
-		gui.line[2] = *lineRM.read_src;
-		gui.line[3] = *lineRR.read_src;
-
-		gui.position[0] = Encoder_GetPosition(&encoderFL);
-		//gui.position[1] = Encoder_GetPosition(&encoderFR);
-		//gui.position[2] = Encoder_GetPosition(&encoderBL);
-		//gui.position[3] = Encoder_GetPosition(&encoderBR);
-
-		gui.velocity[0] = Encoder_GetVelocity(&encoderFL);
-		//gui.velocity[1] = Encoder_GetVelocity(&encoderFR);
-		//gui.velocity[2] = Encoder_GetVelocity(&encoderBL);
-		//gui.velocity[3] = Encoder_GetVelocity(&encoderBR);
 	}
 
 	if(htim->Instance==TIM10) {
-		SNEAK100_Display_Render();
+
 	}
 
   /* USER CODE END Callback 0 */
