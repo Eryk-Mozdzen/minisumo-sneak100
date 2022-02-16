@@ -30,3 +30,4 @@
 - FreeRTOS
 - clever fight algorithms
 - dedicated bluetooth app
+- CLI through UART

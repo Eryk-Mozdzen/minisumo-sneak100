@@ -13,15 +13,13 @@ static uint16_t adc_dma_buffer[6] = {0};
 
 void SNEAK100_Core_Init() {
 
-	Bluetooth_Init(&sneak100.bluetooth, &huart2, BLUETOOTH_EN_GPIO_Port, BLUETOOTH_EN_Pin, BLUETOOTH_ST_GPIO_Port, BLUETOOTH_ST_Pin, BLUETOOTH_PWR_GPIO_Port, BLUETOOTH_PWR_Pin);
+	Bluetooth_Init(&sneak100.bluetooth, &huart2, BLUETOOTH_EN_GPIO_Port, BLUETOOTH_EN_Pin, BLUETOOTH_ST_GPIO_Port, BLUETOOTH_ST_Pin);
 
 	Bluetooth_Config_t config = {0};
-	config.name = "Sneak112";
-	config.password = "7777";
-	config.baudrate = BAUDRATE_38400;
-	if(Bluetooth_SetConfig(&sneak100.bluetooth, config)!=HAL_OK) {
-		HAL_GPIO_WritePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin, GPIO_PIN_SET);
-	}
+	strcpy(config.name, BLUETOOTH_NAME);
+	strcpy(config.password, BLUETOOTH_PASSWORD);
+	config.baudrate = BLUETOOTH_BAUDRATE_38400;
+	sneak100.state.bluetooth_ok = (Bluetooth_SetConfig(&sneak100.bluetooth, config)==HAL_OK);
 
 	Display_Init(&sneak100.display, &hi2c1);
 

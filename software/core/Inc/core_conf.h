@@ -27,4 +27,7 @@
 
 #define MEMORY_SETTINGS_ADDRESS		0x00
 
+#define BLUETOOTH_NAME				"Sneak100"
+#define BLUETOOTH_PASSWORD			"7777"
+
 #endif
