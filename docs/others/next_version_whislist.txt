@@ -17,6 +17,8 @@ version 1.2:
 	- change polarity of battery input connector to flat side
 	- fix proximity sensor connector pinout and add pinout labels
 	- line sensor merged header
+	- remove HC-05 power control MOSFET
+	- add KoNaR symbol on silk layer
 	
 	- detachable screen
 	- detachable 9DOF / 9DOF onboard / 6DOF + 3DOF on board

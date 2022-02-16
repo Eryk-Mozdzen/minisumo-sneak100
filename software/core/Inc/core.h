@@ -14,6 +14,8 @@
 #include "main.h"
 #include "usart.h"
 
+#include <string.h>
+
 #include "line.h"
 #include "motor.h"
 #include "memory.h"

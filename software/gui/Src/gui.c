@@ -205,7 +205,7 @@ void GUI_Render_ViewOthers(void *data) {
 	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_2, "Batt: %.2fV", gui_ptr->state->battery);
 	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_3, "RC5:  %u 0x%02X 0x%02X",
 			gui_ptr->state->rc5.message.toggle, gui_ptr->state->rc5.message.address, gui_ptr->state->rc5.message.command);
-	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_4, "HC05: ");
+	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_4, "BT:   %s", gui_ptr->state->bluetooth_ok ? "ok" : "not present");
 
 	Display_Update(gui_ptr->display);
 }
@@ -256,7 +256,8 @@ void GUI_Render_Info(void *data) {
 	GUI_DrawFooter("", "", "esc");
 
 	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_1, "build: %s", __DATE__);
-	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_2, "pass: %s", "");
+	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_2, "name:  %s", BLUETOOTH_NAME);
+	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_3, "pass:  %s", BLUETOOTH_PASSWORD);
 
 	Display_Update(gui_ptr->display);
 }
