@@ -31,6 +31,7 @@
 
 #include "core.h"
 #include "gui.h"
+#include "cli.h"
 
 //#include <math.h>
 
@@ -59,8 +60,6 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
-char buffer[256] = {0};
 
 /* USER CODE END PFP */
 
@@ -114,7 +113,9 @@ int main(void)
 
 	SNEAK100_Core_Init();
 	SNEAK100_Core_ReadSettings();
+
 	SNEAK100_GUI_Init();
+	SNEAK100_CLI_Init();
 
 	HAL_TIM_Base_Start_IT(&htim14);
 
@@ -126,6 +127,8 @@ int main(void)
 
 	  SNEAK100_Core_ReadState();
 
+	  SNEAK100_CLI_Update();
+
 	  //SNEAK100_Motors_Update();
 	  //SNEAK100_Motors_SetSpeeds_1(100);
 	  //__Motor_SetPower(&sneak100.motors[MOTOR_LF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
@@ -136,8 +139,6 @@ int main(void)
 	  //HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
 	  //HAL_Delay(50);
 	  //HAL_GPIO_TogglePin(USER_LED_YELLOW_GPIO_Port, USER_LED_YELLOW_Pin);
-
-	  RxBufferUART_ReadUntil(&sneak100.bluetooth.buffer, buffer, '\n', 256);
 
 	  HAL_Delay(100);
 
