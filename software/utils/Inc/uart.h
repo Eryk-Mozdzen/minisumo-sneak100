@@ -14,12 +14,15 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdarg.h>
 
 int __io_putchar(int);
 int __io_getchar();
 
 void UART_SetSTDIN(UART_HandleTypeDef *);
 void UART_SetSTDOUT(UART_HandleTypeDef *);
+
+void UART_printf(UART_HandleTypeDef *, const char *, ...);
 
 typedef struct {
 	UART_HandleTypeDef *huart;

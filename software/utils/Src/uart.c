@@ -35,6 +35,17 @@ void UART_SetSTDOUT(UART_HandleTypeDef *huart) {
 	setvbuf(stdout, NULL, _IONBF, 0);
 }
 
+void UART_printf(UART_HandleTypeDef *huart, const char *format, ...) {
+	char buffer[32] = {0};
+
+	va_list args;
+	va_start(args, format);
+	vsprintf(buffer, format, args);
+	va_end(args);
+
+	HAL_UART_Transmit(huart, (uint8_t *)buffer, strlen(buffer) + 1, HAL_MAX_DELAY);
+}
+
 void RxBufferUART_Init(RxBufferUART_t *buffer, UART_HandleTypeDef *huart, uint16_t max_size) {
 	buffer->huart = huart;
 	buffer->max_size = max_size;
