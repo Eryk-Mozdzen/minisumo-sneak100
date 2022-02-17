@@ -15,12 +15,6 @@ void SNEAK100_Core_Init() {
 
 	Bluetooth_Init(&sneak100.bluetooth, &huart2, BLUETOOTH_EN_GPIO_Port, BLUETOOTH_EN_Pin, BLUETOOTH_ST_GPIO_Port, BLUETOOTH_ST_Pin);
 
-	Bluetooth_Config_t config = {0};
-	strcpy(config.name, BLUETOOTH_NAME);
-	strcpy(config.password, BLUETOOTH_PASSWORD);
-	config.baudrate = BLUETOOTH_BAUDRATE_38400;
-	sneak100.state.bluetooth_ok = (Bluetooth_SetConfig(&sneak100.bluetooth, config)==HAL_OK);
-
 	Display_Init(&sneak100.display, &hi2c1);
 
 	Memory_Init(&sneak100.memory, &hi2c1, 0x00);
@@ -48,6 +42,12 @@ void SNEAK100_Core_Init() {
 	Proximity_Init(&sneak100.proximity[PROXIMITY_FL], PROXIMITY_FL_GPIO_Port, PROXIMITY_FL_Pin);
 	Proximity_Init(&sneak100.proximity[PROXIMITY_FR], PROXIMITY_FR_GPIO_Port, PROXIMITY_FR_Pin);
 	Proximity_Init(&sneak100.proximity[PROXIMITY_RR], PROXIMITY_RR_GPIO_Port, PROXIMITY_RR_Pin);
+
+	/*Bluetooth_Config_t config = {0};
+	strcpy(config.name, BLUETOOTH_NAME);
+	strcpy(config.password, BLUETOOTH_PASSWORD);
+	config.baudrate = BLUETOOTH_BAUDRATE_38400;
+	Bluetooth_SetConfig(&sneak100.bluetooth, config);*/
 }
 
 void SNEAK100_Core_ReadState() {
@@ -67,6 +67,7 @@ void SNEAK100_Core_ReadState() {
 
 	sneak100.state.temperature = SNEAK100_Core_GetTemperature();
 	sneak100.state.battery = SNEAK100_Core_GetSupplyVoltage();
+	sneak100.state.bluetooth = Bluetooth_GetStatus(&sneak100.bluetooth);
 
 	RC5_Message_t message;
 	if(DecoderRC5_GetMessage(&sneak100.decoder_rc5, &message)) {

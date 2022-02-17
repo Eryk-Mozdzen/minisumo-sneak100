@@ -205,7 +205,10 @@ void GUI_Render_ViewOthers(void *data) {
 	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_2, "Batt: %.2fV", gui_ptr->state->battery);
 	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_3, "RC5:  %u 0x%02X 0x%02X",
 			gui_ptr->state->rc5.message.toggle, gui_ptr->state->rc5.message.address, gui_ptr->state->rc5.message.command);
-	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_4, "BT:   %s", gui_ptr->state->bluetooth_ok ? "ok" : "not present");
+
+	const char *bluetooth_status[] = {"waiting", "paired", "error"};
+
+	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_4, "BT:   %s", bluetooth_status[gui_ptr->state->bluetooth]);
 
 	Display_Update(gui_ptr->display);
 }

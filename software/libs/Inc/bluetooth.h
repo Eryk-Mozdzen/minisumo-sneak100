@@ -10,6 +10,8 @@
 
 #include "stm32f4xx_hal.h"
 
+#include "uart.h"
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,9 +20,6 @@
 
 #define BLUETOOTH_NAME_MAX_LENGTH		31
 #define BLUETOOTH_PASSWORD_MAX_LENGTH	16
-
-#define BLUETOOTH_RX_FRAME_SIZE			8
-#define BLUETOOTH_RX_BUFFER_SIZE		64
 
 typedef enum {
 	BLUETOOTH_BAUDRATE_4800 = 4800,
@@ -37,7 +36,8 @@ typedef enum {
 
 typedef enum {
 	BLUETOOTH_STATUS_WAITING_FOR_CONNECTION,
-	BLUETOOTH_STATUS_PAIRED
+	BLUETOOTH_STATUS_PAIRED,
+	BLUETOOTH_STATUS_ERROR
 } Bluetooth_Status_t;
 
 typedef struct {
@@ -48,25 +48,22 @@ typedef struct {
 
 typedef struct {
 	UART_HandleTypeDef *huart;
+	RxBufferUART_t buffer;
 
 	GPIO_TypeDef *EN_Port;
 	uint16_t EN_Pin;
 
 	GPIO_TypeDef *ST_Port;
 	uint16_t ST_Pin;
-
-	uint8_t *rx_buffer;
-	uint8_t rx_flag;
 } Bluetooth_t;
 
 void Bluetooth_Init(Bluetooth_t *, UART_HandleTypeDef *, GPIO_TypeDef *, uint16_t, GPIO_TypeDef *, uint16_t);
 HAL_StatusTypeDef Bluetooth_SetConfig(Bluetooth_t *, Bluetooth_Config_t);
 
 Bluetooth_Status_t Bluetooth_GetStatus(Bluetooth_t *);
-void Bluetooth_RxCpltCallback(Bluetooth_t *, UART_HandleTypeDef *);
-uint8_t Bluetooth_IsDataReady(Bluetooth_t *);
-void Bluetooth_ReadData(Bluetooth_t *, uint8_t *);
 
 HAL_StatusTypeDef __Bluetooth_WriteParameter(Bluetooth_t *, const char *, ...);
+HAL_StatusTypeDef __Bluetooth_EnterATMode(Bluetooth_t *);
+HAL_StatusTypeDef __Bluetooth_ExitATMode(Bluetooth_t *);
 
-#endif /* SNEAK100_ABSTRACTION_LAYER_INC_BLUETOOTH_H_ */
+#endif

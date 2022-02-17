@@ -75,7 +75,7 @@ typedef struct {
 
 	float temperature;
 	float battery;
-	uint8_t bluetooth_ok;
+	Bluetooth_Status_t bluetooth;
 
 	struct {
 		RC5_Message_t message;

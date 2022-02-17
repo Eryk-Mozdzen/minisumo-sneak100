@@ -32,7 +32,7 @@
 #include "core.h"
 #include "gui.h"
 
-#include <math.h>
+//#include <math.h>
 
 /* USER CODE END Includes */
 
@@ -59,6 +59,8 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+
+char buffer[256] = {0};
 
 /* USER CODE END PFP */
 
@@ -126,15 +128,18 @@ int main(void)
 
 	  //SNEAK100_Motors_Update();
 	  //SNEAK100_Motors_SetSpeeds_1(100);
-	  __Motor_SetPower(&sneak100.motors[MOTOR_LF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
-	  __Motor_SetPower(&sneak100.motors[MOTOR_LB], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
-	  __Motor_SetPower(&sneak100.motors[MOTOR_RF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
-	  __Motor_SetPower(&sneak100.motors[MOTOR_RB], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
+	  //__Motor_SetPower(&sneak100.motors[MOTOR_LF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
+	  //__Motor_SetPower(&sneak100.motors[MOTOR_LB], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
+	  //__Motor_SetPower(&sneak100.motors[MOTOR_RF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
+	  //__Motor_SetPower(&sneak100.motors[MOTOR_RB], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
 
 	  //HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
-	  HAL_Delay(50);
+	  //HAL_Delay(50);
 	  //HAL_GPIO_TogglePin(USER_LED_YELLOW_GPIO_Port, USER_LED_YELLOW_Pin);
-	  HAL_Delay(50);
+
+	  RxBufferUART_ReadUntil(&sneak100.bluetooth.buffer, buffer, '\n', 256);
+
+	  HAL_Delay(100);
 
     /* USER CODE END WHILE */
 
@@ -193,7 +198,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-	Bluetooth_RxCpltCallback(&sneak100.bluetooth, huart);
+	RxBufferUART_RxCpltCallback(&sneak100.bluetooth.buffer, huart);
 }
 
 /* USER CODE END 4 */
