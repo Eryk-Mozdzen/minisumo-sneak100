@@ -11,8 +11,9 @@
 </p>
 
 ### In progress:
-- create program structure
+- program structure
 - GUI
+- CLI
 
 ### To do:
 - print plastic elements
@@ -30,4 +31,3 @@
 - FreeRTOS
 - clever fight algorithms
 - dedicated bluetooth app
-- CLI through UART
