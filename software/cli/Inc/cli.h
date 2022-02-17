@@ -16,11 +16,8 @@
 typedef struct {
 	RxBufferUART_t *buffer;
 	char line[CLI_LINE_MAX_SIZE];
-	char argv[CLI_ARG_MAX_NUM][CLI_ARG_MAX_SIZE];
+	char **argv;
 	size_t argc;
-
-	RobotState_t *state;
-	RobotSettings_t *settings;
 } Sneak100_CLI_t;
 
 extern Sneak100_CLI_t cli_bluetooth;
