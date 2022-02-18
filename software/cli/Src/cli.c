@@ -14,6 +14,7 @@ static void __CLI_Update(Sneak100_CLI_t *);
 static void __CLI_PrintPrompt(Sneak100_CLI_t *);
 
 static void __CLI_ParseArgs(char *, size_t *, char ***);
+static void __CLI_FreeArgs(size_t *, char ***);
 
 static void __CLI_Cmd_Help(Sneak100_CLI_t *, size_t, char **);
 static void __CLI_Cmd_ConfigBT(Sneak100_CLI_t *, size_t, char **);
@@ -34,8 +35,8 @@ void SNEAK100_CLI_Init() {
 
 void SNEAK100_CLI_Update() {
 
-	if(sneak100.state.bluetooth==BLUETOOTH_STATUS_PAIRED)
-		__CLI_Update(&cli_bluetooth);
+	//if(sneak100.state.bluetooth==BLUETOOTH_STATUS_PAIRED)
+	__CLI_Update(&cli_bluetooth);
 
 	__CLI_Update(&cli_debug);
 
@@ -59,6 +60,8 @@ void __CLI_Update(Sneak100_CLI_t *cli) {
 	else if(!strcmp(cli->argv[0], "btconf"))
 		__CLI_Cmd_ConfigBT(cli, cli->argc, cli->argv);
 
+	__CLI_FreeArgs(&cli->argc, &cli->argv);
+
 	__CLI_PrintPrompt(cli);
 }
 
@@ -67,30 +70,30 @@ static void __CLI_PrintPrompt(Sneak100_CLI_t *cli) {
 }
 
 static void __CLI_ParseArgs(char *line, size_t *argc, char ***argv) {
-	for(size_t i=0; i<*argc; i++)
-		free((*argv)[i]);
-	free(*argv);
-	*argv = NULL;
 	*argc = 0;
+	*argv = NULL;
 
 	char *token = strtok(line, CLI_ARG_DELIMITERS);
 
 	while(token) {
 
 		(*argc)++;
-		*argv = (char **)realloc(*argv, *argc);
+		*argv = (char **)realloc(*argv, *argc*sizeof(char *));
 		(*argv)[*argc - 1] = (char *)malloc(strlen(token) + 1);
 
 		strcpy((*argv)[*argc - 1], token);
 
 		token = strtok(NULL, CLI_ARG_DELIMITERS);
 	}
+}
 
-	memset(line, 0, CLI_LINE_MAX_SIZE);
+static void __CLI_FreeArgs(size_t *argc, char ***argv) {
+	for(size_t i=0; i<*argc; i++)
+		free((*argv)[i]);
+	free(*argv);
 
-	for(size_t i=0; i<*argc; i++) {
-		UART_printf(cli_bluetooth.buffer->huart, "arg[%lu] = %s\n", i, (*argv)[i]);
-	}
+	*argc = 0;
+	*argv = NULL;
 }
 
 void __CLI_Cmd_Help(Sneak100_CLI_t *cli, size_t argc, char **argv) {
