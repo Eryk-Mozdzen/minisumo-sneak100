@@ -20,18 +20,13 @@ void Bluetooth_Init(Bluetooth_t *bluetooth, UART_HandleTypeDef *huart,
 }
 
 HAL_StatusTypeDef Bluetooth_SetConfig(Bluetooth_t *bluetooth, Bluetooth_Config_t config) {
+	HAL_StatusTypeDef status = __Bluetooth_EnterATMode(bluetooth);
 
-	if(__Bluetooth_EnterATMode(bluetooth)!=HAL_OK) {
-		__Bluetooth_ExitATMode(bluetooth);
-		return HAL_TIMEOUT;
+	if(status==HAL_OK) {
+		__Bluetooth_WriteParameter(bluetooth, "AT+NAME=%s\r\n", config.name);
+		__Bluetooth_WriteParameter(bluetooth, "AT+PSWD=\"%s\"\r\n", config.password);
+		__Bluetooth_WriteParameter(bluetooth, "AT+UART=%u,0,0\r\n", config.baudrate);
 	}
-
-	// set values
-	HAL_StatusTypeDef status = HAL_OK;
-
-	if(__Bluetooth_WriteParameter(bluetooth, "AT+NAME=%s\r\n", config.name)!=HAL_OK) 			status = HAL_ERROR;
-	if(__Bluetooth_WriteParameter(bluetooth, "AT+PSWD=\"%s\"\r\n", config.password)!=HAL_OK) 	status = HAL_ERROR;
-	if(__Bluetooth_WriteParameter(bluetooth, "AT+UART=%u,0,0\r\n", config.baudrate)!=HAL_OK) 	status = HAL_ERROR;
 
 	__Bluetooth_ExitATMode(bluetooth);
 
@@ -61,7 +56,7 @@ HAL_StatusTypeDef __Bluetooth_WriteParameter(Bluetooth_t *bluetooth, const char 
 		return HAL_TIMEOUT;
 
 	// OK\r\n (4 characters)
-	if(HAL_UART_Receive(bluetooth->huart, (uint8_t*)buffer, 4, 1000)!=HAL_OK)
+	if(HAL_UART_Receive(bluetooth->huart, (uint8_t*)buffer, 4, 100)!=HAL_OK)
 		return HAL_TIMEOUT;
 
 	if(strncmp(buffer, "OK", 2)!=0)
@@ -76,7 +71,7 @@ HAL_StatusTypeDef __Bluetooth_EnterATMode(Bluetooth_t *bluetooth) {
 	HAL_GPIO_WritePin(bluetooth->EN_Port, bluetooth->EN_Pin, GPIO_PIN_SET);
 	HAL_Delay(50);
 
-	return __Bluetooth_WriteParameter(bluetooth, "AT\r\n");
+	return __Bluetooth_WriteParameter(bluetooth, "AT\r\n");;
 }
 
 HAL_StatusTypeDef __Bluetooth_ExitATMode(Bluetooth_t *bluetooth) {

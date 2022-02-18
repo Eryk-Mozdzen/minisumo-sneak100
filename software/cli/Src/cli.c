@@ -12,6 +12,7 @@ Sneak100_CLI_t cli_debug;
 
 static void __CLI_Update(Sneak100_CLI_t *);
 static void __CLI_PrintPrompt(Sneak100_CLI_t *);
+static void __CLI_PrintFormat(Sneak100_CLI_t *, const char *, ...);
 
 static void __CLI_ParseArgs(char *, size_t *, char ***);
 static void __CLI_FreeArgs(size_t *, char ***);
@@ -65,11 +66,22 @@ void __CLI_Update(Sneak100_CLI_t *cli) {
 	__CLI_PrintPrompt(cli);
 }
 
-static void __CLI_PrintPrompt(Sneak100_CLI_t *cli) {
-	UART_printf(cli->buffer->huart, "$ ");
+void __CLI_PrintPrompt(Sneak100_CLI_t *cli) {
+	__CLI_PrintFormat(cli, "$ ");
 }
 
-static void __CLI_ParseArgs(char *line, size_t *argc, char ***argv) {
+void __CLI_PrintFormat(Sneak100_CLI_t *cli, const char *format, ...) {
+	char buffer[32] = {0};
+
+	va_list args;
+	va_start(args, format);
+	vsprintf(buffer, format, args);
+	va_end(args);
+
+	HAL_UART_Transmit(cli->buffer->huart, (uint8_t *)buffer, strlen(buffer) + 1, HAL_MAX_DELAY);
+}
+
+void __CLI_ParseArgs(char *line, size_t *argc, char ***argv) {
 	*argc = 0;
 	*argv = NULL;
 
@@ -87,7 +99,7 @@ static void __CLI_ParseArgs(char *line, size_t *argc, char ***argv) {
 	}
 }
 
-static void __CLI_FreeArgs(size_t *argc, char ***argv) {
+void __CLI_FreeArgs(size_t *argc, char ***argv) {
 	for(size_t i=0; i<*argc; i++)
 		free((*argv)[i]);
 	free(*argv);
@@ -98,9 +110,9 @@ static void __CLI_FreeArgs(size_t *argc, char ***argv) {
 
 void __CLI_Cmd_Help(Sneak100_CLI_t *cli, size_t argc, char **argv) {
 
-	UART_printf(cli->buffer->huart, "Available commands:\n");
-	UART_printf(cli->buffer->huart, "    help\n");
-	UART_printf(cli->buffer->huart, "    btconf [-param arg]\n");
+	__CLI_PrintFormat(cli, "Available commands:\n");
+	__CLI_PrintFormat(cli, "    help\n");
+	__CLI_PrintFormat(cli, "    btconf [-param arg]\n");
 }
 
 void __CLI_Cmd_ConfigBT(Sneak100_CLI_t *cli, size_t argc, char **argv) {
@@ -117,10 +129,14 @@ void __CLI_Cmd_ConfigBT(Sneak100_CLI_t *cli, size_t argc, char **argv) {
 		} else if(!strcmp(argv[i], "-password") && i+1<argc) {
 			i++;
 			strcpy(config.password, argv[i]);
+		} else {
+			__CLI_PrintFormat(cli, "invalid param: '%s'\n", argv[i]);
 		}
 	}
 
-	if(Bluetooth_SetConfig(&sneak100.bluetooth, config)!=HAL_OK)
-		UART_printf(cli->buffer->huart, "Error\n");
+	HAL_StatusTypeDef status = Bluetooth_SetConfig(&sneak100.bluetooth, config);
+
+	if(status!=HAL_OK)
+		__CLI_PrintFormat(cli, "error code: %u\n", status);
 }
 
