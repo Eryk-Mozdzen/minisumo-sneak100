@@ -7,13 +7,13 @@
 
 <p align="center">
   <img src="/docs/readme/Zrzut ekranu (284).png" width="49%" />
-  <img src="/docs/readme/main_board_v1.1.jpg" width="49%" />
+  <img src="/docs/readme/main_board_v1.1_2.jpg" width="49%" />
 </p>
 
 ### In progress:
-- program structure
 - GUI
 - CLI
+- Core
 
 ### To do:
 - print plastic elements
