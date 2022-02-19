@@ -45,6 +45,8 @@ typedef struct {
 extern Sneak100_t sneak100;
 
 void SNEAK100_Core_Init();
+void SNEAK100_Core_Update();
+
 void SNEAK100_Core_ReadState();
 void SNEAK100_Core_ReadSettings();
 void SNEAK100_Core_WriteSettings();

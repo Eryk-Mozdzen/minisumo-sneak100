@@ -143,15 +143,20 @@ void GUI_Render_ViewMotors(void *data) {
 	GUI_DrawHeader("Motors");
 	GUI_DrawFooter("next", "prev", "esc");
 
-	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_1, "LF: %u", gui_ptr->state->motor[0].position_raw);
-	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_2, "LB: %u", gui_ptr->state->motor[1].position_raw);
-	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_3, "RF: %u", gui_ptr->state->motor[2].position_raw);
-	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_4, "RB: %u", gui_ptr->state->motor[3].position_raw);
+	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_1, "LF:%+.2f", gui_ptr->state->motor[MOTOR_LF].position);
+	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_2, "LB:%+.2f", gui_ptr->state->motor[MOTOR_LB].position);
+	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_3, "RF:%+.2f", gui_ptr->state->motor[MOTOR_RF].position);
+	Display_DrawText(gui_ptr->display, 0,  DISPLAY_LINE_4, "RB:%+.2f", gui_ptr->state->motor[MOTOR_RB].position);
 
-	Display_DrawText(gui_ptr->display, 72,  DISPLAY_LINE_1, "%+.2f", gui_ptr->state->motor[0].velocity);
-	Display_DrawText(gui_ptr->display, 72,  DISPLAY_LINE_2, "%+.2f", gui_ptr->state->motor[1].velocity);
-	Display_DrawText(gui_ptr->display, 72,  DISPLAY_LINE_3, "%+.2f", gui_ptr->state->motor[2].velocity);
-	Display_DrawText(gui_ptr->display, 72,  DISPLAY_LINE_4, "%+.2f", gui_ptr->state->motor[3].velocity);
+	Display_DrawText(gui_ptr->display, 56,  DISPLAY_LINE_1, "%+.2f", gui_ptr->state->motor[MOTOR_LF].velocity);
+	Display_DrawText(gui_ptr->display, 56,  DISPLAY_LINE_2, "%+.2f", gui_ptr->state->motor[MOTOR_LB].velocity);
+	Display_DrawText(gui_ptr->display, 56,  DISPLAY_LINE_3, "%+.2f", gui_ptr->state->motor[MOTOR_RF].velocity);
+	Display_DrawText(gui_ptr->display, 56,  DISPLAY_LINE_4, "%+.2f", gui_ptr->state->motor[MOTOR_RB].velocity);
+
+	Display_DrawText(gui_ptr->display, 92,  DISPLAY_LINE_1, "%+.2f", gui_ptr->state->motor[MOTOR_LF].power);
+	Display_DrawText(gui_ptr->display, 92,  DISPLAY_LINE_2, "%+.2f", gui_ptr->state->motor[MOTOR_LB].power);
+	Display_DrawText(gui_ptr->display, 92,  DISPLAY_LINE_3, "%+.2f", gui_ptr->state->motor[MOTOR_RF].power);
+	Display_DrawText(gui_ptr->display, 92,  DISPLAY_LINE_4, "%+.2f", gui_ptr->state->motor[MOTOR_RB].power);
 
 	Display_Update(gui_ptr->display);
 }
@@ -221,7 +226,7 @@ void GUI_Render_Settings(void *data) {
 	GUI_DrawHeader("Settings");
 	GUI_DrawFooter("opt", "down", "save");
 
-	const char *mode[] = {"module", "button", "RC RC5", "RC BT"};
+	const char *mode[] = {"module", "button"};
 	const char *dyhlo[] = {"black", "white", "auto"};
 	const char *strategy[] = {"agressive", "defense", "passive"};
 

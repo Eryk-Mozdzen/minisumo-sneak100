@@ -21,18 +21,19 @@
 #define MAX(__A__, __B__) (((__A__)>=(__B__)) ? (__A__) : (__B__))
 
 typedef enum {
-	MODE_POSITION_CONTROL,
-	MODE_VELOCITY_CONTROL
+	MOTOR_CONTROL_MODE_OPEN_LOOP_POWER,
+	MOTOR_CONTROL_MODE_CLOSE_LOOP_POSITION,
+	MOTOR_CONTROL_MODE_CLOSE_LOOP_VELOCITY
 } MotorControlMode_t;
 
 typedef enum {
-	DIRECTION_CW,
-	DIRECTION_CC
+	MOTOR_DIRECTION_CW,
+	MOTOR_DIRECTION_CC
 } MotorDirection_t;
 
 typedef enum {
-	MODE_BREAK,
-	MODE_COAST
+	MOTOR_BRAKE_MODE_BREAK,
+	MOTOR_BRAKE_MODE_COAST
 } MotorBrakeMode_t;
 
 typedef struct {
@@ -46,7 +47,9 @@ typedef struct {
 
 	float position_set_value;
 	float velocity_set_value;
+	float power_set_value;
 
+	float output;
 	Encoder_t *encoder;
 	PID_StructTypeDef pid;
 } Motor_t;
@@ -58,7 +61,6 @@ void Motor_SetBreakMode(Motor_t *, MotorBrakeMode_t);
 
 void Motor_SetPosition(Motor_t *, float);
 void Motor_SetVelocity(Motor_t *, float);
-
-void __Motor_SetPower(Motor_t *, int32_t);
+void Motor_SetPower(Motor_t *, float);
 
 #endif

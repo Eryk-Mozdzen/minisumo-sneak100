@@ -32,23 +32,24 @@ typedef enum {
 typedef enum {
 	SETTINGS_MODE_MODULE,
 	SETTINGS_MODE_BUTTON,
-	SETTINGS_MODE_RC_RC5,
-	SETTINGS_MODE_RC_BLUETOOTH,
-	SETTINGS_MODE_NUM
+	SETTINGS_MODE_NUM,
+	SETTINGS_MODE_INVALID
 } Settings_Mode_t;
 
 typedef enum {
 	SETTINGS_DYHLO_BLACK,
 	SETTINGS_DYHLO_WHITE,
 	SETTINGS_DYHLO_AUTO,
-	SETTINGS_DYHLO_NUM
+	SETTINGS_DYHLO_NUM,
+	SETTINGS_DYHLO_INVALID
 } Settings_Dyhlo_t;
 
 typedef enum {
 	SETTINGS_STRATEGY_AGRESSIVE,
 	SETTINGS_STRATEGY_DEFENSIVE,
 	SETTINGS_STRATEGY_PASSIVE,
-	SETTINGS_STRATEGY_NUM
+	SETTINGS_STRATEGY_NUM,
+	SETTINGS_STRATEGY_INVALID
 } Settings_Strategy_t;
 
 typedef struct {
@@ -62,6 +63,7 @@ typedef struct {
 		uint16_t position_raw;
 		float position;
 		float velocity;
+		float power;
 	} motor[4];
 
 	struct {
