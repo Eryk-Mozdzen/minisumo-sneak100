@@ -26,10 +26,10 @@ void SNEAK100_Core_Init() {
 	Encoder_Init(&sneak100.encoders[MOTOR_RF], &htim4, ENCODER_CPR*MOTOR_GEAR_RATIO);
 	Encoder_Init(&sneak100.encoders[MOTOR_RB], &htim5, ENCODER_CPR*MOTOR_GEAR_RATIO);
 
-	Motor_Init(&sneak100.motors[MOTOR_LF], &sneak100.encoders[MOTOR_LF], &htim1, TIM_CHANNEL_3, TIM_CHANNEL_4, DIRECTION_CW, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D, MOTOR_PID_IBAND);
-	Motor_Init(&sneak100.motors[MOTOR_LB], &sneak100.encoders[MOTOR_LB], &htim1, TIM_CHANNEL_1, TIM_CHANNEL_2, DIRECTION_CW, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D, MOTOR_PID_IBAND);
-	Motor_Init(&sneak100.motors[MOTOR_RF], &sneak100.encoders[MOTOR_RF], &htim8, TIM_CHANNEL_3, TIM_CHANNEL_4, DIRECTION_CC, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D, MOTOR_PID_IBAND);
-	Motor_Init(&sneak100.motors[MOTOR_RB], &sneak100.encoders[MOTOR_RB], &htim8, TIM_CHANNEL_1, TIM_CHANNEL_2, DIRECTION_CC, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D, MOTOR_PID_IBAND);
+	Motor_Init(&sneak100.motors[MOTOR_LF], &sneak100.encoders[MOTOR_LF], &htim1, TIM_CHANNEL_3, TIM_CHANNEL_4, MOTOR_DIRECTION_CW, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D, MOTOR_PID_IBAND);
+	Motor_Init(&sneak100.motors[MOTOR_LB], &sneak100.encoders[MOTOR_LB], &htim1, TIM_CHANNEL_1, TIM_CHANNEL_2, MOTOR_DIRECTION_CW, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D, MOTOR_PID_IBAND);
+	Motor_Init(&sneak100.motors[MOTOR_RF], &sneak100.encoders[MOTOR_RF], &htim8, TIM_CHANNEL_3, TIM_CHANNEL_4, MOTOR_DIRECTION_CC, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D, MOTOR_PID_IBAND);
+	Motor_Init(&sneak100.motors[MOTOR_RB], &sneak100.encoders[MOTOR_RB], &htim8, TIM_CHANNEL_1, TIM_CHANNEL_2, MOTOR_DIRECTION_CC, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D, MOTOR_PID_IBAND);
 
 	HAL_ADC_Start_DMA(&hadc1, (uint32_t *)adc_dma_buffer, 6);
 
@@ -42,12 +42,15 @@ void SNEAK100_Core_Init() {
 	Proximity_Init(&sneak100.proximity[PROXIMITY_FL], PROXIMITY_FL_GPIO_Port, PROXIMITY_FL_Pin);
 	Proximity_Init(&sneak100.proximity[PROXIMITY_FR], PROXIMITY_FR_GPIO_Port, PROXIMITY_FR_Pin);
 	Proximity_Init(&sneak100.proximity[PROXIMITY_RR], PROXIMITY_RR_GPIO_Port, PROXIMITY_RR_Pin);
+}
 
-	/*Bluetooth_Config_t config = {0};
-	strcpy(config.name, BLUETOOTH_NAME);
-	strcpy(config.password, BLUETOOTH_PASSWORD);
-	config.baudrate = BLUETOOTH_BAUDRATE_38400;
-	Bluetooth_SetConfig(&sneak100.bluetooth, config);*/
+void SNEAK100_Core_Update() {
+	SNEAK100_Core_ReadState();
+
+	Motor_Update(&sneak100.motors[MOTOR_LF]);
+	Motor_Update(&sneak100.motors[MOTOR_LB]);
+	Motor_Update(&sneak100.motors[MOTOR_RF]);
+	Motor_Update(&sneak100.motors[MOTOR_RB]);
 }
 
 void SNEAK100_Core_ReadState() {
@@ -56,6 +59,7 @@ void SNEAK100_Core_ReadState() {
 		sneak100.state.motor[i].position_raw = Encoder_GetPositionRaw(&sneak100.encoders[i]);
 		sneak100.state.motor[i].position = Encoder_GetPosition(&sneak100.encoders[i]);
 		sneak100.state.motor[i].velocity = Encoder_GetVelocity(&sneak100.encoders[i]);
+		sneak100.state.motor[i].power = sneak100.motors[i].output;
 
 		sneak100.state.line[i].value = *sneak100.lines[i].read_src;
 		sneak100.state.line[i].threshold = sneak100.lines[i].threshold;
@@ -131,7 +135,7 @@ float SNEAK100_Core_GetTemperature() {
 
 float SNEAK100_Core_GetSupplyVoltage() {
 	const uint16_t raw = adc_dma_buffer[4];
-	const float scale = (SUPPLY_VOLTAGE_DIVIDER_R1 + SUPPLY_VOLTAGE_DIVIDER_R2)/SUPPLY_VOLTAGE_DIVIDER_R2;
+	const float scale = ((float)(SUPPLY_VOLTAGE_DIVIDER_R1 + SUPPLY_VOLTAGE_DIVIDER_R2))/SUPPLY_VOLTAGE_DIVIDER_R2;
 	return ADC_GET_VOLTAGE(raw)*scale;
 }
 

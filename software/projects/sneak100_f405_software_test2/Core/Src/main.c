@@ -111,10 +111,6 @@ int main(void)
   MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_GPIO_WritePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin, GPIO_PIN_SET);
-  HAL_Delay(10);
-  HAL_GPIO_WritePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin, GPIO_PIN_RESET);
-
 	SNEAK100_Core_Init();
 	SNEAK100_Core_ReadSettings();
 
@@ -129,16 +125,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while(1) {
 
-	  SNEAK100_Core_ReadState();
-
 	  SNEAK100_CLI_Update();
 
-	  //SNEAK100_Motors_Update();
-	  //SNEAK100_Motors_SetSpeeds_1(100);
-	  //__Motor_SetPower(&sneak100.motors[MOTOR_LF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
-	  //__Motor_SetPower(&sneak100.motors[MOTOR_LB], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
-	  //__Motor_SetPower(&sneak100.motors[MOTOR_RF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
-	  //__Motor_SetPower(&sneak100.motors[MOTOR_RB], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
+	  SNEAK100_Core_Update();
+
+	  //Motor_SetPower(&sneak100.motors[MOTOR_LF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
+	  //Motor_SetPower(&sneak100.motors[MOTOR_LB], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
+	  //Motor_SetPower(&sneak100.motors[MOTOR_RF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
+	  //Motor_SetPower(&sneak100.motors[MOTOR_RB], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
 
 	  //HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
 	  //HAL_Delay(50);

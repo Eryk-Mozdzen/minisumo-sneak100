@@ -14,27 +14,28 @@
 #define CLI_ARG_DELIMITERS				" \r\n"
 
 #define CLI_PRINT_FORMAT_BUFFER_SIZE	1024
-#define CLI_HELP_MESSAGE				"list of available commands:\n \
+#define CLI_HELP_MESSAGE				"\n \
+list of available commands:\n \
 	help\n \
 	reset\n \
 	btconf\n \
 		-n name       		str\n \
 		-p password   		str\n \
 	sett\n \
-		-m mode:       		module | button | rc5 | bt\n \
+		-m mode:       		module | button\n \
 		-d dyhlo color:		black | white | auto\n \
-		-s strategy:		aggressive | defense | passive\n \
+		-s strategy:		agressive | defensive | passive\n \
 	prox\n \
 		-i sensor index:	ll | fl | fr | rr | all\n \
 	line\n \
 		-i sensor index:	ll | lm | rm | rr | all\n \
-	enc\n \
-		-i sensor index:	lf | lb | rf | rb | all\n \
 	mot\n \
 		--get read\n \
 		--set write\n \
 		-i sensor index:	lf | lb | rf | rb | all\n \
 		-v velocity [RPS]	float\n \
-		-p position [R]		float\n"
+		-p position [R]  	float\n \
+		-f power [%%]		float [-1; 1]\n \
+\n"
 
 #endif

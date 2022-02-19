@@ -8,6 +8,7 @@
 #ifndef SNEAK100_HARDWARE_INC_SNEAK100_DISPLAY_H_
 #define SNEAK100_HARDWARE_INC_SNEAK100_DISPLAY_H_
 
+#include <math.h>
 #include <stdio.h>
 
 #include "core.h"
