@@ -19,6 +19,7 @@ static void __CLI_FreeArgs(size_t *, char ***);
 
 static void __CLI_Cmd_Help(Sneak100_CLI_t *, size_t, char **);
 static void __CLI_Cmd_ConfigBT(Sneak100_CLI_t *, size_t, char **);
+static void __CLI_Cmd_Reset(Sneak100_CLI_t *, size_t, char **);
 
 void SNEAK100_CLI_Init() {
 
@@ -60,6 +61,10 @@ void __CLI_Update(Sneak100_CLI_t *cli) {
 		__CLI_Cmd_Help(cli, cli->argc, cli->argv);
 	else if(!strcmp(cli->argv[0], "btconf"))
 		__CLI_Cmd_ConfigBT(cli, cli->argc, cli->argv);
+	else if(!strcmp(cli->argv[0], "reset"))
+		__CLI_Cmd_Reset(cli, cli->argc, cli->argv);
+	else
+		__CLI_PrintFormat(cli, "unknown commad: '%s'\n", cli->argv[0]);
 
 	__CLI_FreeArgs(&cli->argc, &cli->argv);
 
@@ -71,7 +76,7 @@ void __CLI_PrintPrompt(Sneak100_CLI_t *cli) {
 }
 
 void __CLI_PrintFormat(Sneak100_CLI_t *cli, const char *format, ...) {
-	char buffer[32] = {0};
+	char buffer[CLI_PRINT_FORMAT_BUFFER_SIZE] = {0};
 
 	va_list args;
 	va_start(args, format);
@@ -110,9 +115,7 @@ void __CLI_FreeArgs(size_t *argc, char ***argv) {
 
 void __CLI_Cmd_Help(Sneak100_CLI_t *cli, size_t argc, char **argv) {
 
-	__CLI_PrintFormat(cli, "Available commands:\n");
-	__CLI_PrintFormat(cli, "    help\n");
-	__CLI_PrintFormat(cli, "    btconf [-param arg]\n");
+	__CLI_PrintFormat(cli, CLI_HELP_MESSAGE);
 }
 
 void __CLI_Cmd_ConfigBT(Sneak100_CLI_t *cli, size_t argc, char **argv) {
@@ -123,10 +126,10 @@ void __CLI_Cmd_ConfigBT(Sneak100_CLI_t *cli, size_t argc, char **argv) {
 	config.baudrate = BLUETOOTH_BAUDRATE_38400;
 
 	for(size_t i=1; i<argc; i++) {
-		if(!strcmp(argv[i], "-name") && i+1<argc) {
+		if(!strcmp(argv[i], "-n") && i+1<argc) {
 			i++;
 			strcpy(config.name, argv[i]);
-		} else if(!strcmp(argv[i], "-password") && i+1<argc) {
+		} else if(!strcmp(argv[i], "-p") && i+1<argc) {
 			i++;
 			strcpy(config.password, argv[i]);
 		} else {
@@ -138,5 +141,12 @@ void __CLI_Cmd_ConfigBT(Sneak100_CLI_t *cli, size_t argc, char **argv) {
 
 	if(status!=HAL_OK)
 		__CLI_PrintFormat(cli, "error code: %u\n", status);
+}
+
+
+void __CLI_Cmd_Reset(Sneak100_CLI_t *cli, size_t argc, char **argv) {
+
+	NVIC_SystemReset();
+
 }
 
