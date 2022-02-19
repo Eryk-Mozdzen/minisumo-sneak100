@@ -18,6 +18,7 @@ version 1.2:
 	- fix proximity sensor connector pinout and add pinout labels
 	- line sensor merged header
 	- remove HC-05 power control MOSFET
+	- add jumper from ST-Link 5V to supply or 5V rail
 	- add KoNaR symbol on silk layer
 	
 	- detachable screen
