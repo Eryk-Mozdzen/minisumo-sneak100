@@ -8,6 +8,7 @@
 #ifndef INC_CORE_H_
 #define INC_CORE_H_
 
+
 #include "adc.h"
 #include "i2c.h"
 #include "tim.h"
@@ -16,33 +17,10 @@
 
 #include <string.h>
 
-#include "line.h"
-#include "motor.h"
-#include "memory.h"
-#include "encoder.h"
-#include "display.h"
-#include "proximity.h"
-#include "bluetooth.h"
-#include "rc5_decoder.h"
-
 #include "core_def.h"
 #include "core_conf.h"
-
-typedef struct {
-	Motor_t motors[4];
-	Encoder_t encoders[4];
-	Line_t lines[4];
-	Proximity_t proximity[4];
-	Memory_t memory;
-	Display_t display;
-	DecoderRC5_t decoder_rc5;
-	Bluetooth_t bluetooth;
-
-	uint8_t update_request;
-
-	RobotState_t state;
-	RobotSettings_t settings;
-} Sneak100_t;
+#include "core_events.h"
+#include "core_states.h"
 
 extern Sneak100_t sneak100;
 

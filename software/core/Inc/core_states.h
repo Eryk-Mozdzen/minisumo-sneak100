@@ -1,0 +1,27 @@
+/*
+ * core_states.h
+ *
+ *  Created on: Feb 20, 2022
+ *      Author: emozdzen
+ */
+
+#ifndef INC_CORE_STATES_H_
+#define INC_CORE_STATES_H_
+
+#include "core_def.h"
+
+typedef enum {
+	CORE_STATE_IDLE,
+	CORE_STATE_READY,
+	CORE_STATE_PROGRAM,
+	CORE_STATE_RUN,
+	CORE_STATE_STOP
+} CoreState_t;
+
+void Core_Idle_Execute(void *);
+void Core_Ready_Execute(void *);
+void Core_Program_Execute(void *);
+void Core_Run_Execute(void *);
+void Core_Stop_Execute(void *);
+
+#endif

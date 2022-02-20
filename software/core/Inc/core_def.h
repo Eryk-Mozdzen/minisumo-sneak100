@@ -8,6 +8,24 @@
 #ifndef INC_CORE_DEF_H_
 #define INC_CORE_DEF_H_
 
+#include "line.h"
+#include "motor.h"
+#include "memory.h"
+#include "encoder.h"
+#include "display.h"
+#include "proximity.h"
+#include "bluetooth.h"
+#include "rc5_decoder.h"
+
+#include "line.h"
+#include "motor.h"
+#include "memory.h"
+#include "encoder.h"
+#include "display.h"
+#include "proximity.h"
+#include "bluetooth.h"
+#include "rc5_decoder.h"
+
 typedef enum {
 	MOTOR_LF,
 	MOTOR_LB,
@@ -81,8 +99,26 @@ typedef struct {
 
 	struct {
 		RC5_Message_t message;
-		uint8_t seen;
+		uint8_t expired;
 	} rc5;
 } RobotState_t;
+
+typedef struct {
+	Motor_t motors[4];
+	Encoder_t encoders[4];
+	Line_t lines[4];
+	Proximity_t proximity[4];
+	Memory_t memory;
+	Display_t display;
+	DecoderRC5_t decoder_rc5;
+	Bluetooth_t bluetooth;
+
+	FiniteStateMachine_t fsm;
+	uint8_t program_select_flag;
+	uint8_t update_request;
+
+	RobotState_t state;
+	RobotSettings_t settings;
+} Sneak100_t;
 
 #endif
