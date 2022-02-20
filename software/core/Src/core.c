@@ -15,6 +15,24 @@ void SNEAK100_Core_Init() {
 
 	sneak100.update_request = 0;
 
+	// state machine init
+
+	FiniteStateMachine_Init(&sneak100.fsm, &sneak100);
+
+	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_IDLE,		NULL, &Core_Idle_Execute,		NULL);
+	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_READY,		NULL, &Core_Ready_Execute,		NULL);
+	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_PROGRAM,	NULL, &Core_Program_Execute,	NULL);
+	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_RUN,		NULL, &Core_Run_Execute,		NULL);
+	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_STOP,		NULL, &Core_Stop_Execute,		NULL);
+
+	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_IDLE,		CORE_STATE_READY,	0, NULL, &__Core_Program_SelectEvent);
+	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_READY,	CORE_STATE_PROGRAM,	0, NULL, &__Core_Program_SignalEvent);
+	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_PROGRAM,	CORE_STATE_READY,	0, NULL, NULL);
+	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_READY,	CORE_STATE_RUN,		0, NULL, &__Core_Start_SignalEvent);
+	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_RUN,		CORE_STATE_STOP,	0, NULL, &__Core_Stop_SignalEvent);
+
+	// hardware init
+
 	Bluetooth_Init(&sneak100.bluetooth, &huart2, BLUETOOTH_EN_GPIO_Port, BLUETOOTH_EN_Pin, BLUETOOTH_ST_GPIO_Port, BLUETOOTH_ST_Pin);
 
 	Display_Init(&sneak100.display, &hi2c1);
@@ -57,6 +75,9 @@ void SNEAK100_Core_Update() {
 	Motor_Update(&sneak100.motors[MOTOR_RF]);
 	Motor_Update(&sneak100.motors[MOTOR_RB]);
 
+	FiniteStateMachine_Update(&sneak100.fsm);
+	FiniteStateMachine_Execute(&sneak100.fsm);
+
 	if(Display_GetStatus(&sneak100.display)!=HAL_OK)
 		HAL_GPIO_WritePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin, GPIO_PIN_SET);
 
@@ -90,7 +111,7 @@ void SNEAK100_Core_ReadState() {
 	RC5_Message_t message;
 	if(DecoderRC5_GetMessage(&sneak100.decoder_rc5, &message)) {
 		sneak100.state.rc5.message = message;
-		sneak100.state.rc5.seen = 0;
+		sneak100.state.rc5.expired = 0;
 	}
 }
 

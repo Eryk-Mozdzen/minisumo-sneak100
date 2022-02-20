@@ -127,8 +127,6 @@ int main(void)
 	  SNEAK100_CLI_Update();
 	  SNEAK100_GUI_Update();
 
-	  //HAL_Delay(100);
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
