@@ -24,6 +24,7 @@ typedef struct {
 	Display_t *display;
 
 	uint8_t menu_selected;
+	uint8_t update_request;
 
 	RobotState_t *state;
 	RobotSettings_t *settings;
@@ -33,5 +34,6 @@ extern Sneak100_GUI_t gui;
 
 void SNEAK100_GUI_Init();
 void SNEAK100_GUI_Update();
+void SNEAK100_GUI_UpdateRequest();
 
 #endif

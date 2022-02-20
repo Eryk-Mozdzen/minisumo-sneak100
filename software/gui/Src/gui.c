@@ -31,6 +31,8 @@ void SNEAK100_GUI_Init() {
 	gui.buttons[BUTTON_C] = (const GUI_ButtonState_StructTypeDef){0};
 	gui.buttons[BUTTON_R] = (const GUI_ButtonState_StructTypeDef){0};
 
+	gui.update_request = 0;
+
 	gui.display = &sneak100.display;
 	gui.state = &sneak100.state;
 	gui.settings = &sneak100.settings;
@@ -74,10 +76,19 @@ void SNEAK100_GUI_Init() {
 }
 
 void SNEAK100_GUI_Update() {
+	if(!gui.update_request)
+		return;
+
 	GUI_ReadInputs();
 
 	FiniteStateMachine_Update(&gui.fsm);
 	FiniteStateMachine_Execute(&gui.fsm);
+
+	gui.update_request = 0;
+}
+
+void SNEAK100_GUI_UpdateRequest() {
+	gui.update_request = 1;
 }
 
 void GUI_ReadInputs() {

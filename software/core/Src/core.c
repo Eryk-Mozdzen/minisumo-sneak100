@@ -13,6 +13,8 @@ static uint16_t adc_dma_buffer[6] = {0};
 
 void SNEAK100_Core_Init() {
 
+	sneak100.update_request = 0;
+
 	Bluetooth_Init(&sneak100.bluetooth, &huart2, BLUETOOTH_EN_GPIO_Port, BLUETOOTH_EN_Pin, BLUETOOTH_ST_GPIO_Port, BLUETOOTH_ST_Pin);
 
 	Display_Init(&sneak100.display, &hi2c1);
@@ -45,12 +47,24 @@ void SNEAK100_Core_Init() {
 }
 
 void SNEAK100_Core_Update() {
+	if(!sneak100.update_request)
+		return;
+
 	SNEAK100_Core_ReadState();
 
 	Motor_Update(&sneak100.motors[MOTOR_LF]);
 	Motor_Update(&sneak100.motors[MOTOR_LB]);
 	Motor_Update(&sneak100.motors[MOTOR_RF]);
 	Motor_Update(&sneak100.motors[MOTOR_RB]);
+
+	if(Display_GetStatus(&sneak100.display)!=HAL_OK)
+		HAL_GPIO_WritePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin, GPIO_PIN_SET);
+
+	sneak100.update_request = 0;
+}
+
+void SNEAK100_Core_UpdateRequest() {
+	sneak100.update_request = 1;
 }
 
 void SNEAK100_Core_ReadState() {
