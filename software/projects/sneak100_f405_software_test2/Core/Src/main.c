@@ -33,8 +33,6 @@
 #include "gui.h"
 #include "cli.h"
 
-//#include <math.h>
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -125,20 +123,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while(1) {
 
-	  SNEAK100_CLI_Update();
-
 	  SNEAK100_Core_Update();
+	  SNEAK100_CLI_Update();
+	  SNEAK100_GUI_Update();
 
-	  //Motor_SetPower(&sneak100.motors[MOTOR_LF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
-	  //Motor_SetPower(&sneak100.motors[MOTOR_LB], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
-	  //Motor_SetPower(&sneak100.motors[MOTOR_RF], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
-	  //Motor_SetPower(&sneak100.motors[MOTOR_RB], MOTOR_POWER_MAX*sin(0.2f*HAL_GetTick()/1000.f));
-
-	  //HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
-	  //HAL_Delay(50);
-	  //HAL_GPIO_TogglePin(USER_LED_YELLOW_GPIO_Port, USER_LED_YELLOW_Pin);
-
-	  HAL_Delay(100);
+	  //HAL_Delay(100);
 
     /* USER CODE END WHILE */
 
@@ -218,7 +207,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 	if(htim->Instance==TIM14) {
 		// 20 Hz
-		SNEAK100_GUI_Update();
+		SNEAK100_Core_UpdateRequest();
+		SNEAK100_GUI_UpdateRequest();
+		SNEAK100_CLI_UpdateRequest();
 	}
 
   /* USER CODE END Callback 0 */

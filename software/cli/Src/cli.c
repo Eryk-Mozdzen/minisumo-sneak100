@@ -12,7 +12,6 @@ Sneak100_CLI_t cli_debug;
 
 static void __CLI_Update(Sneak100_CLI_t *);
 static void __CLI_PrintPrompt(Sneak100_CLI_t *);
-static void __CLI_PrintFormat(Sneak100_CLI_t *, const char *, ...);
 
 static void __CLI_ParseArgs(char *, size_t *, char ***);
 static void __CLI_FreeArgs(size_t *, char ***);
@@ -45,10 +44,16 @@ void SNEAK100_CLI_Update() {
 	__CLI_Update(&cli_bluetooth);
 
 	__CLI_Update(&cli_debug);
+}
 
+void SNEAK100_CLI_UpdateRequest() {
+	cli_bluetooth.update_request = 1;
+	cli_debug.update_request = 1;
 }
 
 void __CLI_Update(Sneak100_CLI_t *cli) {
+	if(!cli->update_request)
+		return;
 
 	// check if line is complete
 	if(!RxBufferUART_ReadUntil(cli->buffer, cli->line, CLI_LINE_TERMINATOR, CLI_LINE_MAX_SIZE))
@@ -74,6 +79,8 @@ void __CLI_Update(Sneak100_CLI_t *cli) {
 	__CLI_FreeArgs(&cli->argc, &cli->argv);
 
 	__CLI_PrintPrompt(cli);
+
+	cli->update_request = 0;
 }
 
 void __CLI_PrintPrompt(Sneak100_CLI_t *cli) {

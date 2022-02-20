@@ -18,6 +18,8 @@ typedef struct {
 	char line[CLI_LINE_MAX_SIZE];
 	char **argv;
 	size_t argc;
+
+	uint8_t update_request;
 } Sneak100_CLI_t;
 
 extern Sneak100_CLI_t cli_bluetooth;
@@ -25,5 +27,8 @@ extern Sneak100_CLI_t cli_debug;
 
 void SNEAK100_CLI_Init();
 void SNEAK100_CLI_Update();
+void SNEAK100_CLI_UpdateRequest();
+
+void __CLI_PrintFormat(Sneak100_CLI_t *, const char *, ...);
 
 #endif

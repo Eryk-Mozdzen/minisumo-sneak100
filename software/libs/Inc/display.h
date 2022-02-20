@@ -19,12 +19,12 @@
 
 typedef struct {
 	I2C_HandleTypeDef *hi2c;
+	HAL_StatusTypeDef status;
 } Display_t;
-
-__weak void Display_ErrorHandler(const char *, uint16_t);
 
 void Display_Init(Display_t *, I2C_HandleTypeDef *);
 void Display_Update(Display_t *);
+HAL_StatusTypeDef Display_GetStatus(Display_t *);
 
 void Display_Clear(Display_t *);
 void Display_DrawBitmap(Display_t *, uint16_t, uint16_t, const uint8_t*, uint16_t, uint16_t);

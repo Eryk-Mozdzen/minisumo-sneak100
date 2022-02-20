@@ -36,6 +36,7 @@ void Motor_Init(Motor_t *motor, Encoder_t *encoder,
 
 	Motor_SetControlMode(motor, MOTOR_CONTROL_MODE_OPEN_LOOP_POWER);
 	Motor_SetBreakMode(motor, MOTOR_BRAKE_MODE_COAST);
+	//Motor_SetBreakMode(motor, MOTOR_BRAKE_MODE_BREAK);
 }
 
 void Motor_Update(Motor_t *motor) {

@@ -38,6 +38,8 @@ typedef struct {
 	DecoderRC5_t decoder_rc5;
 	Bluetooth_t bluetooth;
 
+	uint8_t update_request;
+
 	RobotState_t state;
 	RobotSettings_t settings;
 } Sneak100_t;
@@ -46,6 +48,7 @@ extern Sneak100_t sneak100;
 
 void SNEAK100_Core_Init();
 void SNEAK100_Core_Update();
+void SNEAK100_Core_UpdateRequest();
 
 void SNEAK100_Core_ReadState();
 void SNEAK100_Core_ReadSettings();

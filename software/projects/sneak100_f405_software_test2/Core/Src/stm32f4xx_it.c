@@ -25,6 +25,9 @@
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
 
+#include "gui.h"
+#include "cli.h"
+
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
 
@@ -95,10 +98,26 @@ void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
 
+	__disable_irq();
+
+	Display_Clear(gui.display);
+	Display_DrawText(gui.display, 0, 0, "Hard fault");
+	Display_Update(gui.display);
+
+	__CLI_PrintFormat(&cli_bluetooth, "Hard fault\n");
+	__CLI_PrintFormat(&cli_debug, "Hard fault\n");
+
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
   {
     /* USER CODE BEGIN W1_HardFault_IRQn 0 */
+
+	  HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
+	  for(uint32_t i=0; i<1000000; i++);
+
+	  HAL_GPIO_TogglePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin);
+	  for(uint32_t i=0; i<1000000; i++);
+
     /* USER CODE END W1_HardFault_IRQn 0 */
   }
 }
