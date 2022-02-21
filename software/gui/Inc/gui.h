@@ -16,6 +16,7 @@
 #include "gui_def.h"
 #include "gui_conf.h"
 #include "gui_events.h"
+#include "gui_states.h"
 
 extern Sneak100_GUI_t gui;
 

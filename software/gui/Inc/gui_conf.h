@@ -21,4 +21,4 @@
 #define GUI_MENU_COL_0	0
 #define GUI_MENU_COL_1	64
 
-#endif /* INC_GUI_CONF_H_ */
+#endif

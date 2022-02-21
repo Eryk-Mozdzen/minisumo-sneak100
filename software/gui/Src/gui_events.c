@@ -5,7 +5,7 @@
  *      Author: emozdzen
  */
 
-#include <gui.h>
+#include "gui_events.h"
 
 uint8_t __Button_L_ClickEvent(void *data) {
 	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
