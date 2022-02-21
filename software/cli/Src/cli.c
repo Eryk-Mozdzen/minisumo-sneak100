@@ -204,11 +204,11 @@ void __CLI_Cmd_Settings(Sneak100_CLI_t *cli) {
 	if(mode!=SETTINGS_MODE_INVALID)
 		sneak100.settings.mode = mode;
 	if(dyhlo!=SETTINGS_DYHLO_INVALID)
-		sneak100.settings.dyhlo = dyhlo;
+		sneak100.settings.dyhlo_color = dyhlo;
 	if(strategy!=SETTINGS_STRATEGY_INVALID)
 		sneak100.settings.strategy = strategy;
 
-	SNEAK100_Core_WriteSettings();
+	Memory_Write(&sneak100.memory, MEMORY_SETTINGS_ADDRESS, &sneak100.settings, sizeof(RobotSettings_t));
 }
 
 void __CLI_Cmd_Proximity(Sneak100_CLI_t *cli) {

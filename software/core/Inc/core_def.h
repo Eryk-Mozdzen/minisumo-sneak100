@@ -70,11 +70,24 @@ typedef enum {
 	SETTINGS_STRATEGY_INVALID
 } Settings_Strategy_t;
 
+typedef enum {
+	CORE_STATE_IDLE,
+	CORE_STATE_READY,
+	CORE_STATE_PROGRAM,
+	CORE_STATE_RUN,
+	CORE_STATE_STOP
+} CoreState_t;
+
 typedef struct {
 	Settings_Mode_t mode;
-	Settings_Dyhlo_t dyhlo;
+	Settings_Dyhlo_t dyhlo_color;
 	Settings_Strategy_t strategy;
 } RobotSettings_t;
+
+typedef struct {
+	uint8_t dyhlo_id;
+	CoreState_t core_state;
+} RobotFightData_t;
 
 typedef struct {
 	struct {
@@ -114,11 +127,17 @@ typedef struct {
 	Bluetooth_t bluetooth;
 
 	FiniteStateMachine_t fsm;
-	uint8_t program_select_flag;
+	struct {
+		uint16_t program_blink_counter;
+		uint8_t program_select : 1;
+		uint8_t button_start : 1;
+		uint8_t button_stop : 1;
+	} interface_flag;
 	uint8_t update_request;
 
 	RobotState_t state;
 	RobotSettings_t settings;
+	RobotFightData_t fight_data;
 } Sneak100_t;
 
 #endif

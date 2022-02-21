@@ -10,16 +10,7 @@
 
 #include <stdint.h>
 
-typedef enum {
-	BUTTON_L,
-	BUTTON_C,
-	BUTTON_R
-} GUI_Button_EnumTypeDef;
-
-typedef struct {
-	uint8_t pressed;
-	uint8_t changed;
-} GUI_ButtonState_StructTypeDef;
+#include "gui_def.h"
 
 uint8_t __Button_L_ClickEvent(void *);
 uint8_t __Button_C_ClickEvent(void *);

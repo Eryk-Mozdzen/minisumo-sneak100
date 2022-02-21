@@ -8,11 +8,12 @@
 #ifndef SNEAK100_ABSTRACTS_INC_LINE_H_
 #define SNEAK100_ABSTRACTS_INC_LINE_H_
 
-#include "stdint.h"
+#include <stdint.h>
 
 typedef enum {
-	DYHLO_BLACK_WITH_WHITE_CIRCUMFERENCE,
-	DYHLO_WHITE_WITH_BLACK_CIRCUMFERENCE
+	LINE_POLARITY_BLACK,
+	LINE_POLARITY_WHITE,
+	LINE_POLARITY_AUTO
 } Line_Polarity_t;
 
 typedef struct {

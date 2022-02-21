@@ -23,10 +23,11 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-/* USER CODE END Includes */
 
 #include "gui.h"
 #include "cli.h"
+
+/* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
@@ -100,9 +101,9 @@ void HardFault_Handler(void)
 
 	__disable_irq();
 
-	Display_Clear(gui.display);
-	Display_DrawText(gui.display, 0, 0, "Hard fault");
-	Display_Update(gui.display);
+	Display_Clear(&gui.sneak100_ptr->display);
+	Display_DrawText(&gui.sneak100_ptr->display, 0, 0, "Hard fault");
+	Display_Update(&gui.sneak100_ptr->display);
 
 	__CLI_PrintFormat(&cli_bluetooth, "Hard fault\n");
 	__CLI_PrintFormat(&cli_debug, "Hard fault\n");
