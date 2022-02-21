@@ -17,15 +17,6 @@
 #include "bluetooth.h"
 #include "rc5_decoder.h"
 
-#include "line.h"
-#include "motor.h"
-#include "memory.h"
-#include "encoder.h"
-#include "display.h"
-#include "proximity.h"
-#include "bluetooth.h"
-#include "rc5_decoder.h"
-
 typedef enum {
 	MOTOR_LF,
 	MOTOR_LB,
