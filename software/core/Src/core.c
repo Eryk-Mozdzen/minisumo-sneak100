@@ -11,6 +11,11 @@ Sneak100_t sneak100;
 
 static uint16_t adc_dma_buffer[6] = {0};
 
+static void SNEAK100_Core_ReadState();
+
+static float SNEAK100_Core_GetTemperature();
+static float SNEAK100_Core_GetSupplyVoltage();
+
 void SNEAK100_Core_Init() {
 
 	sneak100.update_request = 0;
@@ -19,15 +24,15 @@ void SNEAK100_Core_Init() {
 
 	FiniteStateMachine_Init(&sneak100.fsm, &sneak100);
 
-	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_IDLE,		NULL, &Core_Idle_Execute,		NULL);
-	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_READY,		NULL, &Core_Ready_Execute,		NULL);
-	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_PROGRAM,	NULL, &Core_Program_Execute,	NULL);
-	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_RUN,		NULL, &Core_Run_Execute,		NULL);
-	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_STOP,		NULL, &Core_Stop_Execute,		NULL);
+	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_IDLE,		&Core_Idle_Enter,		&Core_Idle_Execute,		NULL);
+	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_READY,		&Core_Ready_Enter,		&Core_Ready_Execute,	NULL);
+	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_PROGRAM,	&Core_Program_Enter,	&Core_Program_Execute,	NULL);
+	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_RUN,		&Core_Run_Enter,		&Core_Run_Execute,		NULL);
+	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_STOP,		&Core_Stop_Enter,		&Core_Stop_Execute,		NULL);
 
 	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_IDLE,		CORE_STATE_READY,	0, NULL, &__Core_Program_SelectEvent);
 	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_READY,	CORE_STATE_PROGRAM,	0, NULL, &__Core_Program_SignalEvent);
-	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_PROGRAM,	CORE_STATE_READY,	0, NULL, NULL);
+	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_PROGRAM,	CORE_STATE_READY,	0, NULL, &__Core_ProgramEnd_Event);
 	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_READY,	CORE_STATE_RUN,		0, NULL, &__Core_Start_SignalEvent);
 	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_RUN,		CORE_STATE_STOP,	0, NULL, &__Core_Stop_SignalEvent);
 
@@ -53,20 +58,32 @@ void SNEAK100_Core_Init() {
 
 	HAL_ADC_Start_DMA(&hadc1, (uint32_t *)adc_dma_buffer, 6);
 
-	Line_Init(&sneak100.lines[LINE_LL], &adc_dma_buffer[3], LINE_THRESHOLD, DYHLO_BLACK_WITH_WHITE_CIRCUMFERENCE);
-	Line_Init(&sneak100.lines[LINE_LM], &adc_dma_buffer[2], LINE_THRESHOLD, DYHLO_BLACK_WITH_WHITE_CIRCUMFERENCE);
-	Line_Init(&sneak100.lines[LINE_RM], &adc_dma_buffer[1], LINE_THRESHOLD, DYHLO_BLACK_WITH_WHITE_CIRCUMFERENCE);
-	Line_Init(&sneak100.lines[LINE_RR], &adc_dma_buffer[0], LINE_THRESHOLD, DYHLO_BLACK_WITH_WHITE_CIRCUMFERENCE);
+	Line_Init(&sneak100.lines[LINE_LL], &adc_dma_buffer[3], LINE_THRESHOLD, LINE_POLARITY_BLACK);
+	Line_Init(&sneak100.lines[LINE_LM], &adc_dma_buffer[2], LINE_THRESHOLD, LINE_POLARITY_BLACK);
+	Line_Init(&sneak100.lines[LINE_RM], &adc_dma_buffer[1], LINE_THRESHOLD, LINE_POLARITY_BLACK);
+	Line_Init(&sneak100.lines[LINE_RR], &adc_dma_buffer[0], LINE_THRESHOLD, LINE_POLARITY_BLACK);
 
 	Proximity_Init(&sneak100.proximity[PROXIMITY_LL], PROXIMITY_LL_GPIO_Port, PROXIMITY_LL_Pin);
 	Proximity_Init(&sneak100.proximity[PROXIMITY_FL], PROXIMITY_FL_GPIO_Port, PROXIMITY_FL_Pin);
 	Proximity_Init(&sneak100.proximity[PROXIMITY_FR], PROXIMITY_FR_GPIO_Port, PROXIMITY_FR_Pin);
 	Proximity_Init(&sneak100.proximity[PROXIMITY_RR], PROXIMITY_RR_GPIO_Port, PROXIMITY_RR_Pin);
+
+	// start
+
+	Memory_Read(&sneak100.memory, MEMORY_SETTINGS_ADDRESS, &sneak100.settings, sizeof(RobotSettings_t));
+	Memory_Read(&sneak100.memory, MEMORY_FIGHT_DATA_ADDRESS, &sneak100.fight_data, sizeof(RobotFightData_t));
+
+	FiniteStateMachine_Start(&sneak100.fsm, sneak100.fight_data.core_state);
 }
 
 void SNEAK100_Core_Update() {
 	if(!sneak100.update_request)
 		return;
+
+	Line_SetPolarity(&sneak100.lines[LINE_LL], sneak100.settings.dyhlo_color);
+	Line_SetPolarity(&sneak100.lines[LINE_LM], sneak100.settings.dyhlo_color);
+	Line_SetPolarity(&sneak100.lines[LINE_RM], sneak100.settings.dyhlo_color);
+	Line_SetPolarity(&sneak100.lines[LINE_RR], sneak100.settings.dyhlo_color);
 
 	SNEAK100_Core_ReadState();
 
@@ -113,55 +130,6 @@ void SNEAK100_Core_ReadState() {
 		sneak100.state.rc5.message = message;
 		sneak100.state.rc5.expired = 0;
 	}
-}
-
-void SNEAK100_Core_ReadSettings() {
-	Memory_Read(&sneak100.memory, MEMORY_SETTINGS_ADDRESS, &sneak100.settings, sizeof(RobotSettings_t));
-
-	// if settings in eeprom are invalid set default parameters
-	if(sneak100.settings.mode>=SETTINGS_MODE_NUM)
-		sneak100.settings.mode = SETTINGS_MODE_MODULE;
-	if(sneak100.settings.dyhlo>=SETTINGS_DYHLO_NUM)
-		sneak100.settings.dyhlo = SETTINGS_DYHLO_AUTO;
-	if(sneak100.settings.strategy>=SETTINGS_STRATEGY_NUM)
-		sneak100.settings.strategy = SETTINGS_STRATEGY_AGRESSIVE;
-
-	SNEAK100_Core_ApplySettings();
-}
-
-void SNEAK100_Core_WriteSettings() {
-	Memory_Write(&sneak100.memory, MEMORY_SETTINGS_ADDRESS, &sneak100.settings, sizeof(RobotSettings_t));
-
-	SNEAK100_Core_ApplySettings();
-}
-
-void SNEAK100_Core_ApplySettings() {
-	if(sneak100.settings.dyhlo!=SETTINGS_DYHLO_AUTO) {
-		Line_SetPolarity(&sneak100.lines[LINE_LL], sneak100.settings.dyhlo);
-		Line_SetPolarity(&sneak100.lines[LINE_LM], sneak100.settings.dyhlo);
-		Line_SetPolarity(&sneak100.lines[LINE_RM], sneak100.settings.dyhlo);
-		Line_SetPolarity(&sneak100.lines[LINE_RR], sneak100.settings.dyhlo);
-
-		return;
-	}
-
-	uint8_t value = 0;
-	value +=Line_GetState(&sneak100.lines[LINE_LL]);
-	value +=Line_GetState(&sneak100.lines[LINE_LM]);
-	value +=Line_GetState(&sneak100.lines[LINE_RM]);
-	value +=Line_GetState(&sneak100.lines[LINE_RR]);
-
-	if(!value)
-		return;
-
-	Line_Polarity_t polarity = DYHLO_BLACK_WITH_WHITE_CIRCUMFERENCE;
-	if(value==4)
-		polarity = !Line_GetPolarity(&sneak100.lines[LINE_LL]);
-
-	Line_SetPolarity(&sneak100.lines[LINE_LL], polarity);
-	Line_SetPolarity(&sneak100.lines[LINE_LM], polarity);
-	Line_SetPolarity(&sneak100.lines[LINE_RM], polarity);
-	Line_SetPolarity(&sneak100.lines[LINE_RR], polarity);
 }
 
 float SNEAK100_Core_GetTemperature() {

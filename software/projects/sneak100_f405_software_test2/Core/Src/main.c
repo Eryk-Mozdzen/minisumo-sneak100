@@ -110,7 +110,6 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 	SNEAK100_Core_Init();
-	SNEAK100_Core_ReadSettings();
 
 	SNEAK100_GUI_Init();
 	SNEAK100_CLI_Init();
@@ -123,9 +122,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while(1) {
 
-	  SNEAK100_Core_Update();
-	  SNEAK100_CLI_Update();
 	  SNEAK100_GUI_Update();
+	  SNEAK100_CLI_Update();
+	  SNEAK100_Core_Update();
 
     /* USER CODE END WHILE */
 
@@ -187,6 +186,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	RxBufferUART_RxCpltCallback(&sneak100.bluetooth.buffer, huart);
 }
 
+uint32_t last_time = 0;
+uint32_t delta_time = 0;
+
 /* USER CODE END 4 */
 
  /**
@@ -208,6 +210,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		SNEAK100_Core_UpdateRequest();
 		SNEAK100_GUI_UpdateRequest();
 		SNEAK100_CLI_UpdateRequest();
+
+		delta_time = HAL_GetTick() - last_time;
+		last_time = HAL_GetTick();
 	}
 
   /* USER CODE END Callback 0 */

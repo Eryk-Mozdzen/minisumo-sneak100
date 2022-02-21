@@ -14,6 +14,7 @@
 
 uint8_t __Core_Program_SelectEvent(void *);
 uint8_t __Core_Program_SignalEvent(void *);
+uint8_t __Core_ProgramEnd_Event(void *);
 uint8_t __Core_Start_SignalEvent(void *);
 uint8_t __Core_Stop_SignalEvent(void *);
 

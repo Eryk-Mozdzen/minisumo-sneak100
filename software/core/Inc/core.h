@@ -28,13 +28,4 @@ void SNEAK100_Core_Init();
 void SNEAK100_Core_Update();
 void SNEAK100_Core_UpdateRequest();
 
-void SNEAK100_Core_ReadState();
-void SNEAK100_Core_ReadSettings();
-void SNEAK100_Core_WriteSettings();
-
-void SNEAK100_Core_ApplySettings();
-
-float SNEAK100_Core_GetTemperature();
-float SNEAK100_Core_GetSupplyVoltage();
-
 #endif
