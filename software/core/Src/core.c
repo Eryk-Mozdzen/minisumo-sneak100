@@ -73,7 +73,7 @@ void SNEAK100_Core_Init() {
 	Memory_Read(&sneak100.memory, MEMORY_SETTINGS_ADDRESS, &sneak100.settings, sizeof(RobotSettings_t));
 	Memory_Read(&sneak100.memory, MEMORY_FIGHT_DATA_ADDRESS, &sneak100.fight_data, sizeof(RobotFightData_t));
 
-	FiniteStateMachine_Start(&sneak100.fsm, sneak100.fight_data.core_state);
+	FiniteStateMachine_Start(&sneak100.fsm, sneak100.fight_data.core_save_state);
 }
 
 void SNEAK100_Core_Update() {
@@ -124,6 +124,7 @@ void SNEAK100_Core_ReadState() {
 	sneak100.state.temperature = SNEAK100_Core_GetTemperature();
 	sneak100.state.battery = SNEAK100_Core_GetSupplyVoltage();
 	sneak100.state.bluetooth = Bluetooth_GetStatus(&sneak100.bluetooth);
+	sneak100.state.core_curr_state = sneak100.fsm.states[sneak100.fsm.curr_state_index].id;
 
 	RC5_Message_t message;
 	if(DecoderRC5_GetMessage(&sneak100.decoder_rc5, &message)) {
