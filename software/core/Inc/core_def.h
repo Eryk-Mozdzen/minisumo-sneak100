@@ -121,7 +121,7 @@ typedef struct {
 	FiniteStateMachine_t fsm;
 	struct {
 		uint16_t program_blink_counter;
-		uint32_t ready_button_start_click_time;
+		uint32_t start_time;
 
 		uint8_t program_select : 1;
 		uint8_t button_start : 1;

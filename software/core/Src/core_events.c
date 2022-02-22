@@ -43,9 +43,9 @@ uint8_t __Core_Start_SignalEvent(void *data) {
 		if(!sneak100_ptr->interface_flag.button_start)
 			return 0;
 
-		uint32_t time = HAL_GetTick() - sneak100_ptr->interface_flag.ready_button_start_click_time;
+		int64_t time = (int64_t)sneak100_ptr->interface_flag.start_time - (int64_t)HAL_GetTick();
 
-		return (time>=BUTTON_START_WAIT_TIME);
+		return (time<0);
 	}
 
 	RC5_Message_t msg = sneak100_ptr->state.rc5.message;

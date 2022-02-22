@@ -77,7 +77,7 @@ void Core_Ready_Execute(void *data) {
 	// do nothing
 
 	if(!sneak100_ptr->interface_flag.button_start)
-		sneak100_ptr->interface_flag.ready_button_start_click_time = HAL_GetTick();
+		sneak100_ptr->interface_flag.start_time = HAL_GetTick() + BUTTON_START_WAIT_TIME;
 }
 
 void Core_Program_Execute(void *data) {

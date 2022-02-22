@@ -60,27 +60,3 @@ uint8_t __GUI_Menu_Option5_SelectEvent(void *data) {
 
 	return (gui_ptr->buttons[BUTTON_R].pressed && gui_ptr->buttons[BUTTON_R].changed && gui_ptr->menu_selected==5);
 }
-
-uint8_t __GUI_Menu_Option6_SelectEvent(void *data) {
-	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
-
-	return (gui_ptr->buttons[BUTTON_R].pressed && gui_ptr->buttons[BUTTON_R].changed && gui_ptr->menu_selected==6);
-}
-
-uint8_t __GUI_Menu_Option7_SelectEvent(void *data) {
-	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
-
-	return (gui_ptr->buttons[BUTTON_R].pressed && gui_ptr->buttons[BUTTON_R].changed && gui_ptr->menu_selected==7);
-}
-
-uint8_t __GUI_Menu_Option8_SelectEvent(void *data) {
-	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
-
-	return (gui_ptr->buttons[BUTTON_R].pressed && gui_ptr->buttons[BUTTON_R].changed && gui_ptr->menu_selected==8);
-}
-
-uint8_t __GUI_Menu_Option9_SelectEvent(void *data) {
-	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
-
-	return (gui_ptr->buttons[BUTTON_R].pressed && gui_ptr->buttons[BUTTON_R].changed && gui_ptr->menu_selected==9);
-}
