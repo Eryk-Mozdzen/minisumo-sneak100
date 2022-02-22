@@ -40,5 +40,7 @@
 #define BUTTON_START_WAIT_TIME			5000	// ms
 
 #define CORE_UPDATE_PERIOD				50		// ms
+#define CORE_BUILD_DATE					__DATE__
+#define CORE_BUILD_TIME					__TIME__
 
 #endif

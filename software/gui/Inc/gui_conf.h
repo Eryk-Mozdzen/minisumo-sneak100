@@ -13,12 +13,14 @@
 #define DISPLAY_LINE_3	32
 #define DISPLAY_LINE_4	42
 
-#define GUI_MENU_ROW_0	0
-#define GUI_MENU_ROW_1	13
-#define GUI_MENU_ROW_2	26
-#define GUI_MENU_ROW_3	39
+#define GUI_MENU_ROW_0	11
+#define GUI_MENU_ROW_1	25
+#define GUI_MENU_ROW_2	38
 
 #define GUI_MENU_COL_0	0
 #define GUI_MENU_COL_1	64
+
+#define GUI_MENU_BLOCK_W	64
+#define GUI_MENU_BLOCK_H	14
 
 #endif

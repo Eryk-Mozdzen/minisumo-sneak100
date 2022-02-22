@@ -28,13 +28,18 @@ void GUI_DrawHeader(Sneak100_GUI_t *gui_ptr, const char *title) {
 }
 
 void GUI_DrawFooter(Sneak100_GUI_t *gui_ptr, const char *action_l, const char *action_c, const char *action_r) {
-	char bot_bar[32] = {0};
 
-	sprintf(bot_bar, "%.4s              ", action_l);
-	sprintf(bot_bar + 7, "%.5s       ", action_c);
-	sprintf(bot_bar + 14, "%.4s", action_r);
+	// right
+	uint8_t pad_len_r = 18 - strlen(action_r);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 53, "%*.*s%s", pad_len_r, pad_len_r, padding, action_r);
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 53, "%s", bot_bar);
+	// center
+	uint8_t pad_len_c = (18 - strlen(action_c))/2;
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 53, "%*.*s%s", pad_len_c, pad_len_c, padding, action_c);
+
+	// left
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 53, "%s", action_l);
+
 	Display_DrawLine(&gui_ptr->sneak100_ptr->display, 0, 52, 127, 52);
 }
 
@@ -49,26 +54,33 @@ void GUI_Render_Menu(void *data) {
 
 	Display_Clear(&gui_ptr->sneak100_ptr->display);
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_0 + 2, "view");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_1 + 2, "settings");
-	//Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_2 + 2, "test");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_3 + 2, "fight");
-
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_0 + 2, "    ");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_1 + 2, "    ");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_2 + 2, "info");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_3 + 2, "credits");
-
+	GUI_DrawHeader(gui_ptr, "Menu");
 	GUI_DrawFooter(gui_ptr, "up", "down", "sel");
 
-	Display_InvertColors(&gui_ptr->sneak100_ptr->display, (gui_ptr->menu_selected<4) ? GUI_MENU_COL_0 : GUI_MENU_COL_1, (gui_ptr->menu_selected%4)*13, 64, 13);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_0 + 2, "view");
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_1 + 2, "settings");
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_2 + 2, "fight");
+
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_0 + 2, "    ");
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_1 + 2, "info");
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_2 + 2, "credits");
+
+	uint8_t block_x[] = {GUI_MENU_COL_0, GUI_MENU_COL_1};
+	uint8_t block_y[] = {GUI_MENU_ROW_0, GUI_MENU_ROW_1, GUI_MENU_ROW_2};
+
+	Display_InvertColors(&gui_ptr->sneak100_ptr->display,
+		block_x[gui_ptr->menu_selected/3],
+		block_y[gui_ptr->menu_selected%3],
+		GUI_MENU_BLOCK_W,
+		GUI_MENU_BLOCK_H
+	);
 
 	if(gui_ptr->buttons[BUTTON_L].pressed && gui_ptr->buttons[BUTTON_L].changed)
-		gui_ptr->menu_selected--;
+		gui_ptr->menu_selected +=5;
 	if(gui_ptr->buttons[BUTTON_C].pressed && gui_ptr->buttons[BUTTON_C].changed)
 		gui_ptr->menu_selected++;
 
-	gui_ptr->menu_selected %=8;
+	gui_ptr->menu_selected %=6;
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
@@ -190,42 +202,50 @@ void GUI_Render_Settings(void *data) {
 void GUI_Render_Fight(void *data) {
 	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
 
-	Display_Clear(&gui_ptr->sneak100_ptr->display);
+	if(gui_ptr->sneak100_ptr->settings.mode==SETTINGS_MODE_MODULE) {
+		Display_Clear(&gui_ptr->sneak100_ptr->display);
 
-	GUI_DrawHeader(gui_ptr, "Fight");
-
-	if(gui_ptr->sneak100_ptr->settings.mode==SETTINGS_MODE_BUTTON) {
-		if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_READY) {
-
-			if(!gui_ptr->sneak100_ptr->interface_flag.button_start)
-				GUI_DrawFooter(gui_ptr, "", "start", "esc");
-			else {
-				uint32_t time = HAL_GetTick() - gui_ptr->sneak100_ptr->interface_flag.ready_button_start_click_time;
-				float time_remain = (BUTTON_START_WAIT_TIME - time)/1000.f;
-				if(time_remain<0.f)
-					time_remain = 0.f;
-
-				char buffer[16] = {0};
-				sprintf(buffer, "%.2f", time_remain);
-				GUI_DrawFooter(gui_ptr, "", buffer, "esc");
-			}
-
-		} else if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_RUN)
-			GUI_DrawFooter(gui_ptr, "", "stop", "esc");
-		else
-			GUI_DrawFooter(gui_ptr, "", "", "esc");;
-	} else
+		GUI_DrawHeader(gui_ptr, "Fight");
 		GUI_DrawFooter(gui_ptr, "", "", "esc");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, DISPLAY_LINE_1, "Save:     %s", core_states[gui_ptr->sneak100_ptr->fight_data.core_save_state]);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, DISPLAY_LINE_2, "dyhlo ID: 0x%02X", gui_ptr->sneak100_ptr->fight_data.dyhlo_id>>1);
+		Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, DISPLAY_LINE_1, "Save:     %s", core_states[gui_ptr->sneak100_ptr->fight_data.core_save_state]);
+		Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, DISPLAY_LINE_2, "dyhlo ID: 0x%02X", gui_ptr->sneak100_ptr->fight_data.dyhlo_id>>1);
 
-	if(gui_ptr->sneak100_ptr->settings.mode==SETTINGS_MODE_BUTTON && gui_ptr->buttons[BUTTON_C].pressed && gui_ptr->buttons[BUTTON_C].changed) {
+		Display_Update(&gui_ptr->sneak100_ptr->display);
+		return;
+	}
+
+	char button_c[8] = {0};
+
+	if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_READY) {
+
+		if(!gui_ptr->sneak100_ptr->interface_flag.button_start)
+			sprintf(button_c, "start");
+		else {
+			int64_t time = (int64_t)gui_ptr->sneak100_ptr->interface_flag.start_time - (int64_t)HAL_GetTick();
+			float time_f = (float)time/1000.f;
+			if(time_f<0.f)
+				time_f = 0.f;
+
+			sprintf(button_c, "%.2f", time_f);
+		}
+
+	} else if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_RUN)
+		sprintf(button_c, "stop");
+
+	if(gui_ptr->buttons[BUTTON_C].pressed && gui_ptr->buttons[BUTTON_C].changed) {
 		if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_READY)
 			gui_ptr->sneak100_ptr->interface_flag.button_start = 1;
 		else if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_RUN)
 			gui_ptr->sneak100_ptr->interface_flag.button_stop = 1;
 	}
+
+	Display_Clear(&gui_ptr->sneak100_ptr->display);
+
+	GUI_DrawHeader(gui_ptr, "Fight");
+	GUI_DrawFooter(gui_ptr, "", button_c, "esc");
+
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, DISPLAY_LINE_1, "Save:     %s", core_states[gui_ptr->sneak100_ptr->fight_data.core_save_state]);
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
@@ -238,7 +258,8 @@ void GUI_Render_Info(void *data) {
 	GUI_DrawHeader(gui_ptr, "Info");
 	GUI_DrawFooter(gui_ptr, "", "", "esc");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_1, "build: %s", __DATE__);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_1, "build: %s", CORE_BUILD_DATE);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_2, "       %s", CORE_BUILD_TIME);
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
