@@ -6,13 +6,24 @@
  */
 
 #include "gui_states.h"
-#include "sprites.h"
+
+static const char *mode[] = {"module", "button"};
+static const char *dyhlo[] = {"black", "white", "auto"};
+static const char *strategy[] = {"agressive", "defense", "passive"};
+static const char *core_states[] = {"idle", "ready", "program", "run", "stop"};
+static const char *bluetooth_status[] = {"waiting", "paired", "error"};
+static const char *padding = "                                               ";
 
 static void GUI_DrawHeader(Sneak100_GUI_t *, const char *);
 static void GUI_DrawFooter(Sneak100_GUI_t *, const char *, const char *, const char *);
 
 void GUI_DrawHeader(Sneak100_GUI_t *gui_ptr, const char *title) {
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 0, "%s       ", title);
+
+	const char *core_state = core_states[gui_ptr->sneak100_ptr->state.core_curr_state];
+	uint8_t pad_len = 7 - strlen(core_state);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 78, 0, "%*.*s%s", pad_len, pad_len, padding, core_state);
+
 	Display_DrawLine(&gui_ptr->sneak100_ptr->display, 0, 10, 127, 10);
 }
 
@@ -20,11 +31,17 @@ void GUI_DrawFooter(Sneak100_GUI_t *gui_ptr, const char *action_l, const char *a
 	char bot_bar[32] = {0};
 
 	sprintf(bot_bar, "%.4s              ", action_l);
-	sprintf(bot_bar + 7, "%.4s       ", action_c);
+	sprintf(bot_bar + 7, "%.5s       ", action_c);
 	sprintf(bot_bar + 14, "%.4s", action_r);
 
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 53, "%s", bot_bar);
 	Display_DrawLine(&gui_ptr->sneak100_ptr->display, 0, 52, 127, 52);
+}
+
+void GUI_Fight_Enter(void *data) {
+	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
+
+	gui_ptr->sneak100_ptr->interface_flag.program_select = 1;
 }
 
 void GUI_Render_Menu(void *data) {
@@ -34,7 +51,7 @@ void GUI_Render_Menu(void *data) {
 
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_0 + 2, "view");
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_1 + 2, "settings");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_2 + 2, "test");
+	//Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_2 + 2, "test");
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_3 + 2, "fight");
 
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_0 + 2, "    ");
@@ -132,8 +149,6 @@ void GUI_Render_ViewOthers(void *data) {
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_3, "RC5:  %u 0x%02X 0x%02X",
 			gui_ptr->sneak100_ptr->state.rc5.message.toggle, gui_ptr->sneak100_ptr->state.rc5.message.address, gui_ptr->sneak100_ptr->state.rc5.message.command);
 
-	const char *bluetooth_status[] = {"waiting", "paired", "error"};
-
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_4, "BT:   %s", bluetooth_status[gui_ptr->sneak100_ptr->state.bluetooth]);
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
@@ -146,10 +161,6 @@ void GUI_Render_Settings(void *data) {
 
 	GUI_DrawHeader(gui_ptr, "Settings");
 	GUI_DrawFooter(gui_ptr, "opt", "down", "save");
-
-	const char *mode[] = {"module", "button"};
-	const char *dyhlo[] = {"black", "white", "auto"};
-	const char *strategy[] = {"agressive", "defense", "passive"};
 
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_1, "mode : %s", mode[gui_ptr->sneak100_ptr->settings.mode]);
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_2, "dyhlo: %s", dyhlo[gui_ptr->sneak100_ptr->settings.dyhlo_color]);
@@ -176,6 +187,46 @@ void GUI_Render_Settings(void *data) {
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
 
+void GUI_Render_Fight(void *data) {
+	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
+
+	Display_Clear(&gui_ptr->sneak100_ptr->display);
+
+	GUI_DrawHeader(gui_ptr, "Fight");
+
+	if(gui_ptr->sneak100_ptr->settings.mode==SETTINGS_MODE_BUTTON) {
+		if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_READY) {
+
+
+			GUI_DrawFooter(gui_ptr, "", "start", "esc");
+
+		} else if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_RUN)
+			GUI_DrawFooter(gui_ptr, "", "stop", "esc");
+		else
+			GUI_DrawFooter(gui_ptr, "", "", "esc");;
+	} else
+		GUI_DrawFooter(gui_ptr, "", "", "esc");
+
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, DISPLAY_LINE_1, "Save:     %s", core_states[gui_ptr->sneak100_ptr->fight_data.core_save_state]);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, DISPLAY_LINE_2, "dyhlo ID: 0x%02X", gui_ptr->sneak100_ptr->fight_data.dyhlo_id>>1);
+
+	if(gui_ptr->sneak100_ptr->settings.mode==SETTINGS_MODE_BUTTON && gui_ptr->buttons[BUTTON_C].pressed && gui_ptr->buttons[BUTTON_C].changed) {
+		if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_READY) {
+
+			gui_ptr->sneak100_ptr->interface_flag.ready_button_start_click_time = HAL_GetTick();
+
+
+
+			//gui_ptr->sneak100_ptr->interface_flag.button_start = 1;
+
+		} else if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_RUN) {
+			gui_ptr->sneak100_ptr->interface_flag.button_stop = 1;
+		}
+	}
+
+	Display_Update(&gui_ptr->sneak100_ptr->display);
+}
+
 void GUI_Render_Info(void *data) {
 	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
 
@@ -185,7 +236,6 @@ void GUI_Render_Info(void *data) {
 	GUI_DrawFooter(gui_ptr, "", "", "esc");
 
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_1, "build: %s", __DATE__);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_2, "dyhlo ID:  0x%02X", gui_ptr->sneak100_ptr->fight_data.dyhlo_id);
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
