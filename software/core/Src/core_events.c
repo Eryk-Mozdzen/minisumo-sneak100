@@ -39,8 +39,14 @@ uint8_t __Core_ProgramEnd_Event(void *data) {
 uint8_t __Core_Start_SignalEvent(void *data) {
 	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
 
-	if(sneak100_ptr->settings.mode==SETTINGS_MODE_BUTTON)
-		return sneak100_ptr->interface_flag.button_start;
+	if(sneak100_ptr->settings.mode==SETTINGS_MODE_BUTTON) {
+		if(!sneak100_ptr->interface_flag.button_start)
+			return 0;
+
+		uint32_t time = HAL_GetTick() - sneak100_ptr->interface_flag.ready_button_start_click_time;
+
+		return (time>=BUTTON_START_WAIT_TIME);
+	}
 
 	RC5_Message_t msg = sneak100_ptr->state.rc5.message;
 	uint8_t dyhlo_id = sneak100_ptr->fight_data.dyhlo_id;

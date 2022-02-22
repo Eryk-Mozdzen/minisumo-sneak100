@@ -72,11 +72,12 @@ void Core_Idle_Execute(void *data) {
 }
 
 void Core_Ready_Execute(void *data) {
-	//Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
 
 	// do nothing
 
-	//gui_ptr->sneak100_ptr->interface_flag.ready_button_start_click_time = HAL_GetTick();
+	if(!sneak100_ptr->interface_flag.button_start)
+		sneak100_ptr->interface_flag.ready_button_start_click_time = HAL_GetTick();
 }
 
 void Core_Program_Execute(void *data) {
