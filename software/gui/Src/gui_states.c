@@ -197,8 +197,18 @@ void GUI_Render_Fight(void *data) {
 	if(gui_ptr->sneak100_ptr->settings.mode==SETTINGS_MODE_BUTTON) {
 		if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_READY) {
 
+			if(!gui_ptr->sneak100_ptr->interface_flag.button_start)
+				GUI_DrawFooter(gui_ptr, "", "start", "esc");
+			else {
+				uint32_t time = HAL_GetTick() - gui_ptr->sneak100_ptr->interface_flag.ready_button_start_click_time;
+				float time_remain = (BUTTON_START_WAIT_TIME - time)/1000.f;
+				if(time_remain<0.f)
+					time_remain = 0.f;
 
-			GUI_DrawFooter(gui_ptr, "", "start", "esc");
+				char buffer[16] = {0};
+				sprintf(buffer, "%.2f", time_remain);
+				GUI_DrawFooter(gui_ptr, "", buffer, "esc");
+			}
 
 		} else if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_RUN)
 			GUI_DrawFooter(gui_ptr, "", "stop", "esc");
@@ -211,17 +221,10 @@ void GUI_Render_Fight(void *data) {
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, DISPLAY_LINE_2, "dyhlo ID: 0x%02X", gui_ptr->sneak100_ptr->fight_data.dyhlo_id>>1);
 
 	if(gui_ptr->sneak100_ptr->settings.mode==SETTINGS_MODE_BUTTON && gui_ptr->buttons[BUTTON_C].pressed && gui_ptr->buttons[BUTTON_C].changed) {
-		if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_READY) {
-
-			gui_ptr->sneak100_ptr->interface_flag.ready_button_start_click_time = HAL_GetTick();
-
-
-
-			//gui_ptr->sneak100_ptr->interface_flag.button_start = 1;
-
-		} else if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_RUN) {
+		if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_READY)
+			gui_ptr->sneak100_ptr->interface_flag.button_start = 1;
+		else if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_RUN)
 			gui_ptr->sneak100_ptr->interface_flag.button_stop = 1;
-		}
 	}
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);

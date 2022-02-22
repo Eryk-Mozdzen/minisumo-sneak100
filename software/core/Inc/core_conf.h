@@ -37,6 +37,8 @@
 #define MODULE_RC5_CMD_MASK_START_STOP	0x01
 #define MODULE_RC5_LED_BLINK_PERIOD		400		// ms
 
+#define BUTTON_START_WAIT_TIME			5000	// ms
+
 #define CORE_UPDATE_PERIOD				50		// ms
 
 #endif

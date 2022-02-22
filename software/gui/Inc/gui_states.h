@@ -10,6 +10,7 @@
 
 #include "gui_def.h"
 #include "gui_conf.h"
+#include "core_conf.h"
 #include "sprites.h"
 
 void GUI_Fight_Enter(void *);
