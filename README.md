@@ -11,11 +11,10 @@
 </p>
 
 ### In progress:
-- GUI
-- CLI
-- Core
+- code names style unification
 
 ### To do:
+- simple fight algorithm
 - print plastic elements
 - shape blade
 
