@@ -24,6 +24,7 @@
 #  4 sep 2021 - Baltic Robot Battles, Gdansk, Poland (canceled)
 - 20 nov 2021 - EastROBO 2021, Bialystok, Poland (missed)
 - 28 nov 2021 - ROBOmotion 2021, Rzeszow, Poland (missed)
++  9 apr 2022 - Robotic Tournament, Rybnik, Poland
 + 13 may 2022 - Baltic Robot Battles, Gdansk, Poland
 ```
 
