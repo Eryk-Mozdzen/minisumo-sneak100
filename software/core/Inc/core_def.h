@@ -10,6 +10,7 @@
 
 #include "line.h"
 #include "motor.h"
+#include "button.h"
 #include "memory.h"
 #include "encoder.h"
 #include "display.h"
@@ -37,6 +38,12 @@ typedef enum {
 	PROXIMITY_FR,
 	PROXIMITY_RR
 } Core_Proximity_t;
+
+typedef enum {
+	BUTTON_L,
+	BUTTON_C,
+	BUTTON_R
+} Core_Button_t;
 
 typedef enum {
 	SETTINGS_MODE_MODULE,
@@ -113,6 +120,7 @@ typedef struct {
 	Encoder_t encoders[4];
 	Line_t lines[4];
 	Proximity_t proximity[4];
+	Button_t buttons[3];
 	Memory_t memory;
 	Display_t display;
 	DecoderRC5_t decoder_rc5;

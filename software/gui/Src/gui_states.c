@@ -82,9 +82,9 @@ void __GUI_Menu_Execute(void *data) {
 		GUI_MENU_BLOCK_H
 	);
 
-	if(gui_ptr->buttons[BUTTON_L].pressed && gui_ptr->buttons[BUTTON_L].changed)
+	if(Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_L]))
 		gui_ptr->menu_selected +=5;
-	if(gui_ptr->buttons[BUTTON_C].pressed && gui_ptr->buttons[BUTTON_C].changed)
+	if(Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_C]))
 		gui_ptr->menu_selected++;
 
 	gui_ptr->menu_selected %=6;
@@ -187,16 +187,16 @@ void __GUI_Settings_Execute(void *data) {
 
 	Display_InvertColors(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_1 + (GUI_CONTENT_LINE_2 - GUI_CONTENT_LINE_1)*gui_ptr->menu_selected - 1, 128, GUI_CONTENT_LINE_2 - GUI_CONTENT_LINE_1 + 1);
 
-	if(gui_ptr->buttons[BUTTON_C].pressed && gui_ptr->buttons[BUTTON_C].changed)
+	if(Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_C]))
 		gui_ptr->menu_selected++;
 
-	if(gui_ptr->buttons[BUTTON_L].pressed && gui_ptr->buttons[BUTTON_L].changed && gui_ptr->menu_selected==0) {
+	if(Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_L]) && gui_ptr->menu_selected==0) {
 		gui_ptr->sneak100_ptr->settings.mode++;
 		gui_ptr->sneak100_ptr->settings.mode %=SETTINGS_MODE_NUM;
-	} else if(gui_ptr->buttons[BUTTON_L].pressed && gui_ptr->buttons[BUTTON_L].changed && gui_ptr->menu_selected==1) {
+	} else if(Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_L]) && gui_ptr->menu_selected==1) {
 		gui_ptr->sneak100_ptr->settings.dyhlo_color++;
 		gui_ptr->sneak100_ptr->settings.dyhlo_color %=SETTINGS_DYHLO_NUM;
-	} else if(gui_ptr->buttons[BUTTON_L].pressed && gui_ptr->buttons[BUTTON_L].changed && gui_ptr->menu_selected==2) {
+	} else if(Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_L]) && gui_ptr->menu_selected==2) {
 		gui_ptr->sneak100_ptr->settings.strategy++;
 		gui_ptr->sneak100_ptr->settings.strategy %=SETTINGS_STRATEGY_NUM;
 	}
@@ -240,7 +240,7 @@ void __GUI_Fight_Execute(void *data) {
 	} else if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_RUN)
 		sprintf(button_c, "stop");
 
-	if(gui_ptr->buttons[BUTTON_C].pressed && gui_ptr->buttons[BUTTON_C].changed) {
+	if(Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_C])) {
 		if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_READY)
 			gui_ptr->sneak100_ptr->interface_flag.button_start = 1;
 		else if(gui_ptr->sneak100_ptr->state.core_curr_state==CORE_STATE_RUN)

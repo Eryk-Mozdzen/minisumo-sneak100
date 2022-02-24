@@ -68,6 +68,10 @@ void SNEAK100_Core_Init() {
 	Proximity_Init(&sneak100.proximity[PROXIMITY_FR], PROXIMITY_FR_GPIO_Port, PROXIMITY_FR_Pin);
 	Proximity_Init(&sneak100.proximity[PROXIMITY_RR], PROXIMITY_RR_GPIO_Port, PROXIMITY_RR_Pin);
 
+	Button_Init(&sneak100.buttons[BUTTON_L], USER_BUTTON_L_GPIO_Port, USER_BUTTON_L_Pin);
+	Button_Init(&sneak100.buttons[BUTTON_C], USER_BUTTON_C_GPIO_Port, USER_BUTTON_C_Pin);
+	Button_Init(&sneak100.buttons[BUTTON_R], USER_BUTTON_R_GPIO_Port, USER_BUTTON_R_Pin);
+
 	// start
 
 	Memory_Read(&sneak100.memory, MEMORY_SETTINGS_ADDRESS, &sneak100.settings, sizeof(Core_Settings_t));
