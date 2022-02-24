@@ -12,6 +12,7 @@
 
 #include "cli_conf.h"
 #include "cli_def.h"
+#include "cli_cmd.h"
 
 extern Sneak100_CLI_t cli_bluetooth;
 extern Sneak100_CLI_t cli_debug;
