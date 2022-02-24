@@ -21,6 +21,6 @@
 #define GUI_MENU_COL_1		64
 
 #define GUI_MENU_BLOCK_W	64
-#define GUI_MENU_BLOCK_H	14
+#define GUI_MENU_BLOCK_H	13
 
 #endif

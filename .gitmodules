@@ -1,3 +1,7 @@
 [submodule "software/external/state-machine-c"]
 	path = software/external/state-machine-c
 	url = git@github.com:Eryk-Mozdzen/state-machine-c.git
+
+[submodule "software/external/stm32-ssd1306"]
+	path = software/external/stm32-ssd1306
+	url = git@github.com:afiskon/stm32-ssd1306.git
