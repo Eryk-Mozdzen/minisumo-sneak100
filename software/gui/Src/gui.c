@@ -9,15 +9,9 @@
 
 Sneak100_GUI_t gui;
 
-static void GUI_ReadInputs();
-
 void SNEAK100_GUI_Init() {
-	gui.buttons[BUTTON_L] = (const GUI_ButtonState_t){0};
-	gui.buttons[BUTTON_C] = (const GUI_ButtonState_t){0};
-	gui.buttons[BUTTON_R] = (const GUI_ButtonState_t){0};
-	gui.update_request = 0;
-
 	gui.sneak100_ptr = &sneak100;
+	gui.update_request = 0;
 
 	FiniteStateMachine_Init(&gui.fsm, &gui);
 
@@ -62,7 +56,9 @@ void SNEAK100_GUI_Update() {
 	if(!gui.update_request)
 		return;
 
-	GUI_ReadInputs();
+	Button_Update(&gui.sneak100_ptr->buttons[BUTTON_L]);
+	Button_Update(&gui.sneak100_ptr->buttons[BUTTON_C]);
+	Button_Update(&gui.sneak100_ptr->buttons[BUTTON_R]);
 
 	FiniteStateMachine_Update(&gui.fsm);
 	FiniteStateMachine_Execute(&gui.fsm);
@@ -72,14 +68,4 @@ void SNEAK100_GUI_Update() {
 
 void SNEAK100_GUI_UpdateRequest() {
 	gui.update_request = 1;
-}
-
-void GUI_ReadInputs() {
-	gui.buttons[BUTTON_L].changed = gui.buttons[BUTTON_L].pressed ^ !HAL_GPIO_ReadPin(USER_BUTTON_L_GPIO_Port, USER_BUTTON_L_Pin);
-	gui.buttons[BUTTON_C].changed = gui.buttons[BUTTON_C].pressed ^ !HAL_GPIO_ReadPin(USER_BUTTON_C_GPIO_Port, USER_BUTTON_C_Pin);
-	gui.buttons[BUTTON_R].changed = gui.buttons[BUTTON_R].pressed ^ !HAL_GPIO_ReadPin(USER_BUTTON_R_GPIO_Port, USER_BUTTON_R_Pin);
-
-	gui.buttons[BUTTON_L].pressed = !HAL_GPIO_ReadPin(USER_BUTTON_L_GPIO_Port, USER_BUTTON_L_Pin);
-	gui.buttons[BUTTON_C].pressed = !HAL_GPIO_ReadPin(USER_BUTTON_C_GPIO_Port, USER_BUTTON_C_Pin);
-	gui.buttons[BUTTON_R].pressed = !HAL_GPIO_ReadPin(USER_BUTTON_R_GPIO_Port, USER_BUTTON_R_Pin);
 }
