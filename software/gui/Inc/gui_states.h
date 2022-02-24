@@ -13,16 +13,18 @@
 #include "core_conf.h"
 #include "sprites.h"
 
-void GUI_Fight_Enter(void *);
+void __GUI_Fight_Enter(void *);
 
-void GUI_Render_Menu(void *);
-void GUI_Render_ViewMotors(void *);
-void GUI_Render_ViewLine(void *);
-void GUI_Render_ViewProximity(void *);
-void GUI_Render_ViewOthers(void *);
-void GUI_Render_Settings(void *);
-void GUI_Render_Fight(void *);
-void GUI_Render_Info(void *);
-void GUI_Render_Credits(void *);
+void __GUI_Menu_Execute(void *);
+void __GUI_Motors_Execute(void *);
+void __GUI_Line_Execute(void *);
+void __GUI_Proximity_Execute(void *);
+void __GUI_Others_Execute(void *);
+void __GUI_Settings_Execute(void *);
+void __GUI_Fight_Execute(void *);
+void __GUI_Info_Execute(void *);
+void __GUI_Credits_Execute(void *);
+
+void __GUI_Settings_Exit(void *);
 
 #endif

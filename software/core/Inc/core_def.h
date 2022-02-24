@@ -22,28 +22,28 @@ typedef enum {
 	MOTOR_LB,
 	MOTOR_RF,
 	MOTOR_RB
-} Motor_Enum;
+} Core_Motor_t;
 
 typedef enum {
 	LINE_LL,
 	LINE_LM,
 	LINE_RM,
 	LINE_RR
-} Line_Enum;
+} Core_Line_t;
 
 typedef enum {
 	PROXIMITY_LL,
 	PROXIMITY_FL,
 	PROXIMITY_FR,
 	PROXIMITY_RR
-} Proximity_Enum;
+} Core_Proximity_t;
 
 typedef enum {
 	SETTINGS_MODE_MODULE,
 	SETTINGS_MODE_BUTTON,
 	SETTINGS_MODE_NUM,
 	SETTINGS_MODE_INVALID
-} Settings_Mode_t;
+} Core_SettingsMode_t;
 
 typedef enum {
 	SETTINGS_DYHLO_BLACK,
@@ -51,7 +51,7 @@ typedef enum {
 	SETTINGS_DYHLO_AUTO,
 	SETTINGS_DYHLO_NUM,
 	SETTINGS_DYHLO_INVALID
-} Settings_Dyhlo_t;
+} Core_SettingsDyhlo_t;
 
 typedef enum {
 	SETTINGS_STRATEGY_AGRESSIVE,
@@ -59,7 +59,7 @@ typedef enum {
 	SETTINGS_STRATEGY_PASSIVE,
 	SETTINGS_STRATEGY_NUM,
 	SETTINGS_STRATEGY_INVALID
-} Settings_Strategy_t;
+} Core_SettingsStrategy_t;
 
 typedef enum {
 	CORE_STATE_IDLE,
@@ -67,18 +67,18 @@ typedef enum {
 	CORE_STATE_PROGRAM,
 	CORE_STATE_RUN,
 	CORE_STATE_STOP
-} CoreState_t;
+} Core_State_t;
 
 typedef struct {
-	Settings_Mode_t mode;
-	Settings_Dyhlo_t dyhlo_color;
-	Settings_Strategy_t strategy;
-} RobotSettings_t;
+	Core_SettingsMode_t mode;
+	Core_SettingsDyhlo_t dyhlo_color;
+	Core_SettingsStrategy_t strategy;
+} Core_Settings_t;
 
 typedef struct {
 	uint8_t dyhlo_id;
-	CoreState_t core_save_state;
-} RobotFightData_t;
+	Core_State_t core_save_state;
+} Core_FightData_t;
 
 typedef struct {
 	struct {
@@ -99,14 +99,14 @@ typedef struct {
 
 	float temperature;
 	float battery;
-	CoreState_t core_curr_state;
+	Core_State_t core_curr_state;
 	Bluetooth_Status_t bluetooth;
 
 	struct {
 		RC5_Message_t message;
 		uint8_t expired;
 	} rc5;
-} RobotState_t;
+} Core_StateData_t;
 
 typedef struct {
 	Motor_t motors[4];
@@ -129,9 +129,9 @@ typedef struct {
 	} interface_flag;
 	uint8_t update_request;
 
-	RobotState_t state;
-	RobotSettings_t settings;
-	RobotFightData_t fight_data;
-} Sneak100_t;
+	Core_StateData_t state;
+	Core_Settings_t settings;
+	Core_FightData_t fight_data;
+} Sneak100_Core_t;
 
 #endif

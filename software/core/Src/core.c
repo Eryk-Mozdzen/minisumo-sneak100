@@ -7,7 +7,7 @@
 
 #include "core.h"
 
-Sneak100_t sneak100;
+Sneak100_Core_t sneak100;
 
 static uint16_t adc_dma_buffer[6] = {0};
 
@@ -70,8 +70,8 @@ void SNEAK100_Core_Init() {
 
 	// start
 
-	Memory_Read(&sneak100.memory, MEMORY_SETTINGS_ADDRESS, &sneak100.settings, sizeof(RobotSettings_t));
-	Memory_Read(&sneak100.memory, MEMORY_FIGHT_DATA_ADDRESS, &sneak100.fight_data, sizeof(RobotFightData_t));
+	Memory_Read(&sneak100.memory, MEMORY_SETTINGS_ADDRESS, &sneak100.settings, sizeof(Core_Settings_t));
+	Memory_Read(&sneak100.memory, MEMORY_FIGHT_DATA_ADDRESS, &sneak100.fight_data, sizeof(Core_FightData_t));
 
 	FiniteStateMachine_Start(&sneak100.fsm, sneak100.fight_data.core_save_state);
 }

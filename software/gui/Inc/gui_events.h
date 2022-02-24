@@ -12,15 +12,15 @@
 
 #include "gui_def.h"
 
-uint8_t __Button_L_ClickEvent(void *);
-uint8_t __Button_C_ClickEvent(void *);
-uint8_t __Button_R_ClickEvent(void *);
+uint8_t __GUI_ButtonL_Click_Event(void *);
+uint8_t __GUI_ButtonC_Click_Event(void *);
+uint8_t __GUI_ButtonR_Click_Event(void *);
 
-uint8_t __GUI_Menu_Option0_SelectEvent(void *);
-uint8_t __GUI_Menu_Option1_SelectEvent(void *);
-uint8_t __GUI_Menu_Option2_SelectEvent(void *);
-uint8_t __GUI_Menu_Option3_SelectEvent(void *);
-uint8_t __GUI_Menu_Option4_SelectEvent(void *);
-uint8_t __GUI_Menu_Option5_SelectEvent(void *);
+uint8_t __GUI_MenuOption0_Select_Event(void *);
+uint8_t __GUI_MenuOption1_Select_Event(void *);
+uint8_t __GUI_MenuOption2_Select_Event(void *);
+uint8_t __GUI_MenuOption3_Select_Event(void *);
+uint8_t __GUI_MenuOption4_Select_Event(void *);
+uint8_t __GUI_MenuOption5_Select_Event(void *);
 
 #endif
