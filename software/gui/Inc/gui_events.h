@@ -22,5 +22,7 @@ uint8_t __GUI_MenuOption2_Select_Event(void *);
 uint8_t __GUI_MenuOption3_Select_Event(void *);
 uint8_t __GUI_MenuOption4_Select_Event(void *);
 uint8_t __GUI_MenuOption5_Select_Event(void *);
+uint8_t __GUI_MenuOption6_Select_Event(void *);
+uint8_t __GUI_MenuOption7_Select_Event(void *);
 
 #endif

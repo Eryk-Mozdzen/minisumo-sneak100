@@ -60,3 +60,15 @@ uint8_t __GUI_MenuOption5_Select_Event(void *data) {
 
 	return (Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_R]) && gui_ptr->menu_selected==5);
 }
+
+uint8_t __GUI_MenuOption6_Select_Event(void *data) {
+	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
+
+	return (Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_R]) && gui_ptr->menu_selected==6);
+}
+
+uint8_t __GUI_MenuOption7_Select_Event(void *data) {
+	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
+
+	return (Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_R]) && gui_ptr->menu_selected==7);
+}
