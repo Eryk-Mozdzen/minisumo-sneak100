@@ -64,18 +64,18 @@ void __GUI_Menu_Execute(void *data) {
 	GUI_DrawHeader(gui_ptr, "Menu");
 	GUI_DrawFooter(gui_ptr, "up", "down", "sel");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_0 + 2, "view");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_1 + 2, "settings");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0,  GUI_MENU_ROW_2 + 2, "fight");
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0 + 2,  GUI_MENU_ROW_0 + 2, "view");
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0 + 2,  GUI_MENU_ROW_1 + 2, "settings");
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0 + 2,  GUI_MENU_ROW_2 + 2, "fight");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_0 + 2, "    ");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_1 + 2, "info");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1,  GUI_MENU_ROW_2 + 2, "credits");
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1 + 2,  GUI_MENU_ROW_0 + 2, "    ");
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1 + 2,  GUI_MENU_ROW_1 + 2, "info");
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1 + 2,  GUI_MENU_ROW_2 + 2, "credits");
 
 	uint8_t block_x[] = {GUI_MENU_COL_0, GUI_MENU_COL_1};
 	uint8_t block_y[] = {GUI_MENU_ROW_0, GUI_MENU_ROW_1, GUI_MENU_ROW_2};
 
-	Display_InvertColors(&gui_ptr->sneak100_ptr->display,
+	Display_DrawRect(&gui_ptr->sneak100_ptr->display,
 		block_x[gui_ptr->menu_selected/3],
 		block_y[gui_ptr->menu_selected%3],
 		GUI_MENU_BLOCK_W,
@@ -185,7 +185,7 @@ void __GUI_Settings_Execute(void *data) {
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_2, "dyhlo: %s", dyhlo[gui_ptr->sneak100_ptr->settings.dyhlo_color]);
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_3, "strat: %s", strategy[gui_ptr->sneak100_ptr->settings.strategy]);
 
-	Display_InvertColors(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_1 + (GUI_CONTENT_LINE_2 - GUI_CONTENT_LINE_1)*gui_ptr->menu_selected - 1, 128, GUI_CONTENT_LINE_2 - GUI_CONTENT_LINE_1 + 1);
+	Display_DrawRect(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_1 + (GUI_CONTENT_LINE_2 - GUI_CONTENT_LINE_1)*gui_ptr->menu_selected - 1, 128, GUI_CONTENT_LINE_2 - GUI_CONTENT_LINE_1 + 1);
 
 	if(Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_C]))
 		gui_ptr->menu_selected++;

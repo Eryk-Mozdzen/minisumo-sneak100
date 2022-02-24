@@ -10,14 +10,19 @@
 void Display_Init(Display_t *display, I2C_HandleTypeDef *hi2c) {
 	display->hi2c = hi2c;
 
-	display->status = ssd1306_Init(display->hi2c);
+	//display->status = ssd1306_Init(display->hi2c);
+
+	display->status = HAL_OK;
+	ssd1306_Init();
 }
 
 void Display_Update(Display_t *display) {
 	if(Display_GetStatus(display)!=HAL_OK)
 		return;
 
-	ssd1306_UpdateScreen(display->hi2c);
+	//ssd1306_UpdateScreen(display->hi2c);
+
+	ssd1306_UpdateScreen();
 }
 
 HAL_StatusTypeDef Display_GetStatus(Display_t *display) {
@@ -33,87 +38,7 @@ void Display_DrawBitmap(Display_t *display, uint16_t x, uint16_t y, const uint8_
 }
 
 void Display_DrawLine(Display_t *display, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
-	int16_t dx, dy, sx, sy, err, e2, i, tmp;
-
-	/* Check for overflow */
-	if (x0 >= SSD1306_WIDTH) {
-		x0 = SSD1306_WIDTH - 1;
-	}
-	if (x1 >= SSD1306_WIDTH) {
-		x1 = SSD1306_WIDTH - 1;
-	}
-	if (y0 >= SSD1306_HEIGHT) {
-		y0 = SSD1306_HEIGHT - 1;
-	}
-	if (y1 >= SSD1306_HEIGHT) {
-		y1 = SSD1306_HEIGHT - 1;
-	}
-
-	dx = (x0 < x1) ? (x1 - x0) : (x0 - x1);
-	dy = (y0 < y1) ? (y1 - y0) : (y0 - y1);
-	sx = (x0 < x1) ? 1 : -1;
-	sy = (y0 < y1) ? 1 : -1;
-	err = ((dx > dy) ? dx : -dy) / 2;
-
-	if (dx == 0) {
-		if (y1 < y0) {
-			tmp = y1;
-			y1 = y0;
-			y0 = tmp;
-		}
-
-		if (x1 < x0) {
-			tmp = x1;
-			x1 = x0;
-			x0 = tmp;
-		}
-
-		/* Vertical line */
-		for (i = y0; i <= y1; i++) {
-			ssd1306_DrawPixel(x0, i, White);
-		}
-
-		/* Return from function */
-		return;
-	}
-
-	if (dy == 0) {
-		if (y1 < y0) {
-			tmp = y1;
-			y1 = y0;
-			y0 = tmp;
-		}
-
-		if (x1 < x0) {
-			tmp = x1;
-			x1 = x0;
-			x0 = tmp;
-		}
-
-		/* Horizontal line */
-		for (i = x0; i <= x1; i++) {
-			ssd1306_DrawPixel(i, y0, White);
-		}
-
-		/* Return from function */
-		return;
-	}
-
-	while(1) {
-		ssd1306_DrawPixel(x0, y0, White);
-		if (x0 == x1 && y0 == y1) {
-			break;
-		}
-		e2 = err;
-		if (e2 > -dx) {
-			err -= dy;
-			x0 += sx;
-		}
-		if (e2 < dy) {
-			err += dx;
-			y0 += sy;
-		}
-	}
+	ssd1306_Line(x0, y0, x1, y1, White);
 
 }
 
@@ -129,21 +54,8 @@ void Display_DrawText(Display_t *display, uint8_t x, uint8_t y, const char *form
 	ssd1306_WriteString(buffer, Font_7x10, White);
 }
 
-void Display_InvertColors(Display_t *display, uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
-	if(x>=128 || y>=64)
-		return;
-
-	for(uint8_t i=0; i<w; i++) {
-		if(x+i>=128)
-			return;
-
-		for(uint8_t j=0; j<h; j++) {
-			if(y+j>=64)
-				continue;
-
-			ssd1306_DrawPixel(x+i, y+j, !ssd1306_GetPixel(x+i, y+j));
-		}
-	}
+void Display_DrawRect(Display_t *display, uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
+	ssd1306_DrawRectangle(x, y, x + w, y + h, White);
 }
 
 

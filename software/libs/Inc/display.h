@@ -30,6 +30,6 @@ void Display_Clear(Display_t *);
 void Display_DrawBitmap(Display_t *, uint16_t, uint16_t, const uint8_t*, uint16_t, uint16_t);
 void Display_DrawLine(Display_t *, uint16_t, uint16_t, uint16_t, uint16_t);
 void Display_DrawText(Display_t *, uint8_t, uint8_t, const char *, ...);
-void Display_InvertColors(Display_t *, uint8_t, uint8_t, uint8_t, uint8_t);
+void Display_DrawRect(Display_t *, uint8_t, uint8_t, uint8_t, uint8_t);
 
 #endif /* SNEAK100_ABSTRACTION_LAYER_INC_DISPLAY_H_ */
