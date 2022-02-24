@@ -20,10 +20,13 @@
 typedef struct {
 	I2C_HandleTypeDef *hi2c;
 	HAL_StatusTypeDef status;
+
+	SSD1306_COLOR color;
 } Display_t;
 
 void Display_Init(Display_t *, I2C_HandleTypeDef *);
 void Display_Update(Display_t *);
+void Display_SetColor(Display_t *, SSD1306_COLOR);
 HAL_StatusTypeDef Display_GetStatus(Display_t *);
 
 void Display_Clear(Display_t *);

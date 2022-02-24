@@ -12,6 +12,8 @@ static const char *dyhlo[] = {"black", "white", "auto"};
 static const char *strategy[] = {"agressive", "defense", "passive"};
 static const char *core_states[] = {"idle", "ready", "program", "run", "stop"};
 static const char *bluetooth_status[] = {"waiting", "paired", "error"};
+static const char *menu[] = {"view", "settings", "fight", "", "", "", "info", "credits"};
+static const char *settings[] = {"mode", "dyhlo", "strat"};
 static const char *padding = "                                               ";
 
 static void GUI_DrawHeader(Sneak100_GUI_t *, const char *);
@@ -32,16 +34,16 @@ void GUI_DrawFooter(Sneak100_GUI_t *gui_ptr, const char *action_l, const char *a
 
 	// right
 	uint8_t pad_len_r = 18 - strlen(action_r);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 53, "%*.*s%s", pad_len_r, pad_len_r, padding, action_r);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 54, "%*.*s%s", pad_len_r, pad_len_r, padding, action_r);
 
 	// center
 	uint8_t pad_len_c = (18 - strlen(action_c))/2;
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 53, "%*.*s%s", pad_len_c, pad_len_c, padding, action_c);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 54, "%*.*s%s", pad_len_c, pad_len_c, padding, action_c);
 
 	// left
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 53, "%s", action_l);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 54, "%s", action_l);
 
-	Display_DrawLine(&gui_ptr->sneak100_ptr->display, 0, 52, 127, 52);
+	Display_DrawLine(&gui_ptr->sneak100_ptr->display, 0, 53, 127, 53);
 }
 
 void GUI_WriteSettings(Sneak100_GUI_t *gui_ptr, Core_Settings_t settings) {
@@ -64,30 +66,23 @@ void __GUI_Menu_Execute(void *data) {
 	GUI_DrawHeader(gui_ptr, "Menu");
 	GUI_DrawFooter(gui_ptr, "up", "down", "sel");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0 + 2,  GUI_MENU_ROW_0 + 2, "view");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0 + 2,  GUI_MENU_ROW_1 + 2, "settings");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_0 + 2,  GUI_MENU_ROW_2 + 2, "fight");
+	uint8_t block_x[] = {0, 64};
+	uint8_t block_y[] = {GUI_CONTENT_LINE_1, GUI_CONTENT_LINE_2, GUI_CONTENT_LINE_3, GUI_CONTENT_LINE_4};
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1 + 2,  GUI_MENU_ROW_0 + 2, "    ");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1 + 2,  GUI_MENU_ROW_1 + 2, "info");
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, GUI_MENU_COL_1 + 2,  GUI_MENU_ROW_2 + 2, "credits");
+	for(uint8_t i=0; i<8; i++) {
+		if(i==gui_ptr->menu_selected)
+			Display_SetColor(&gui_ptr->sneak100_ptr->display, Black);
 
-	uint8_t block_x[] = {GUI_MENU_COL_0, GUI_MENU_COL_1};
-	uint8_t block_y[] = {GUI_MENU_ROW_0, GUI_MENU_ROW_1, GUI_MENU_ROW_2};
-
-	Display_DrawRect(&gui_ptr->sneak100_ptr->display,
-		block_x[gui_ptr->menu_selected/3],
-		block_y[gui_ptr->menu_selected%3],
-		GUI_MENU_BLOCK_W,
-		GUI_MENU_BLOCK_H
-	);
+		Display_DrawText(&gui_ptr->sneak100_ptr->display, block_x[i/4], block_y[i%4], "%-10s", menu[i]);
+		Display_SetColor(&gui_ptr->sneak100_ptr->display, White);
+	}
 
 	if(Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_L]))
-		gui_ptr->menu_selected +=5;
+		gui_ptr->menu_selected +=7;
 	if(Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_C]))
 		gui_ptr->menu_selected++;
 
-	gui_ptr->menu_selected %=6;
+	gui_ptr->menu_selected %=8;
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
@@ -181,14 +176,27 @@ void __GUI_Settings_Execute(void *data) {
 	GUI_DrawHeader(gui_ptr, "Settings");
 	GUI_DrawFooter(gui_ptr, "opt", "down", "save");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_1, "mode : %s", mode[gui_ptr->sneak100_ptr->settings.mode]);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_2, "dyhlo: %s", dyhlo[gui_ptr->sneak100_ptr->settings.dyhlo_color]);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_3, "strat: %s", strategy[gui_ptr->sneak100_ptr->settings.strategy]);
+	gui_ptr->menu_selected %=3;
 
-	Display_DrawRect(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_1 + (GUI_CONTENT_LINE_2 - GUI_CONTENT_LINE_1)*gui_ptr->menu_selected - 1, 128, GUI_CONTENT_LINE_2 - GUI_CONTENT_LINE_1 + 1);
+	uint8_t block_y[] = {GUI_CONTENT_LINE_1, GUI_CONTENT_LINE_2, GUI_CONTENT_LINE_3};
+	const char *curr_sett[] = {
+		mode[gui_ptr->sneak100_ptr->settings.mode],
+		dyhlo[gui_ptr->sneak100_ptr->settings.dyhlo_color],
+		strategy[gui_ptr->sneak100_ptr->settings.strategy]
+	};
 
-	if(Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_C]))
+	for(uint8_t i=0; i<3; i++) {
+		if(i==gui_ptr->menu_selected)
+			Display_SetColor(&gui_ptr->sneak100_ptr->display, Black);
+
+		Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, block_y[i], "%-5s: %-20s", settings[i], curr_sett[i]);
+		Display_SetColor(&gui_ptr->sneak100_ptr->display, White);
+	}
+
+	if(Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_C])) {
 		gui_ptr->menu_selected++;
+		gui_ptr->menu_selected %=3;
+	}
 
 	if(Button_IsClicked(&gui_ptr->sneak100_ptr->buttons[BUTTON_L]) && gui_ptr->menu_selected==0) {
 		gui_ptr->sneak100_ptr->settings.mode++;
@@ -200,8 +208,6 @@ void __GUI_Settings_Execute(void *data) {
 		gui_ptr->sneak100_ptr->settings.strategy++;
 		gui_ptr->sneak100_ptr->settings.strategy %=SETTINGS_STRATEGY_NUM;
 	}
-
-	gui_ptr->menu_selected %=3;
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }

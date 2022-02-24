@@ -28,8 +28,8 @@ void SNEAK100_GUI_Init() {
 	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,		GUI_STATE_MOTORS,		0, NULL, &__GUI_MenuOption0_Select_Event);
 	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,		GUI_STATE_SETTINGS,		0, NULL, &__GUI_MenuOption1_Select_Event);
 	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,		GUI_STATE_FIGHT,		0, NULL, &__GUI_MenuOption2_Select_Event);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,		GUI_STATE_INFO,			0, NULL, &__GUI_MenuOption4_Select_Event);
-	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,		GUI_STATE_CREDITS,		0, NULL, &__GUI_MenuOption5_Select_Event);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,		GUI_STATE_INFO,			0, NULL, &__GUI_MenuOption6_Select_Event);
+	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MENU,		GUI_STATE_CREDITS,		0, NULL, &__GUI_MenuOption7_Select_Event);
 
 	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_MOTORS,		GUI_STATE_LINE,			0, NULL, &__GUI_ButtonL_Click_Event);
 	FiniteStateMachine_DefineTransition(&gui.fsm, GUI_STATE_LINE,		GUI_STATE_PROXIMITY,	0, NULL, &__GUI_ButtonL_Click_Event);
