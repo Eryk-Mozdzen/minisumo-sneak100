@@ -7,29 +7,29 @@
 
 #include "core_states.h"
 
-static void SaveState(Sneak100_t *, CoreState_t);
-static void SaveDyhloID(Sneak100_t *, uint8_t);
+static void SaveState(Sneak100_Core_t *, Core_State_t);
+static void SaveDyhloID(Sneak100_Core_t *, uint8_t);
 
-static void SaveState(Sneak100_t *sneak100, CoreState_t state) {
+static void SaveState(Sneak100_Core_t *sneak100, Core_State_t state) {
 	sneak100->fight_data.core_save_state = state;
-	Memory_Write(&sneak100->memory, MEMORY_FIGHT_DATA_ADDRESS, &sneak100->fight_data, sizeof(RobotFightData_t));
+	Memory_Write(&sneak100->memory, MEMORY_FIGHT_DATA_ADDRESS, &sneak100->fight_data, sizeof(Core_FightData_t));
 }
 
-static void SaveDyhloID(Sneak100_t *sneak100, uint8_t id) {
+static void SaveDyhloID(Sneak100_Core_t *sneak100, uint8_t id) {
 	sneak100->fight_data.dyhlo_id = id;
-	Memory_Write(&sneak100->memory, MEMORY_FIGHT_DATA_ADDRESS, &sneak100->fight_data, sizeof(RobotSettings_t));
+	Memory_Write(&sneak100->memory, MEMORY_FIGHT_DATA_ADDRESS, &sneak100->fight_data, sizeof(Core_Settings_t));
 }
 
 // enter
 
 void Core_Idle_Enter(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	SaveState(sneak100_ptr, CORE_STATE_IDLE);
 }
 
 void Core_Ready_Enter(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	sneak100_ptr->state.rc5.expired = 1;
 
@@ -37,7 +37,7 @@ void Core_Ready_Enter(void *data) {
 }
 
 void Core_Program_Enter(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	sneak100_ptr->state.rc5.expired = 1;
 	sneak100_ptr->interface_flag.program_blink_counter = 0;
@@ -48,7 +48,7 @@ void Core_Program_Enter(void *data) {
 }
 
 void Core_Run_Enter(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	sneak100_ptr->state.rc5.expired = 1;
 
@@ -56,7 +56,7 @@ void Core_Run_Enter(void *data) {
 }
 
 void Core_Stop_Enter(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	sneak100_ptr->state.rc5.expired = 1;
 
@@ -72,7 +72,7 @@ void Core_Idle_Execute(void *data) {
 }
 
 void Core_Ready_Execute(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	// do nothing
 
@@ -81,7 +81,7 @@ void Core_Ready_Execute(void *data) {
 }
 
 void Core_Program_Execute(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	// save RC5 programming data
 	// blink yellow led two times
@@ -99,7 +99,7 @@ void Core_Program_Execute(void *data) {
 }
 
 void Core_Run_Execute(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	// execute fight algorithm
 	// according to settings
@@ -111,7 +111,7 @@ void Core_Run_Execute(void *data) {
 }
 
 void Core_Stop_Execute(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	// stop motors
 

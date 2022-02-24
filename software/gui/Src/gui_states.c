@@ -16,6 +16,7 @@ static const char *padding = "                                               ";
 
 static void GUI_DrawHeader(Sneak100_GUI_t *, const char *);
 static void GUI_DrawFooter(Sneak100_GUI_t *, const char *, const char *, const char *);
+static void GUI_WriteSettings(Sneak100_GUI_t *, Core_Settings_t);
 
 void GUI_DrawHeader(Sneak100_GUI_t *gui_ptr, const char *title) {
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 0, "%s       ", title);
@@ -43,13 +44,19 @@ void GUI_DrawFooter(Sneak100_GUI_t *gui_ptr, const char *action_l, const char *a
 	Display_DrawLine(&gui_ptr->sneak100_ptr->display, 0, 52, 127, 52);
 }
 
-void GUI_Fight_Enter(void *data) {
+void GUI_WriteSettings(Sneak100_GUI_t *gui_ptr, Core_Settings_t settings) {
+	gui_ptr->sneak100_ptr->settings = settings;
+
+	Memory_Write(&gui_ptr->sneak100_ptr->memory, MEMORY_SETTINGS_ADDRESS, &gui_ptr->sneak100_ptr->settings, sizeof(Core_Settings_t));
+}
+
+void __GUI_Fight_Enter(void *data) {
 	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
 
 	gui_ptr->sneak100_ptr->interface_flag.program_select = 1;
 }
 
-void GUI_Render_Menu(void *data) {
+void __GUI_Menu_Execute(void *data) {
 	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
 
 	Display_Clear(&gui_ptr->sneak100_ptr->display);
@@ -85,7 +92,7 @@ void GUI_Render_Menu(void *data) {
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
 
-void GUI_Render_ViewMotors(void *data) {
+void __GUI_Motors_Execute(void *data) {
 	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
 
 	Display_Clear(&gui_ptr->sneak100_ptr->display);
@@ -93,25 +100,25 @@ void GUI_Render_ViewMotors(void *data) {
 	GUI_DrawHeader(gui_ptr, "Motors");
 	GUI_DrawFooter(gui_ptr, "next", "prev", "esc");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_1, "LF:%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LF].position);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_2, "LB:%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LB].position);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_3, "RF:%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RF].position);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_4, "RB:%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RB].position);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_1, "LF:%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LF].position);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_2, "LB:%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LB].position);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_3, "RF:%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RF].position);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_4, "RB:%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RB].position);
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 56,  DISPLAY_LINE_1, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LF].velocity);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 56,  DISPLAY_LINE_2, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LB].velocity);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 56,  DISPLAY_LINE_3, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RF].velocity);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 56,  DISPLAY_LINE_4, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RB].velocity);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 56,  GUI_CONTENT_LINE_1, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LF].velocity);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 56,  GUI_CONTENT_LINE_2, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LB].velocity);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 56,  GUI_CONTENT_LINE_3, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RF].velocity);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 56,  GUI_CONTENT_LINE_4, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RB].velocity);
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 92,  DISPLAY_LINE_1, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LF].power);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 92,  DISPLAY_LINE_2, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LB].power);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 92,  DISPLAY_LINE_3, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RF].power);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 92,  DISPLAY_LINE_4, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RB].power);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 92,  GUI_CONTENT_LINE_1, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LF].power);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 92,  GUI_CONTENT_LINE_2, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LB].power);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 92,  GUI_CONTENT_LINE_3, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RF].power);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 92,  GUI_CONTENT_LINE_4, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RB].power);
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
 
-void GUI_Render_ViewLine(void *data) {
+void __GUI_Line_Execute(void *data) {
 	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
 
 	Display_Clear(&gui_ptr->sneak100_ptr->display);
@@ -119,20 +126,20 @@ void GUI_Render_ViewLine(void *data) {
 	GUI_DrawHeader(gui_ptr, "Line");
 	GUI_DrawFooter(gui_ptr, "next", "prev", "esc");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_1, "LL: %u", gui_ptr->sneak100_ptr->state.line[0].value);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_2, "LM: %u", gui_ptr->sneak100_ptr->state.line[1].value);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_3, "RM: %u", gui_ptr->sneak100_ptr->state.line[2].value);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_4, "RR: %u", gui_ptr->sneak100_ptr->state.line[3].value);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_1, "LL: %u", gui_ptr->sneak100_ptr->state.line[0].value);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_2, "LM: %u", gui_ptr->sneak100_ptr->state.line[1].value);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_3, "RM: %u", gui_ptr->sneak100_ptr->state.line[2].value);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_4, "RR: %u", gui_ptr->sneak100_ptr->state.line[3].value);
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 64,  DISPLAY_LINE_1, "%u %c %u", gui_ptr->sneak100_ptr->state.line[0].threshold, gui_ptr->sneak100_ptr->state.line[0].polarity ? 'W' : 'B', gui_ptr->sneak100_ptr->state.line[0].state);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 64,  DISPLAY_LINE_2, "%u %c %u", gui_ptr->sneak100_ptr->state.line[1].threshold, gui_ptr->sneak100_ptr->state.line[1].polarity ? 'W' : 'B', gui_ptr->sneak100_ptr->state.line[1].state);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 64,  DISPLAY_LINE_3, "%u %c %u", gui_ptr->sneak100_ptr->state.line[2].threshold, gui_ptr->sneak100_ptr->state.line[2].polarity ? 'W' : 'B', gui_ptr->sneak100_ptr->state.line[2].state);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 64,  DISPLAY_LINE_4, "%u %c %u", gui_ptr->sneak100_ptr->state.line[3].threshold, gui_ptr->sneak100_ptr->state.line[3].polarity ? 'W' : 'B', gui_ptr->sneak100_ptr->state.line[3].state);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 64,  GUI_CONTENT_LINE_1, "%u %c %u", gui_ptr->sneak100_ptr->state.line[0].threshold, gui_ptr->sneak100_ptr->state.line[0].polarity ? 'W' : 'B', gui_ptr->sneak100_ptr->state.line[0].state);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 64,  GUI_CONTENT_LINE_2, "%u %c %u", gui_ptr->sneak100_ptr->state.line[1].threshold, gui_ptr->sneak100_ptr->state.line[1].polarity ? 'W' : 'B', gui_ptr->sneak100_ptr->state.line[1].state);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 64,  GUI_CONTENT_LINE_3, "%u %c %u", gui_ptr->sneak100_ptr->state.line[2].threshold, gui_ptr->sneak100_ptr->state.line[2].polarity ? 'W' : 'B', gui_ptr->sneak100_ptr->state.line[2].state);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 64,  GUI_CONTENT_LINE_4, "%u %c %u", gui_ptr->sneak100_ptr->state.line[3].threshold, gui_ptr->sneak100_ptr->state.line[3].polarity ? 'W' : 'B', gui_ptr->sneak100_ptr->state.line[3].state);
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
 
-void GUI_Render_ViewProximity(void *data) {
+void __GUI_Proximity_Execute(void *data) {
 	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
 
 	Display_Clear(&gui_ptr->sneak100_ptr->display);
@@ -140,15 +147,15 @@ void GUI_Render_ViewProximity(void *data) {
 	GUI_DrawHeader(gui_ptr, "Proximity");
 	GUI_DrawFooter(gui_ptr, "next", "prev", "esc");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_1, "LL: %u", gui_ptr->sneak100_ptr->state.proximity[0]);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_2, "FL: %u", gui_ptr->sneak100_ptr->state.proximity[1]);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_3, "FR: %u", gui_ptr->sneak100_ptr->state.proximity[2]);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_4, "RR: %u", gui_ptr->sneak100_ptr->state.proximity[3]);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_1, "LL: %u", gui_ptr->sneak100_ptr->state.proximity[0]);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_2, "FL: %u", gui_ptr->sneak100_ptr->state.proximity[1]);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_3, "FR: %u", gui_ptr->sneak100_ptr->state.proximity[2]);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_4, "RR: %u", gui_ptr->sneak100_ptr->state.proximity[3]);
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
 
-void GUI_Render_ViewOthers(void *data) {
+void __GUI_Others_Execute(void *data) {
 	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
 
 	Display_Clear(&gui_ptr->sneak100_ptr->display);
@@ -156,17 +163,17 @@ void GUI_Render_ViewOthers(void *data) {
 	GUI_DrawHeader(gui_ptr, "Others");
 	GUI_DrawFooter(gui_ptr, "next", "prev", "esc");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_1, "Temp: %.0f*C", gui_ptr->sneak100_ptr->state.temperature);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_2, "Batt: %.2fV", gui_ptr->sneak100_ptr->state.battery);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_3, "RC5:  %u 0x%02X 0x%02X",
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_1, "Temp: %.0f*C", gui_ptr->sneak100_ptr->state.temperature);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_2, "Batt: %.2fV", gui_ptr->sneak100_ptr->state.battery);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_3, "RC5:  %u 0x%02X 0x%02X",
 			gui_ptr->sneak100_ptr->state.rc5.message.toggle, gui_ptr->sneak100_ptr->state.rc5.message.address, gui_ptr->sneak100_ptr->state.rc5.message.command);
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_4, "BT:   %s", bluetooth_status[gui_ptr->sneak100_ptr->state.bluetooth]);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_4, "BT:   %s", bluetooth_status[gui_ptr->sneak100_ptr->state.bluetooth]);
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
 
-void GUI_Render_Settings(void *data) {
+void __GUI_Settings_Execute(void *data) {
 	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
 
 	Display_Clear(&gui_ptr->sneak100_ptr->display);
@@ -174,11 +181,11 @@ void GUI_Render_Settings(void *data) {
 	GUI_DrawHeader(gui_ptr, "Settings");
 	GUI_DrawFooter(gui_ptr, "opt", "down", "save");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_1, "mode : %s", mode[gui_ptr->sneak100_ptr->settings.mode]);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_2, "dyhlo: %s", dyhlo[gui_ptr->sneak100_ptr->settings.dyhlo_color]);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_3, "strat: %s", strategy[gui_ptr->sneak100_ptr->settings.strategy]);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_1, "mode : %s", mode[gui_ptr->sneak100_ptr->settings.mode]);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_2, "dyhlo: %s", dyhlo[gui_ptr->sneak100_ptr->settings.dyhlo_color]);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_3, "strat: %s", strategy[gui_ptr->sneak100_ptr->settings.strategy]);
 
-	Display_InvertColors(&gui_ptr->sneak100_ptr->display, 0, DISPLAY_LINE_1 + (DISPLAY_LINE_2 - DISPLAY_LINE_1)*gui_ptr->menu_selected - 1, 128, DISPLAY_LINE_2 - DISPLAY_LINE_1 + 1);
+	Display_InvertColors(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_1 + (GUI_CONTENT_LINE_2 - GUI_CONTENT_LINE_1)*gui_ptr->menu_selected - 1, 128, GUI_CONTENT_LINE_2 - GUI_CONTENT_LINE_1 + 1);
 
 	if(gui_ptr->buttons[BUTTON_C].pressed && gui_ptr->buttons[BUTTON_C].changed)
 		gui_ptr->menu_selected++;
@@ -199,7 +206,7 @@ void GUI_Render_Settings(void *data) {
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
 
-void GUI_Render_Fight(void *data) {
+void __GUI_Fight_Execute(void *data) {
 	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
 
 	if(gui_ptr->sneak100_ptr->settings.mode==SETTINGS_MODE_MODULE) {
@@ -208,8 +215,8 @@ void GUI_Render_Fight(void *data) {
 		GUI_DrawHeader(gui_ptr, "Fight");
 		GUI_DrawFooter(gui_ptr, "", "", "esc");
 
-		Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, DISPLAY_LINE_1, "Save:     %s", core_states[gui_ptr->sneak100_ptr->fight_data.core_save_state]);
-		Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, DISPLAY_LINE_2, "dyhlo ID: 0x%02X", gui_ptr->sneak100_ptr->fight_data.dyhlo_id>>1);
+		Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_1, "Save:     %s", core_states[gui_ptr->sneak100_ptr->fight_data.core_save_state]);
+		Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_2, "dyhlo ID: 0x%02X", gui_ptr->sneak100_ptr->fight_data.dyhlo_id>>1);
 
 		Display_Update(&gui_ptr->sneak100_ptr->display);
 		return;
@@ -245,12 +252,12 @@ void GUI_Render_Fight(void *data) {
 	GUI_DrawHeader(gui_ptr, "Fight");
 	GUI_DrawFooter(gui_ptr, "", button_c, "esc");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, DISPLAY_LINE_1, "Save:     %s", core_states[gui_ptr->sneak100_ptr->fight_data.core_save_state]);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_1, "Save:     %s", core_states[gui_ptr->sneak100_ptr->fight_data.core_save_state]);
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
 
-void GUI_Render_Info(void *data) {
+void __GUI_Info_Execute(void *data) {
 	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
 
 	Display_Clear(&gui_ptr->sneak100_ptr->display);
@@ -258,13 +265,13 @@ void GUI_Render_Info(void *data) {
 	GUI_DrawHeader(gui_ptr, "Info");
 	GUI_DrawFooter(gui_ptr, "", "", "esc");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_1, "build: %s", CORE_BUILD_DATE);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  DISPLAY_LINE_2, "       %s", CORE_BUILD_TIME);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_1, "build: %s", CORE_BUILD_DATE);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_2, "       %s", CORE_BUILD_TIME);
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
 
-void GUI_Render_Credits(void *data) {
+void __GUI_Credits_Execute(void *data) {
 	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
 
 	Display_Clear(&gui_ptr->sneak100_ptr->display);
@@ -275,4 +282,10 @@ void GUI_Render_Credits(void *data) {
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 53, "by E.Mozdzen 2022");
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
+}
+
+void __GUI_Settings_Exit(void *data) {
+	Sneak100_GUI_t *gui_ptr = (Sneak100_GUI_t *)data;
+
+	GUI_WriteSettings(gui_ptr, gui_ptr->sneak100_ptr->settings);
 }

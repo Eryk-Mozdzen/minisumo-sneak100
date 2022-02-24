@@ -8,13 +8,13 @@
 #include "core_events.h"
 
 uint8_t __Core_Program_SelectEvent(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	return sneak100_ptr->interface_flag.program_select;
 }
 
 uint8_t __Core_Program_SignalEvent(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	if(sneak100_ptr->settings.mode==SETTINGS_MODE_BUTTON)
 		return 0;
@@ -28,7 +28,7 @@ uint8_t __Core_Program_SignalEvent(void *data) {
 }
 
 uint8_t __Core_ProgramEnd_Event(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	if(sneak100_ptr->settings.mode==SETTINGS_MODE_BUTTON)
 		return 0;
@@ -37,7 +37,7 @@ uint8_t __Core_ProgramEnd_Event(void *data) {
 }
 
 uint8_t __Core_Start_SignalEvent(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	if(sneak100_ptr->settings.mode==SETTINGS_MODE_BUTTON) {
 		if(!sneak100_ptr->interface_flag.button_start)
@@ -64,7 +64,7 @@ uint8_t __Core_Start_SignalEvent(void *data) {
 }
 
 uint8_t __Core_Stop_SignalEvent(void *data) {
-	Sneak100_t *sneak100_ptr = (Sneak100_t *)data;
+	Sneak100_Core_t *sneak100_ptr = (Sneak100_Core_t *)data;
 
 	if(sneak100_ptr->settings.mode==SETTINGS_MODE_BUTTON)
 		return sneak100_ptr->interface_flag.button_stop;
