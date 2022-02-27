@@ -11,11 +11,10 @@
 </p>
 
 ### In progress:
-- code names style unification
+- print plastic elements
 
 ### To do:
 - simple fight algorithm
-- print plastic elements
 - shape blade
 
 ### DEADLINE:
@@ -25,6 +24,7 @@
 - 28 nov 2021 - ROBOmotion 2021, Rzeszow, Poland (missed)
 +  9 apr 2022 - Robotic Tournament, Rybnik, Poland
 + 13 may 2022 - Baltic Robot Battles, Gdansk, Poland
++  2 jul 2022 - Drones And Robots Tournament, Krakow, Poland
 ```
 
 ### Planned features:
