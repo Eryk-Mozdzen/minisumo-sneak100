@@ -14,8 +14,11 @@
 - print plastic elements
 
 ### To do:
-- simple fight algorithm
+- connect wires for sensors and motors
+- fight algorithm
 - shape blade
+- develop spring for blade
+- add lead weight
 
 ### DEADLINE:
 ```diff
