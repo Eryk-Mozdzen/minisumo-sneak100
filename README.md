@@ -15,6 +15,7 @@
 
 ### To do:
 - connect wires for sensors and motors
+- soleder more proximity sensors
 - fight algorithm
 - shape blade
 - develop spring for blade
