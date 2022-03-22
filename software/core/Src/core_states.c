@@ -53,6 +53,8 @@ void Core_Run_Enter(void *data) {
 	sneak100_ptr->state.rc5.expired = 1;
 
 	SaveState(sneak100_ptr, CORE_STATE_RUN);
+
+	FiniteStateMachine_Start(&sneak100_ptr->fight_fsm, FIGHT_STATE_START);
 }
 
 void Core_Stop_Enter(void *data) {
@@ -104,10 +106,8 @@ void Core_Run_Execute(void *data) {
 	// execute fight algorithm
 	// according to settings
 
-	Motor_SetPower(&sneak100_ptr->motors[MOTOR_LF], 1);
-	Motor_SetPower(&sneak100_ptr->motors[MOTOR_LB], 1);
-	Motor_SetPower(&sneak100_ptr->motors[MOTOR_RF], 1);
-	Motor_SetPower(&sneak100_ptr->motors[MOTOR_RB], 1);
+	FiniteStateMachine_Update(&sneak100_ptr->fight_fsm);
+	FiniteStateMachine_Execute(&sneak100_ptr->fight_fsm);
 }
 
 void Core_Stop_Execute(void *data) {

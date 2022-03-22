@@ -18,17 +18,22 @@ void Encoder_Init(Encoder_t *encoder, TIM_HandleTypeDef *encoder_timer, uint16_t
 }
 
 void Encoder_Reset(Encoder_t *encoder) {
-	encoder->prev_position = 0;
+	encoder->prev_position = encoder->prev_position - ((float)((int16_t)__HAL_TIM_GET_COUNTER(encoder->timer)))/encoder->cpr;
 
 	__HAL_TIM_SET_COUNTER(encoder->timer, 0);
 }
 
-uint16_t Encoder_GetPositionRaw(Encoder_t *encoder) {
+uint32_t Encoder_GetPositionRaw(Encoder_t *encoder) {
 	return __HAL_TIM_GET_COUNTER(encoder->timer);
 }
 
 float Encoder_GetPosition(Encoder_t *encoder) {
-	return ((float)((int16_t)__HAL_TIM_GET_COUNTER(encoder->timer)))/encoder->cpr;
+	float pos = ((float)((int16_t)__HAL_TIM_GET_COUNTER(encoder->timer)))/encoder->cpr;
+
+	if(fabs(pos)>80)
+		Encoder_Reset(encoder);
+
+	return pos;
 }
 
 float Encoder_GetVelocity(Encoder_t *encoder) {

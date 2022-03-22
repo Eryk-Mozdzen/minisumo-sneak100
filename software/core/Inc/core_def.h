@@ -127,6 +127,7 @@ typedef struct {
 	Bluetooth_t bluetooth;
 
 	FiniteStateMachine_t fsm;
+	FiniteStateMachine_t fight_fsm;
 	struct {
 		uint16_t program_blink_counter;
 		uint32_t start_time;

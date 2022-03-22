@@ -11,10 +11,9 @@
 #define MOTOR_GEAR_RATIO				30
 #define ENCODER_CPR						12
 
-#define MOTOR_PID_P						100.f
-#define MOTOR_PID_I						0.1f
-#define MOTOR_PID_D						10.f
-#define MOTOR_PID_IBAND					0.5f
+#define MOTOR_PID_P						0.07f
+#define MOTOR_PID_I						0.04f
+#define MOTOR_PID_D						0.00075f
 
 #define LINE_THRESHOLD					1500
 

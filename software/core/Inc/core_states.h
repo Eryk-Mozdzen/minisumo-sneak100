@@ -13,6 +13,8 @@
 #include "core_def.h"
 #include "core_conf.h"
 
+#include "fight_def.h"
+
 void Core_Idle_Enter(void *);
 void Core_Ready_Enter(void *);
 void Core_Program_Enter(void *);

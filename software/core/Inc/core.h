@@ -22,7 +22,10 @@
 #include "core_events.h"
 #include "core_states.h"
 
-extern Sneak100_Core_t sneak100;
+#include "fight_events.h"
+#include "fight_states.h"
+
+extern Sneak100_Core_t core;
 
 void SNEAK100_Core_Init();
 void SNEAK100_Core_Update();

@@ -51,7 +51,7 @@ void __CLI_Cmd_ConfigBT(Sneak100_CLI_t *cli) {
 		}
 	}
 
-	HAL_StatusTypeDef status = Bluetooth_SetConfig(&sneak100.bluetooth, config);
+	HAL_StatusTypeDef status = Bluetooth_SetConfig(&core.bluetooth, config);
 
 	if(status!=HAL_OK)
 		__CLI_PrintFormat(cli, "error code: %u\n", status);
@@ -99,13 +99,13 @@ void __CLI_Cmd_Settings(Sneak100_CLI_t *cli) {
 	}
 
 	if(mode!=SETTINGS_MODE_INVALID)
-		sneak100.settings.mode = mode;
+		core.settings.mode = mode;
 	if(dyhlo!=SETTINGS_DYHLO_INVALID)
-		sneak100.settings.dyhlo_color = dyhlo;
+		core.settings.dyhlo_color = dyhlo;
 	if(strategy!=SETTINGS_STRATEGY_INVALID)
-		sneak100.settings.strategy = strategy;
+		core.settings.strategy = strategy;
 
-	Memory_Write(&sneak100.memory, MEMORY_SETTINGS_ADDRESS, &sneak100.settings, sizeof(Core_Settings_t));
+	Memory_Write(&core.memory, MEMORY_SETTINGS_ADDRESS, &core.settings, sizeof(Core_Settings_t));
 }
 
 void __CLI_Cmd_Proximity(Sneak100_CLI_t *cli) {
@@ -116,16 +116,16 @@ void __CLI_Cmd_Proximity(Sneak100_CLI_t *cli) {
 		if(!strcmp(argv[i], "-i") && i+1<argc) {
 			i++;
 
-			if(!strcmp(argv[i], "ll"))			__CLI_PrintFormat(cli, "%u\n", sneak100.state.proximity[PROXIMITY_LL]);
-			else if(!strcmp(argv[i], "fl"))		__CLI_PrintFormat(cli, "%u\n", sneak100.state.proximity[PROXIMITY_FL]);
-			else if(!strcmp(argv[i], "fr"))		__CLI_PrintFormat(cli, "%u\n", sneak100.state.proximity[PROXIMITY_FR]);
-			else if(!strcmp(argv[i], "rr"))		__CLI_PrintFormat(cli, "%u\n", sneak100.state.proximity[PROXIMITY_RR]);
+			if(!strcmp(argv[i], "ll"))			__CLI_PrintFormat(cli, "%u\n", core.state.proximity[PROXIMITY_LL]);
+			else if(!strcmp(argv[i], "fl"))		__CLI_PrintFormat(cli, "%u\n", core.state.proximity[PROXIMITY_FL]);
+			else if(!strcmp(argv[i], "fr"))		__CLI_PrintFormat(cli, "%u\n", core.state.proximity[PROXIMITY_FR]);
+			else if(!strcmp(argv[i], "rr"))		__CLI_PrintFormat(cli, "%u\n", core.state.proximity[PROXIMITY_RR]);
 			else if(!strcmp(argv[i], "all"))
 				__CLI_PrintFormat(cli, "%u %u %u %u\n",
-					sneak100.state.proximity[PROXIMITY_LL],
-					sneak100.state.proximity[PROXIMITY_FL],
-					sneak100.state.proximity[PROXIMITY_FR],
-					sneak100.state.proximity[PROXIMITY_RR]
+					core.state.proximity[PROXIMITY_LL],
+					core.state.proximity[PROXIMITY_FL],
+					core.state.proximity[PROXIMITY_FR],
+					core.state.proximity[PROXIMITY_RR]
 				);
 			else
 				__CLI_PrintFormat(cli, "invalid arg: '%s'\n", argv[i]);
@@ -145,16 +145,16 @@ void __CLI_Cmd_Line(Sneak100_CLI_t *cli) {
 		if(!strcmp(argv[i], "-i") && i+1<argc) {
 			i++;
 
-			if(!strcmp(argv[i], "ll"))			__CLI_PrintFormat(cli, "%u\n", sneak100.state.line[LINE_LL].state);
-			else if(!strcmp(argv[i], "lm"))		__CLI_PrintFormat(cli, "%u\n", sneak100.state.line[LINE_LM].state);
-			else if(!strcmp(argv[i], "rm"))		__CLI_PrintFormat(cli, "%u\n", sneak100.state.line[LINE_RM].state);
-			else if(!strcmp(argv[i], "rr"))		__CLI_PrintFormat(cli, "%u\n", sneak100.state.line[LINE_RR].state);
+			if(!strcmp(argv[i], "ll"))			__CLI_PrintFormat(cli, "%u\n", core.state.line[LINE_LL].state);
+			else if(!strcmp(argv[i], "lm"))		__CLI_PrintFormat(cli, "%u\n", core.state.line[LINE_LM].state);
+			else if(!strcmp(argv[i], "rm"))		__CLI_PrintFormat(cli, "%u\n", core.state.line[LINE_RM].state);
+			else if(!strcmp(argv[i], "rr"))		__CLI_PrintFormat(cli, "%u\n", core.state.line[LINE_RR].state);
 			else if(!strcmp(argv[i], "all"))
 				__CLI_PrintFormat(cli, "%u %u %u %u\n",
-					sneak100.state.line[LINE_LL].state,
-					sneak100.state.line[LINE_LM].state,
-					sneak100.state.line[LINE_RM].state,
-					sneak100.state.line[LINE_RR].state
+					core.state.line[LINE_LL].state,
+					core.state.line[LINE_LM].state,
+					core.state.line[LINE_RM].state,
+					core.state.line[LINE_RR].state
 				);
 			else
 				__CLI_PrintFormat(cli, "invalid arg: '%s'\n", argv[i]);
@@ -231,30 +231,30 @@ void __CLI_Cmd_Motor(Sneak100_CLI_t *cli) {
 		if(!flags.index_all) {
 
 			if(flags.velocity)
-				__CLI_PrintFormat(cli, "%.3f\n", sneak100.state.motor[data.index].velocity);
+				__CLI_PrintFormat(cli, "%.3f\n", core.state.motor[data.index].velocity);
 			else if(flags.position)
-				__CLI_PrintFormat(cli, "%.3f\n", sneak100.state.motor[data.index].position);
+				__CLI_PrintFormat(cli, "%.3f\n", core.state.motor[data.index].position);
 			else if(flags.power)
-				__CLI_PrintFormat(cli, "%.3f\n", sneak100.state.motor[data.index].power);
+				__CLI_PrintFormat(cli, "%.3f\n", core.state.motor[data.index].power);
 
 			return;
 		}
 
 		if(flags.velocity) {
-			__CLI_PrintFormat(cli, "%.3f ", sneak100.state.motor[MOTOR_LF].velocity);
-			__CLI_PrintFormat(cli, "%.3f ", sneak100.state.motor[MOTOR_LB].velocity);
-			__CLI_PrintFormat(cli, "%.3f ", sneak100.state.motor[MOTOR_RF].velocity);
-			__CLI_PrintFormat(cli, "%.3f\n", sneak100.state.motor[MOTOR_RB].velocity);
+			__CLI_PrintFormat(cli, "%.3f ", core.state.motor[MOTOR_LF].velocity);
+			__CLI_PrintFormat(cli, "%.3f ", core.state.motor[MOTOR_LB].velocity);
+			__CLI_PrintFormat(cli, "%.3f ", core.state.motor[MOTOR_RF].velocity);
+			__CLI_PrintFormat(cli, "%.3f\n", core.state.motor[MOTOR_RB].velocity);
 		} else if(flags.position) {
-			__CLI_PrintFormat(cli, "%.3f ", sneak100.state.motor[MOTOR_LF].position);
-			__CLI_PrintFormat(cli, "%.3f ", sneak100.state.motor[MOTOR_LB].position);
-			__CLI_PrintFormat(cli, "%.3f ", sneak100.state.motor[MOTOR_RF].position);
-			__CLI_PrintFormat(cli, "%.3f\n", sneak100.state.motor[MOTOR_RB].position);
+			__CLI_PrintFormat(cli, "%.3f ", core.state.motor[MOTOR_LF].position);
+			__CLI_PrintFormat(cli, "%.3f ", core.state.motor[MOTOR_LB].position);
+			__CLI_PrintFormat(cli, "%.3f ", core.state.motor[MOTOR_RF].position);
+			__CLI_PrintFormat(cli, "%.3f\n", core.state.motor[MOTOR_RB].position);
 		} else if(flags.power) {
-			__CLI_PrintFormat(cli, "%.3f ", sneak100.state.motor[MOTOR_LF].power);
-			__CLI_PrintFormat(cli, "%.3f ", sneak100.state.motor[MOTOR_LB].power);
-			__CLI_PrintFormat(cli, "%.3f ", sneak100.state.motor[MOTOR_RF].power);
-			__CLI_PrintFormat(cli, "%.3f\n", sneak100.state.motor[MOTOR_RB].power);
+			__CLI_PrintFormat(cli, "%.3f ", core.state.motor[MOTOR_LF].power);
+			__CLI_PrintFormat(cli, "%.3f ", core.state.motor[MOTOR_LB].power);
+			__CLI_PrintFormat(cli, "%.3f ", core.state.motor[MOTOR_RF].power);
+			__CLI_PrintFormat(cli, "%.3f\n", core.state.motor[MOTOR_RB].power);
 		}
 
 		return;
@@ -283,30 +283,23 @@ void __CLI_Cmd_Motor(Sneak100_CLI_t *cli) {
 	if(!flags.index_all) {
 
 		if(flags.velocity)
-			Motor_SetVelocity(&sneak100.motors[data.index], data.velocity);
-		else if(flags.position)
-			Motor_SetPosition(&sneak100.motors[data.index], data.position);
+			Motor_SetVelocity(&core.motors[data.index], data.velocity);
 		else if(flags.power)
-			Motor_SetPower(&sneak100.motors[data.index], data.power);
+			Motor_SetPower(&core.motors[data.index], data.power);
 
 		return;
 	}
 
 	if(flags.velocity) {
-		Motor_SetVelocity(&sneak100.motors[MOTOR_LF], data.velocity);
-		Motor_SetVelocity(&sneak100.motors[MOTOR_LB], data.velocity);
-		Motor_SetVelocity(&sneak100.motors[MOTOR_RF], data.velocity);
-		Motor_SetVelocity(&sneak100.motors[MOTOR_RB], data.velocity);
-	} else if(flags.velocity) {
-		Motor_SetPosition(&sneak100.motors[MOTOR_LF], data.position);
-		Motor_SetPosition(&sneak100.motors[MOTOR_LB], data.position);
-		Motor_SetPosition(&sneak100.motors[MOTOR_RF], data.position);
-		Motor_SetPosition(&sneak100.motors[MOTOR_RB], data.position);
+		Motor_SetVelocity(&core.motors[MOTOR_LF], data.velocity);
+		Motor_SetVelocity(&core.motors[MOTOR_LB], data.velocity);
+		Motor_SetVelocity(&core.motors[MOTOR_RF], data.velocity);
+		Motor_SetVelocity(&core.motors[MOTOR_RB], data.velocity);
 	} else if(flags.power) {
-		Motor_SetPower(&sneak100.motors[MOTOR_LF], data.power);
-		Motor_SetPower(&sneak100.motors[MOTOR_LB], data.power);
-		Motor_SetPower(&sneak100.motors[MOTOR_RF], data.power);
-		Motor_SetPower(&sneak100.motors[MOTOR_RB], data.power);
+		Motor_SetPower(&core.motors[MOTOR_LF], data.power);
+		Motor_SetPower(&core.motors[MOTOR_LB], data.power);
+		Motor_SetPower(&core.motors[MOTOR_RF], data.power);
+		Motor_SetPower(&core.motors[MOTOR_RB], data.power);
 	}
 
 }

@@ -7,7 +7,7 @@
 
 #include "core.h"
 
-Sneak100_Core_t sneak100;
+Sneak100_Core_t core;
 
 static uint16_t adc_dma_buffer[6] = {0};
 
@@ -18,122 +18,134 @@ static float SNEAK100_Core_GetSupplyVoltage();
 
 void SNEAK100_Core_Init() {
 
-	sneak100.update_request = 0;
+	core.update_request = 0;
 
 	// state machine init
 
-	FiniteStateMachine_Init(&sneak100.fsm, &sneak100);
+	FiniteStateMachine_Init(&core.fsm, &core);
 
-	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_IDLE,		&Core_Idle_Enter,		&Core_Idle_Execute,		NULL);
-	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_READY,		&Core_Ready_Enter,		&Core_Ready_Execute,	NULL);
-	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_PROGRAM,	&Core_Program_Enter,	&Core_Program_Execute,	NULL);
-	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_RUN,		&Core_Run_Enter,		&Core_Run_Execute,		NULL);
-	FiniteStateMachine_DefineState(&sneak100.fsm, CORE_STATE_STOP,		&Core_Stop_Enter,		&Core_Stop_Execute,		NULL);
+	FiniteStateMachine_DefineState(&core.fsm, CORE_STATE_IDLE,		&Core_Idle_Enter,		&Core_Idle_Execute,		NULL);
+	FiniteStateMachine_DefineState(&core.fsm, CORE_STATE_READY,		&Core_Ready_Enter,		&Core_Ready_Execute,	NULL);
+	FiniteStateMachine_DefineState(&core.fsm, CORE_STATE_PROGRAM,	&Core_Program_Enter,	&Core_Program_Execute,	NULL);
+	FiniteStateMachine_DefineState(&core.fsm, CORE_STATE_RUN,		&Core_Run_Enter,		&Core_Run_Execute,		NULL);
+	FiniteStateMachine_DefineState(&core.fsm, CORE_STATE_STOP,		&Core_Stop_Enter,		&Core_Stop_Execute,		NULL);
 
-	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_IDLE,		CORE_STATE_READY,	0, NULL, &__Core_Program_SelectEvent);
-	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_READY,	CORE_STATE_PROGRAM,	0, NULL, &__Core_Program_SignalEvent);
-	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_PROGRAM,	CORE_STATE_READY,	0, NULL, &__Core_ProgramEnd_Event);
-	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_READY,	CORE_STATE_RUN,		0, NULL, &__Core_Start_SignalEvent);
-	FiniteStateMachine_DefineTransition(&sneak100.fsm, CORE_STATE_RUN,		CORE_STATE_STOP,	0, NULL, &__Core_Stop_SignalEvent);
+	FiniteStateMachine_DefineTransition(&core.fsm, CORE_STATE_IDLE,		CORE_STATE_READY,	0, NULL, &__Core_Program_SelectEvent);
+	FiniteStateMachine_DefineTransition(&core.fsm, CORE_STATE_READY,	CORE_STATE_PROGRAM,	0, NULL, &__Core_Program_SignalEvent);
+	FiniteStateMachine_DefineTransition(&core.fsm, CORE_STATE_PROGRAM,	CORE_STATE_READY,	0, NULL, &__Core_ProgramEnd_Event);
+	FiniteStateMachine_DefineTransition(&core.fsm, CORE_STATE_READY,	CORE_STATE_RUN,		0, NULL, &__Core_Start_SignalEvent);
+	FiniteStateMachine_DefineTransition(&core.fsm, CORE_STATE_RUN,		CORE_STATE_STOP,	0, NULL, &__Core_Stop_SignalEvent);
+
+	// fight algorithm
+
+	FiniteStateMachine_Init(&core.fight_fsm, &core);
+
+	FiniteStateMachine_DefineState(&core.fight_fsm, FIGHT_STATE_START,		&Fight_Start_Enter,		NULL,					NULL);
+	FiniteStateMachine_DefineState(&core.fight_fsm, FIGHT_STATE_EXPLORE,	&Fight_Explore_Enter,	&Fight_Explore_Execute,	NULL);
+	FiniteStateMachine_DefineState(&core.fight_fsm, FIGHT_STATE_TURN,		&Fight_Turn_Enter,		&Fight_Turn_Execute,	NULL);
+
+	FiniteStateMachine_DefineTransition(&core.fight_fsm, FIGHT_STATE_START,		FIGHT_STATE_EXPLORE,	0, NULL, NULL);
+	FiniteStateMachine_DefineTransition(&core.fight_fsm, FIGHT_STATE_EXPLORE,	FIGHT_STATE_TURN,		0, NULL, &__Fight_Line_DetectEvent);
+	FiniteStateMachine_DefineTransition(&core.fight_fsm, FIGHT_STATE_TURN,		FIGHT_STATE_EXPLORE,	0, NULL, &__Fight_TurnEnd_Event);
 
 	// hardware init
 
-	Bluetooth_Init(&sneak100.bluetooth, &huart2, BLUETOOTH_EN_GPIO_Port, BLUETOOTH_EN_Pin, BLUETOOTH_ST_GPIO_Port, BLUETOOTH_ST_Pin);
+	Bluetooth_Init(&core.bluetooth, &huart2, BLUETOOTH_EN_GPIO_Port, BLUETOOTH_EN_Pin, BLUETOOTH_ST_GPIO_Port, BLUETOOTH_ST_Pin);
 
-	Display_Init(&sneak100.display, &hi2c1);
+	Display_Init(&core.display, &hi2c1);
 
-	Memory_Init(&sneak100.memory, &hi2c1, 0x00);
+	Memory_Init(&core.memory, &hi2c1, 0x00);
 
-	DecoderRC5_Init(&sneak100.decoder_rc5, &htim7, RECEIVER_OUT_GPIO_Port, RECEIVER_OUT_Pin);
+	DecoderRC5_Init(&core.decoder_rc5, &htim7, RECEIVER_OUT_GPIO_Port, RECEIVER_OUT_Pin);
 
-	Encoder_Init(&sneak100.encoders[MOTOR_LF], &htim2, ENCODER_CPR*MOTOR_GEAR_RATIO);
-	Encoder_Init(&sneak100.encoders[MOTOR_LB], &htim3, ENCODER_CPR*MOTOR_GEAR_RATIO);
-	Encoder_Init(&sneak100.encoders[MOTOR_RF], &htim4, ENCODER_CPR*MOTOR_GEAR_RATIO);
-	Encoder_Init(&sneak100.encoders[MOTOR_RB], &htim5, ENCODER_CPR*MOTOR_GEAR_RATIO);
+	Encoder_Init(&core.encoders[MOTOR_LF], &htim2, ENCODER_CPR*MOTOR_GEAR_RATIO);
+	Encoder_Init(&core.encoders[MOTOR_LB], &htim3, ENCODER_CPR*MOTOR_GEAR_RATIO);
+	Encoder_Init(&core.encoders[MOTOR_RF], &htim4, ENCODER_CPR*MOTOR_GEAR_RATIO);
+	Encoder_Init(&core.encoders[MOTOR_RB], &htim5, ENCODER_CPR*MOTOR_GEAR_RATIO);
 
-	Motor_Init(&sneak100.motors[MOTOR_LF], &sneak100.encoders[MOTOR_LF], &htim1, TIM_CHANNEL_3, TIM_CHANNEL_4, MOTOR_DIRECTION_CW, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D, MOTOR_PID_IBAND);
-	Motor_Init(&sneak100.motors[MOTOR_LB], &sneak100.encoders[MOTOR_LB], &htim1, TIM_CHANNEL_1, TIM_CHANNEL_2, MOTOR_DIRECTION_CW, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D, MOTOR_PID_IBAND);
-	Motor_Init(&sneak100.motors[MOTOR_RF], &sneak100.encoders[MOTOR_RF], &htim8, TIM_CHANNEL_3, TIM_CHANNEL_4, MOTOR_DIRECTION_CC, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D, MOTOR_PID_IBAND);
-	Motor_Init(&sneak100.motors[MOTOR_RB], &sneak100.encoders[MOTOR_RB], &htim8, TIM_CHANNEL_1, TIM_CHANNEL_2, MOTOR_DIRECTION_CC, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D, MOTOR_PID_IBAND);
+	Motor_Init(&core.motors[MOTOR_LF], &core.encoders[MOTOR_LF], &htim1, TIM_CHANNEL_3, TIM_CHANNEL_4, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D);
+	Motor_Init(&core.motors[MOTOR_LB], &core.encoders[MOTOR_LB], &htim1, TIM_CHANNEL_1, TIM_CHANNEL_2, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D);
+	Motor_Init(&core.motors[MOTOR_RF], &core.encoders[MOTOR_RF], &htim8, TIM_CHANNEL_3, TIM_CHANNEL_4, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D);
+	Motor_Init(&core.motors[MOTOR_RB], &core.encoders[MOTOR_RB], &htim8, TIM_CHANNEL_1, TIM_CHANNEL_2, MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D);
 
 	HAL_ADC_Start_DMA(&hadc1, (uint32_t *)adc_dma_buffer, 6);
 
-	Line_Init(&sneak100.lines[LINE_LL], &adc_dma_buffer[3], LINE_THRESHOLD, LINE_POLARITY_BLACK);
-	Line_Init(&sneak100.lines[LINE_LM], &adc_dma_buffer[2], LINE_THRESHOLD, LINE_POLARITY_BLACK);
-	Line_Init(&sneak100.lines[LINE_RM], &adc_dma_buffer[1], LINE_THRESHOLD, LINE_POLARITY_BLACK);
-	Line_Init(&sneak100.lines[LINE_RR], &adc_dma_buffer[0], LINE_THRESHOLD, LINE_POLARITY_BLACK);
+	Line_Init(&core.lines[LINE_LL], &adc_dma_buffer[3], LINE_THRESHOLD, LINE_POLARITY_BLACK);
+	Line_Init(&core.lines[LINE_LM], &adc_dma_buffer[2], LINE_THRESHOLD, LINE_POLARITY_BLACK);
+	Line_Init(&core.lines[LINE_RM], &adc_dma_buffer[1], LINE_THRESHOLD, LINE_POLARITY_BLACK);
+	Line_Init(&core.lines[LINE_RR], &adc_dma_buffer[0], LINE_THRESHOLD, LINE_POLARITY_BLACK);
 
-	Proximity_Init(&sneak100.proximity[PROXIMITY_LL], PROXIMITY_LL_GPIO_Port, PROXIMITY_LL_Pin);
-	Proximity_Init(&sneak100.proximity[PROXIMITY_FL], PROXIMITY_FL_GPIO_Port, PROXIMITY_FL_Pin);
-	Proximity_Init(&sneak100.proximity[PROXIMITY_FR], PROXIMITY_FR_GPIO_Port, PROXIMITY_FR_Pin);
-	Proximity_Init(&sneak100.proximity[PROXIMITY_RR], PROXIMITY_RR_GPIO_Port, PROXIMITY_RR_Pin);
+	Proximity_Init(&core.proximity[PROXIMITY_LL], PROXIMITY_LL_GPIO_Port, PROXIMITY_LL_Pin);
+	Proximity_Init(&core.proximity[PROXIMITY_FL], PROXIMITY_FL_GPIO_Port, PROXIMITY_FL_Pin);
+	Proximity_Init(&core.proximity[PROXIMITY_FR], PROXIMITY_FR_GPIO_Port, PROXIMITY_FR_Pin);
+	Proximity_Init(&core.proximity[PROXIMITY_RR], PROXIMITY_RR_GPIO_Port, PROXIMITY_RR_Pin);
 
-	Button_Init(&sneak100.buttons[BUTTON_L], USER_BUTTON_L_GPIO_Port, USER_BUTTON_L_Pin);
-	Button_Init(&sneak100.buttons[BUTTON_C], USER_BUTTON_C_GPIO_Port, USER_BUTTON_C_Pin);
-	Button_Init(&sneak100.buttons[BUTTON_R], USER_BUTTON_R_GPIO_Port, USER_BUTTON_R_Pin);
+	Button_Init(&core.buttons[BUTTON_L], USER_BUTTON_L_GPIO_Port, USER_BUTTON_L_Pin);
+	Button_Init(&core.buttons[BUTTON_C], USER_BUTTON_C_GPIO_Port, USER_BUTTON_C_Pin);
+	Button_Init(&core.buttons[BUTTON_R], USER_BUTTON_R_GPIO_Port, USER_BUTTON_R_Pin);
 
 	// start
 
-	Memory_Read(&sneak100.memory, MEMORY_SETTINGS_ADDRESS, &sneak100.settings, sizeof(Core_Settings_t));
-	Memory_Read(&sneak100.memory, MEMORY_FIGHT_DATA_ADDRESS, &sneak100.fight_data, sizeof(Core_FightData_t));
+	Memory_Read(&core.memory, MEMORY_SETTINGS_ADDRESS, &core.settings, sizeof(Core_Settings_t));
+	Memory_Read(&core.memory, MEMORY_FIGHT_DATA_ADDRESS, &core.fight_data, sizeof(Core_FightData_t));
 
-	FiniteStateMachine_Start(&sneak100.fsm, sneak100.fight_data.core_save_state);
+	FiniteStateMachine_Start(&core.fsm, core.fight_data.core_save_state);
 }
 
 void SNEAK100_Core_Update() {
-	if(!sneak100.update_request)
+	if(!core.update_request)
 		return;
 
-	Line_SetPolarity(&sneak100.lines[LINE_LL], sneak100.settings.dyhlo_color);
-	Line_SetPolarity(&sneak100.lines[LINE_LM], sneak100.settings.dyhlo_color);
-	Line_SetPolarity(&sneak100.lines[LINE_RM], sneak100.settings.dyhlo_color);
-	Line_SetPolarity(&sneak100.lines[LINE_RR], sneak100.settings.dyhlo_color);
+	Line_SetPolarity(&core.lines[LINE_LL], core.settings.dyhlo_color);
+	Line_SetPolarity(&core.lines[LINE_LM], core.settings.dyhlo_color);
+	Line_SetPolarity(&core.lines[LINE_RM], core.settings.dyhlo_color);
+	Line_SetPolarity(&core.lines[LINE_RR], core.settings.dyhlo_color);
 
 	SNEAK100_Core_ReadState();
 
-	Motor_Update(&sneak100.motors[MOTOR_LF]);
-	Motor_Update(&sneak100.motors[MOTOR_LB]);
-	Motor_Update(&sneak100.motors[MOTOR_RF]);
-	Motor_Update(&sneak100.motors[MOTOR_RB]);
+	Motor_Update(&core.motors[MOTOR_LF]);
+	Motor_Update(&core.motors[MOTOR_LB]);
+	Motor_Update(&core.motors[MOTOR_RF]);
+	Motor_Update(&core.motors[MOTOR_RB]);
 
-	FiniteStateMachine_Update(&sneak100.fsm);
-	FiniteStateMachine_Execute(&sneak100.fsm);
+	FiniteStateMachine_Update(&core.fsm);
+	FiniteStateMachine_Execute(&core.fsm);
 
-	if(Display_GetStatus(&sneak100.display)!=HAL_OK)
+	if(Display_GetStatus(&core.display)!=HAL_OK)
 		HAL_GPIO_WritePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin, GPIO_PIN_SET);
 
-	sneak100.update_request = 0;
+	core.update_request = 0;
 }
 
 void SNEAK100_Core_UpdateRequest() {
-	sneak100.update_request = 1;
+	core.update_request = 1;
 }
 
 void SNEAK100_Core_ReadState() {
 
 	for(uint8_t i=0; i<4; i++) {
-		sneak100.state.motor[i].position_raw = Encoder_GetPositionRaw(&sneak100.encoders[i]);
-		sneak100.state.motor[i].position = Encoder_GetPosition(&sneak100.encoders[i]);
-		sneak100.state.motor[i].velocity = Encoder_GetVelocity(&sneak100.encoders[i]);
-		sneak100.state.motor[i].power = sneak100.motors[i].output;
+		core.state.motor[i].position_raw = __HAL_TIM_GET_COUNTER(core.encoders[i].timer);
+		core.state.motor[i].position = Encoder_GetPosition(&core.encoders[i]);
+		core.state.motor[i].velocity = core.motors[i].curr_vel;
+		core.state.motor[i].power = core.motors[i].output;
 
-		sneak100.state.line[i].value = *sneak100.lines[i].read_src;
-		sneak100.state.line[i].threshold = sneak100.lines[i].threshold;
-		sneak100.state.line[i].polarity = sneak100.lines[i].polarity;
-		sneak100.state.line[i].state = Line_GetState(&sneak100.lines[i]);
+		core.state.line[i].value = *core.lines[i].read_src;
+		core.state.line[i].threshold = core.lines[i].threshold;
+		core.state.line[i].polarity = core.lines[i].polarity;
+		core.state.line[i].state = Line_GetState(&core.lines[i]);
 
-		sneak100.state.proximity[i] = Proximity_GetState(&sneak100.proximity[i]);
+		core.state.proximity[i] = Proximity_GetState(&core.proximity[i]);
 	}
 
-	sneak100.state.temperature = SNEAK100_Core_GetTemperature();
-	sneak100.state.battery = SNEAK100_Core_GetSupplyVoltage();
-	sneak100.state.bluetooth = Bluetooth_GetStatus(&sneak100.bluetooth);
-	sneak100.state.core_curr_state = sneak100.fsm.states[sneak100.fsm.curr_state_index].id;
+	core.state.temperature = SNEAK100_Core_GetTemperature();
+	core.state.battery = SNEAK100_Core_GetSupplyVoltage();
+	core.state.bluetooth = Bluetooth_GetStatus(&core.bluetooth);
+	core.state.core_curr_state = core.fsm.states[core.fsm.curr_state_index].id;
 
 	RC5_Message_t message;
-	if(DecoderRC5_GetMessage(&sneak100.decoder_rc5, &message)) {
-		sneak100.state.rc5.message = message;
-		sneak100.state.rc5.expired = 0;
+	if(DecoderRC5_GetMessage(&core.decoder_rc5, &message)) {
+		core.state.rc5.message = message;
+		core.state.rc5.expired = 0;
 	}
 }
 

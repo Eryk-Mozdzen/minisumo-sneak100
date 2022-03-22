@@ -179,11 +179,11 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-	DecoderRC5_EXTI_Callback(&sneak100.decoder_rc5, GPIO_Pin);
+	DecoderRC5_EXTI_Callback(&core.decoder_rc5, GPIO_Pin);
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-	RxBufferUART_RxCpltCallback(&sneak100.bluetooth.buffer, huart);
+	RxBufferUART_RxCpltCallback(&core.bluetooth.buffer, huart);
 }
 
 uint32_t last_time = 0;
@@ -203,7 +203,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
 
-	DecoderRC5_PeriodElapsedCallback(&sneak100.decoder_rc5, htim);
+	DecoderRC5_PeriodElapsedCallback(&core.decoder_rc5, htim);
 
 	if(htim->Instance==TIM14) {
 		// 20 Hz
