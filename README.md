@@ -11,10 +11,10 @@
 </p>
 
 ### In progress:
-
+- connect wires for motors
 
 ### To do:
-- connect wires for sensors and motors
+- connect wires for sensors
 - assembly more proximity sensors
 - fight algorithm
 - shape blade

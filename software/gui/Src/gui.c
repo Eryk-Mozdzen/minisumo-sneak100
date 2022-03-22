@@ -10,7 +10,7 @@
 Sneak100_GUI_t gui;
 
 void SNEAK100_GUI_Init() {
-	gui.sneak100_ptr = &sneak100;
+	gui.sneak100_ptr = &core;
 	gui.update_request = 0;
 
 	FiniteStateMachine_Init(&gui.fsm, &gui);

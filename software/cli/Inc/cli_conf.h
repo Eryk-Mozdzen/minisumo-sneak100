@@ -34,7 +34,6 @@ list of available commands:\n \
 		--set write\n \
 		-i sensor index:	lf | lb | rf | rb | all\n \
 		-v velocity [RPS]	float\n \
-		-p position [R]  	float\n \
 		-f power [%%]		float [-1; 1]\n \
 \n"
 

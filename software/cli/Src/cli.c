@@ -18,7 +18,7 @@ static void __CLI_FreeArgs(size_t *, char ***);
 void SNEAK100_CLI_Init() {
 
 	cli_bluetooth = (const Sneak100_CLI_t){0};
-	cli_bluetooth.buffer = &sneak100.bluetooth.buffer;
+	cli_bluetooth.buffer = &core.bluetooth.buffer;
 
 	cli_debug = (const Sneak100_CLI_t){0};
 	cli_debug.buffer = (RxBufferUART_t *)malloc(sizeof(RxBufferUART_t));
