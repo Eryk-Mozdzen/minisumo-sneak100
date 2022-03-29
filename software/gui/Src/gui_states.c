@@ -23,9 +23,34 @@ static void GUI_WriteSettings(Sneak100_GUI_t *, Core_Settings_t);
 void GUI_DrawHeader(Sneak100_GUI_t *gui_ptr, const char *title) {
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, 0, "%s       ", title);
 
-	const char *core_state = core_states[gui_ptr->sneak100_ptr->state.core_curr_state];
-	uint8_t pad_len = 7 - strlen(core_state);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 78, 0, "%*.*s%s", pad_len, pad_len, padding, core_state);
+	static uint8_t battery_warning_toggle = 0;
+	static uint32_t battery_warning_time = 0;
+
+	if(gui_ptr->sneak100_ptr->state.battery<=BATTERY_CRITICAL_VOLTAGE) {
+		if((HAL_GetTick() - battery_warning_time)>500) {
+			battery_warning_toggle = !battery_warning_toggle;
+			battery_warning_time = HAL_GetTick();
+		}
+	} else {
+		battery_warning_toggle = 0;
+		battery_warning_time = 0;
+	}
+
+	if(battery_warning_toggle) {
+
+		char batt_info[10] = {0};
+		sprintf(batt_info, "%.1fV", gui_ptr->sneak100_ptr->state.battery);
+
+		uint8_t pad_len = 7 - strlen(batt_info);
+		Display_DrawText(&gui_ptr->sneak100_ptr->display, 78, 0, "%*.*s%s", pad_len, pad_len, padding, batt_info);
+
+	} else {
+
+		const char *core_state = core_states[gui_ptr->sneak100_ptr->state.core_curr_state];
+		uint8_t pad_len = 7 - strlen(core_state);
+		Display_DrawText(&gui_ptr->sneak100_ptr->display, 78, 0, "%*.*s%s", pad_len, pad_len, padding, core_state);
+
+	}
 
 	Display_DrawLine(&gui_ptr->sneak100_ptr->display, 0, 10, 127, 10);
 }
