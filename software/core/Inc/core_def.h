@@ -86,7 +86,13 @@ typedef struct {
 	uint8_t dyhlo_id;
 	Core_State_t core_save_state;
 
+	float angle_value;
+	float angle_distance;
+	uint32_t turn_back_counter;
+
 	struct {
+		uint8_t angle_complete : 1;
+		uint8_t angle_side : 2;
 		uint8_t turn_complete : 1;
 	} flags;
 } Core_FightData_t;
@@ -111,6 +117,7 @@ typedef struct {
 	float temperature;
 	float battery;
 	Core_State_t core_curr_state;
+	uint8_t fight_curr_state;
 	Bluetooth_Status_t bluetooth;
 
 	struct {

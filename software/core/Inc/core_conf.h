@@ -8,17 +8,23 @@
 #ifndef INC_CORE_CONF_H_
 #define INC_CORE_CONF_H_
 
-#define MOTOR_GEAR_RATIO				30
-#define ENCODER_CPR						12
+#define MOTOR_GEAR_RATIO				30		// input/output
+#define ENCODER_CPR						12		// counts per rotation
+#define WHEEL_DIAMETER					0.0292f	// m
+#define WHEEL_RADIUS					0.0146f	// m
+#define WHEEL_SPACING					0.085f	// m
+#define WHEEL_ROT_TO_CHASSIE_ROT_CONST	0.4f
 
 #define MOTOR_PID_P						0.07f
-#define MOTOR_PID_I						0.04f
-#define MOTOR_PID_D						0.00075f
+#define MOTOR_PID_I						0.0275f
+#define MOTOR_PID_D						0.00125f
 
-#define LINE_THRESHOLD					1500
+#define LINE_THRESHOLD					2000
+#define LINE_SPACING					0.0232f	// m
 
 #define SUPPLY_VOLTAGE_DIVIDER_R1		18000	// ohm
 #define SUPPLY_VOLTAGE_DIVIDER_R2		10000	// ohm
+#define BATTERY_CRITICAL_VOLTAGE		6.5f	// volt
 
 #define ADC_REF_VOLTAGE					3.27f	// volt
 #define ADC_RESOLUTION					4095
@@ -37,8 +43,6 @@
 #define MODULE_RC5_LED_BLINK_PERIOD		400		// ms
 
 #define BUTTON_START_WAIT_TIME			5000	// ms
-
-#define BATTERY_CRITICAL_VOLTAGE		6.5f		// volt
 
 #define CORE_UPDATE_PERIOD				50		// ms
 #define CORE_BUILD_DATE					__DATE__

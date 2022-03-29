@@ -12,7 +12,13 @@
 #include "core_def.h"
 #include "core_conf.h"
 
-uint8_t __Fight_Line_DetectEvent(void *);
+uint8_t __Fight_DetectLineAny_Event(void *);
+uint8_t __Fight_DetectLineLL_Event(void *);
+uint8_t __Fight_DetectLineLM_Event(void *);
+uint8_t __Fight_DetectLineRM_Event(void *);
+uint8_t __Fight_DetectLineRR_Event(void *);
+
+uint8_t __Fight_AngleComplete_Event(void *);
 uint8_t __Fight_TurnEnd_Event(void *);
 
 #endif

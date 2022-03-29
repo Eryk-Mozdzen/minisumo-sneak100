@@ -11,6 +11,7 @@ static const char *mode[] = {"module", "button"};
 static const char *dyhlo[] = {"black", "white", "auto"};
 static const char *strategy[] = {"agressive", "defense", "passive"};
 static const char *core_states[] = {"idle", "ready", "program", "run", "stop"};
+static const char *fight_states[] = {"start", "explore", "angle", "line"};
 static const char *bluetooth_status[] = {"waiting", "paired", "error"};
 static const char *menu[] = {"view", "settings", "fight", "", "", "", "info", "credits"};
 static const char *settings[] = {"mode", "dyhlo", "strat"};
@@ -247,7 +248,10 @@ void __GUI_Fight_Execute(void *data) {
 		GUI_DrawFooter(gui_ptr, "", "", "esc");
 
 		Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_1, "Save:     %s", core_states[gui_ptr->sneak100_ptr->fight_data.core_save_state]);
-		Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_2, "dyhlo ID: 0x%02X", gui_ptr->sneak100_ptr->fight_data.dyhlo_id>>1);
+		Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_2, "Fight:    %s", fight_states[gui_ptr->sneak100_ptr->state.fight_curr_state]);
+		//Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_3, "dyhlo ID: 0x%02X", gui_ptr->sneak100_ptr->fight_data.dyhlo_id>>1);
+		//Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_3, "dist:     %.5f", gui_ptr->sneak100_ptr->fight_data.angle_distance);
+		//Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_4, "angl:     %.5f", gui_ptr->sneak100_ptr->fight_data.angle_value*180/3.1415);
 
 		Display_Update(&gui_ptr->sneak100_ptr->display);
 		return;
