@@ -38,6 +38,8 @@
 
 #define BUTTON_START_WAIT_TIME			5000	// ms
 
+#define BATTERY_CRITICAL_VOLTAGE		6.5f		// volt
+
 #define CORE_UPDATE_PERIOD				50		// ms
 #define CORE_BUILD_DATE					__DATE__
 #define CORE_BUILD_TIME					__TIME__

@@ -85,6 +85,10 @@ typedef struct {
 typedef struct {
 	uint8_t dyhlo_id;
 	Core_State_t core_save_state;
+
+	struct {
+		uint8_t turn_complete : 1;
+	} flags;
 } Core_FightData_t;
 
 typedef struct {
