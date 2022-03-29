@@ -17,14 +17,13 @@ void Encoder_Init(Encoder_t *encoder, TIM_HandleTypeDef *encoder_timer, uint16_t
 	HAL_TIM_Encoder_Start(encoder->timer, TIM_CHANNEL_ALL);
 }
 
-void Encoder_Reset(Encoder_t *encoder) {
+int16_t Encoder_Reset(Encoder_t *encoder) {
 	encoder->prev_position = encoder->prev_position - ((float)((int16_t)__HAL_TIM_GET_COUNTER(encoder->timer)))/encoder->cpr;
+	int16_t raw = __HAL_TIM_GET_COUNTER(encoder->timer);
 
 	__HAL_TIM_SET_COUNTER(encoder->timer, 0);
-}
 
-uint32_t Encoder_GetPositionRaw(Encoder_t *encoder) {
-	return __HAL_TIM_GET_COUNTER(encoder->timer);
+	return raw;
 }
 
 float Encoder_GetPosition(Encoder_t *encoder) {

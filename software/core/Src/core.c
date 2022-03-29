@@ -40,13 +40,15 @@ void SNEAK100_Core_Init() {
 
 	FiniteStateMachine_Init(&core.fight_fsm, &core);
 
-	FiniteStateMachine_DefineState(&core.fight_fsm, FIGHT_STATE_START,		&Fight_Start_Enter,		NULL,					NULL);
-	FiniteStateMachine_DefineState(&core.fight_fsm, FIGHT_STATE_EXPLORE,	&Fight_Explore_Enter,	&Fight_Explore_Execute,	NULL);
-	FiniteStateMachine_DefineState(&core.fight_fsm, FIGHT_STATE_TURN,		&Fight_Turn_Enter,		&Fight_Turn_Execute,	NULL);
+	FiniteStateMachine_DefineState(&core.fight_fsm, FIGHT_STATE_START,				&Fight_Start_Enter,				NULL,								NULL);
+	FiniteStateMachine_DefineState(&core.fight_fsm, FIGHT_STATE_EXPLORE,			&Fight_Explore_Enter,			&Fight_Explore_Execute,				NULL);
+	FiniteStateMachine_DefineState(&core.fight_fsm, FIGHT_STATE_ANGLE_MEASUREMENT,	&Fight_AngleMeasurement_Enter,	&Fight_AngleMeasurement_Execute,	NULL);
+	FiniteStateMachine_DefineState(&core.fight_fsm, FIGHT_STATE_LINE_MANEUVER,		&Fight_LineManeuver_Enter,		&Fight_LineManeuver_Execute,		NULL);
 
-	FiniteStateMachine_DefineTransition(&core.fight_fsm, FIGHT_STATE_START,		FIGHT_STATE_EXPLORE,	0, NULL, NULL);
-	FiniteStateMachine_DefineTransition(&core.fight_fsm, FIGHT_STATE_EXPLORE,	FIGHT_STATE_TURN,		0, NULL, &__Fight_Line_DetectEvent);
-	FiniteStateMachine_DefineTransition(&core.fight_fsm, FIGHT_STATE_TURN,		FIGHT_STATE_EXPLORE,	0, NULL, &__Fight_TurnEnd_Event);
+	FiniteStateMachine_DefineTransition(&core.fight_fsm, FIGHT_STATE_START,				FIGHT_STATE_EXPLORE,			0, NULL, NULL);
+	FiniteStateMachine_DefineTransition(&core.fight_fsm, FIGHT_STATE_EXPLORE,			FIGHT_STATE_ANGLE_MEASUREMENT,	0, NULL, &__Fight_DetectLineAny_Event);
+	FiniteStateMachine_DefineTransition(&core.fight_fsm, FIGHT_STATE_ANGLE_MEASUREMENT,	FIGHT_STATE_LINE_MANEUVER,		0, NULL, &__Fight_AngleComplete_Event);
+	FiniteStateMachine_DefineTransition(&core.fight_fsm, FIGHT_STATE_LINE_MANEUVER,		FIGHT_STATE_EXPLORE,			0, NULL, &__Fight_TurnEnd_Event);
 
 	// hardware init
 
@@ -141,6 +143,7 @@ void SNEAK100_Core_ReadState() {
 	core.state.battery = SNEAK100_Core_GetSupplyVoltage();
 	core.state.bluetooth = Bluetooth_GetStatus(&core.bluetooth);
 	core.state.core_curr_state = core.fsm.states[core.fsm.curr_state_index].id;
+	core.state.fight_curr_state = core.fight_fsm.states[core.fight_fsm.curr_state_index].id;
 
 	RC5_Message_t message;
 	if(DecoderRC5_GetMessage(&core.decoder_rc5, &message)) {
