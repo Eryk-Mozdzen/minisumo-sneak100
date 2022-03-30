@@ -11,12 +11,11 @@
 </p>
 
 ### In progress:
-- connect wires for motors
+- fight algorithm
+- connect wires for sensors
 
 ### To do:
-- connect wires for sensors
 - assembly more proximity sensors
-- fight algorithm
 - shape blade
 - develop spring for blade
 - add lead weight
