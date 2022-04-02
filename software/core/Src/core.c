@@ -92,6 +92,9 @@ void SNEAK100_Core_Init() {
 	Memory_Read(&core.memory, MEMORY_FIGHT_DATA_ADDRESS, &core.fight_data, sizeof(Core_FightData_t));
 
 	FiniteStateMachine_Start(&core.fsm, core.fight_data.core_save_state);
+
+	core.state.temperature = SNEAK100_Core_GetTemperature();
+	core.state.battery = SNEAK100_Core_GetSupplyVoltage();
 }
 
 void SNEAK100_Core_Update() {
@@ -139,8 +142,8 @@ void SNEAK100_Core_ReadState() {
 		core.state.proximity[i] = Proximity_GetState(&core.proximity[i]);
 	}
 
-	core.state.temperature = SNEAK100_Core_GetTemperature();
-	core.state.battery = SNEAK100_Core_GetSupplyVoltage();
+	core.state.temperature = TEMPERATURE_FILTER_ALPHA*SNEAK100_Core_GetTemperature() + (1.f - TEMPERATURE_FILTER_ALPHA)*core.state.temperature;
+	core.state.battery = SUPPLY_VOLTAGE_FILTER_ALPHA*SNEAK100_Core_GetSupplyVoltage() + (1.f - SUPPLY_VOLTAGE_FILTER_ALPHA)*core.state.battery;
 	core.state.bluetooth = Bluetooth_GetStatus(&core.bluetooth);
 	core.state.core_curr_state = core.fsm.states[core.fsm.curr_state_index].id;
 	core.state.fight_curr_state = core.fight_fsm.states[core.fight_fsm.curr_state_index].id;
