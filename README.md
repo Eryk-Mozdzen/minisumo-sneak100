@@ -12,13 +12,13 @@
 
 ### In progress:
 - fight algorithm
-- connect wires for sensors
+- add lead weight
 
 ### To do:
-- assembly more proximity sensors
-- shape blade
 - develop spring for blade
-- add lead weight
+- shape blade
+- cast better silicon tires
+- update model and reprint chassis
 
 ### DEADLINE:
 ```diff
@@ -33,4 +33,4 @@
 ### Planned features:
 - FreeRTOS
 - clever fight algorithms
-- dedicated bluetooth app
+- dedicated bluetooth app for smartphone
