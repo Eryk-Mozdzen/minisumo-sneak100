@@ -27,7 +27,7 @@ void GUI_DrawHeader(Sneak100_GUI_t *gui_ptr, const char *title) {
 	static uint8_t battery_warning_toggle = 0;
 	static uint32_t battery_warning_time = 0;
 
-	if(gui_ptr->sneak100_ptr->state.battery<=BATTERY_CRITICAL_VOLTAGE) {
+	if(gui_ptr->sneak100_ptr->state.battery<=SUPPLY_VOLTAGE_CRITICAL) {
 		if((HAL_GetTick() - battery_warning_time)>500) {
 			battery_warning_toggle = !battery_warning_toggle;
 			battery_warning_time = HAL_GetTick();

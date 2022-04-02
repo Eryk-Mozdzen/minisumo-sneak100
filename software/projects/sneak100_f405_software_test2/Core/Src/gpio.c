@@ -62,7 +62,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PCPin PCPin */
-  GPIO_InitStruct.Pin = PROXIMITY_RR_Pin|PROXIMITY_FR_Pin;
+  GPIO_InitStruct.Pin = PROXIMITY_FR_Pin|PROXIMITY_RR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
