@@ -18,6 +18,10 @@
 #define MOTOR_PID_P						0.07f
 #define MOTOR_PID_I						0.0275f
 #define MOTOR_PID_D						0.00125f
+#define MOTOR_LF_DIR					1.f
+#define MOTOR_LB_DIR					1.f
+#define MOTOR_RF_DIR					-1.f
+#define MOTOR_RB_DIR					-1.f
 
 #define LINE_THRESHOLD					2000
 #define LINE_SPACING					0.0232f	// m
