@@ -248,10 +248,11 @@ void __GUI_Fight_Execute(void *data) {
 		GUI_DrawFooter(gui_ptr, "", "", "esc");
 
 		Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_1, "Save:     %s", core_states[gui_ptr->sneak100_ptr->fight_data.core_save_state]);
-		Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_2, "Fight:    %s", fight_states[gui_ptr->sneak100_ptr->state.fight_curr_state]);
+		//Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_2, "Fight:    %s", fight_states[gui_ptr->sneak100_ptr->state.fight_curr_state]);
 		//Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_3, "dyhlo ID: 0x%02X", gui_ptr->sneak100_ptr->fight_data.dyhlo_id>>1);
 		//Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_3, "dist:     %.5f", gui_ptr->sneak100_ptr->fight_data.angle_distance);
 		//Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_4, "angl:     %.5f", gui_ptr->sneak100_ptr->fight_data.angle_value*180/3.1415);
+		Display_DrawText(&gui_ptr->sneak100_ptr->display, 0, GUI_CONTENT_LINE_2, "Error:    %.1f", gui_ptr->sneak100_ptr->fight_data.pid_error);
 
 		Display_Update(&gui_ptr->sneak100_ptr->display);
 		return;

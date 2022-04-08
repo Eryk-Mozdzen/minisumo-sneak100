@@ -89,11 +89,13 @@ typedef struct {
 	float angle_value;
 	float angle_distance;
 	uint32_t turn_back_counter;
+	float pid_error;
 
 	struct {
 		uint8_t angle_complete : 1;
 		uint8_t angle_side : 2;
 		uint8_t turn_complete : 1;
+		uint8_t last_pid_error_sign : 1;
 	} flags;
 } Core_FightData_t;
 

@@ -54,7 +54,7 @@ void Core_Run_Enter(void *data) {
 
 	SaveState(sneak100_ptr, CORE_STATE_RUN);
 
-	FiniteStateMachine_Start(&sneak100_ptr->fight_fsm, FIGHT_STATE_START);
+	//FiniteStateMachine_Start(&sneak100_ptr->fight_fsm, FIGHT_STATE_START);
 }
 
 void Core_Stop_Enter(void *data) {
@@ -106,8 +106,57 @@ void Core_Run_Execute(void *data) {
 	// execute fight algorithm
 	// according to settings
 
-	FiniteStateMachine_Update(&sneak100_ptr->fight_fsm);
-	FiniteStateMachine_Execute(&sneak100_ptr->fight_fsm);
+	//FiniteStateMachine_Update(&sneak100_ptr->fight_fsm);
+	//FiniteStateMachine_Execute(&sneak100_ptr->fight_fsm);
+
+	if(!sneak100_ptr->state.proximity[PROXIMITY_LL] &&
+		!sneak100_ptr->state.proximity[PROXIMITY_FL] &&
+		!sneak100_ptr->state.proximity[PROXIMITY_FR] &&
+		!sneak100_ptr->state.proximity[PROXIMITY_RR]) {
+
+		const float turn_power = 0.75f;
+		const float turn_sign = sneak100_ptr->fight_data.flags.last_pid_error_sign ? 1.f : -1.f;
+
+		Motor_SetPower(&sneak100_ptr->motors[MOTOR_LF],  turn_sign*turn_power*MOTOR_LF_DIR);
+		Motor_SetPower(&sneak100_ptr->motors[MOTOR_LB],  turn_sign*turn_power*MOTOR_LB_DIR);
+		Motor_SetPower(&sneak100_ptr->motors[MOTOR_RF], -turn_sign*turn_power*MOTOR_RF_DIR);
+		Motor_SetPower(&sneak100_ptr->motors[MOTOR_RB], -turn_sign*turn_power*MOTOR_RB_DIR);
+
+		sneak100_ptr->fight_data.pid_error = 0.f;
+
+		return;
+	}
+
+	float sum = 0;
+	sum +=sneak100_ptr->state.proximity[PROXIMITY_LL]*(-3);
+	sum +=sneak100_ptr->state.proximity[PROXIMITY_FL]*(-1);
+	sum +=sneak100_ptr->state.proximity[PROXIMITY_FR]*(1);
+	sum +=sneak100_ptr->state.proximity[PROXIMITY_RR]*(3);
+
+	float number = 0;
+	number +=sneak100_ptr->state.proximity[PROXIMITY_LL];
+	number +=sneak100_ptr->state.proximity[PROXIMITY_FL];
+	number +=sneak100_ptr->state.proximity[PROXIMITY_FR];
+	number +=sneak100_ptr->state.proximity[PROXIMITY_RR];
+
+	const float value = (float)sum/number;
+
+	const float Kp = 0.2f;
+	const float setpoint = 0.f;
+
+	const float error = (value - setpoint);
+	const float output = Kp*error;
+
+	const float power = 0.9f;
+
+	Motor_SetPower(&sneak100_ptr->motors[MOTOR_LF], (power + output)*MOTOR_LF_DIR);
+	Motor_SetPower(&sneak100_ptr->motors[MOTOR_LB], (power + output)*MOTOR_LB_DIR);
+	Motor_SetPower(&sneak100_ptr->motors[MOTOR_RF], (power - output)*MOTOR_RF_DIR);
+	Motor_SetPower(&sneak100_ptr->motors[MOTOR_RB], (power - output)*MOTOR_RB_DIR);
+
+	sneak100_ptr->fight_data.pid_error = error;
+	sneak100_ptr->fight_data.flags.last_pid_error_sign = (error>0.f);
+
 }
 
 void Core_Stop_Execute(void *data) {
