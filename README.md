@@ -12,11 +12,9 @@
 
 ### In progress:
 - fight algorithm
-- add lead weight
 
 ### To do:
 - develop spring for blade
-- shape blade
 - cast better silicon tires
 - update model and reprint chassis
 
@@ -26,7 +24,7 @@
 - 20 nov 2021 - EastROBO 2021, Bialystok, Poland (missed)
 - 28 nov 2021 - ROBOmotion 2021, Rzeszow, Poland (missed)
 +  9 apr 2022 - Robotic Tournament, Rybnik, Poland
-# 13 may 2022 - Baltic Robot Battles, Gdansk, Poland (canceled)
++ 13 may 2022 - Baltic Robot Battles, Gdansk, Poland
 +  2 jul 2022 - Drones And Robots Tournament, Krakow, Poland
 ```
 
@@ -34,3 +32,4 @@
 - FreeRTOS
 - clever fight algorithms
 - dedicated bluetooth app for smartphone
+- omniwheels
