@@ -11,12 +11,18 @@
 </p>
 
 ### In progress:
-- fight algorithm
 
 ### To do:
 - develop spring for blade
 - cast better silicon tires
-- update model and reprint chassis
+- proximity sensors: turn to front
+- proximity sensors: check if uC pins are 5V tolerant
+- proximity sensors: power from 5V rail
+- proximity sensors: find the best one and replace diode resistors
+- proximity sensors: replace calbes to thicker ones
+- hide power switch
+- steer motors in close loop
+- react on edge line
 
 ### DEADLINE:
 ```diff
