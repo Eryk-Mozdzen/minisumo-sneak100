@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <img src="/docs/readme/screen_board.PNG" width="49%" />
+  <img src="/docs/readme/screen_board.png" width="49%" />
   <img src="/docs/readme/real_board.jpg" width="49%" />
 </p>
 
@@ -36,6 +36,7 @@
 - 28 nov 2021 - ROBOmotion 2021, Rzeszow, Poland (missed)
 +  9 apr 2022 - Robotic Tournament, Rybnik, Poland
 # 13 may 2022 - Baltic Robot Battles, Gdansk, Poland (canceled)
++ 18 jun 2022 - XIII Robotic Arena, Wroclaw
 +  2 jul 2022 - Drones And Robots Tournament, Krakow, Poland
 ```
 
