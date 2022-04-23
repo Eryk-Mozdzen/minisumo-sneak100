@@ -5,6 +5,8 @@
 #include "task.h"
 
 #include "config.h"
+#include "uart3.h"
+#include "cli.h"
 
 void greenTask(void *param) {
     (void)param;
@@ -32,9 +34,8 @@ void yellowTask(void *param) {
 
 int main() {
 
-    NVIC_SetPriorityGrouping(0);
-
-    Clock_Init();
+    Setup();
+    CLI_Init();
 
     // PA5
     RCC->AHB1ENR |=RCC_AHB1ENR_GPIOBEN;

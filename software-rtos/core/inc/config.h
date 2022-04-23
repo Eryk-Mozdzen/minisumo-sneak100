@@ -7,7 +7,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-void Clock_Init();
+void Setup();
 
 void vApplicationStackOverflowHook(TaskHandle_t, char *);
 void vApplicationGetIdleTaskMemory(StaticTask_t **, StackType_t **, uint32_t *);
