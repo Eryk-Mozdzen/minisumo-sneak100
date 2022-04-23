@@ -5,3 +5,6 @@
 [submodule "software/external/stm32-ssd1306"]
 	path = software/external/stm32-ssd1306
 	url = git@github.com:afiskon/stm32-ssd1306.git
+[submodule "software-rtos/third-party/FreeRTOS-Kernel"]
+	path = software-rtos/third-party/FreeRTOS-Kernel
+	url = git@github.com:FreeRTOS/FreeRTOS-Kernel.git
