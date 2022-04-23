@@ -37,8 +37,11 @@ set(SOURCES
 	"${BASE_DIR}/third-party/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/port.c"
 	"${BASE_DIR}/third-party/FreeRTOS-Kernel/portable/MemMang/heap_1.c"
 	"${BASE_DIR}/third-party/FreeRTOS-Plus-CLI/FreeRTOS_CLI.c"
-	"${BASE_DIR}/code/src/main.c"
-	"${BASE_DIR}/code/src/config.c"
+	"${BASE_DIR}/core/src/main.c"
+	"${BASE_DIR}/core/src/config.c"
+	"${BASE_DIR}/cli/src/uart3.c"
+	"${BASE_DIR}/cli/src/cli.c"
+	"${BASE_DIR}/cli/src/cli_apps.c"
 )
 
 include_directories(
@@ -47,7 +50,10 @@ include_directories(
 	"${BASE_DIR}/third-party/FreeRTOS-Kernel/include"
 	"${BASE_DIR}/third-party/FreeRTOS-Kernel/portable/GCC/ARM_CM4F"
 	"${BASE_DIR}/third-party/FreeRTOS-Plus-CLI"
-	"${BASE_DIR}/code/inc"
+	"${BASE_DIR}/core/inc"
+	"${BASE_DIR}/cli/inc"
+	"${BASE_DIR}/gui/inc"
+	"${BASE_DIR}/fight/inc"
 )
 
 add_executable(${TARGET}.elf ${SOURCES})

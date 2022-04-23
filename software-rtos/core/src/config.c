@@ -1,6 +1,6 @@
 #include "config.h"
 
-void Clock_Init() {
+void Setup() {
     RCC->CR |=RCC_CR_HSEON;
     while(!(RCC->CR & RCC_CR_HSERDY));
 
@@ -21,6 +21,8 @@ void Clock_Init() {
 
     RCC->CFGR |=RCC_CFGR_SW_PLL;
     while((RCC->CFGR & RCC_CFGR_SW)!=RCC_CFGR_SW_PLL);
+
+    NVIC_SetPriorityGrouping(0);
 }
 
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName) {
