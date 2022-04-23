@@ -5,7 +5,6 @@
 #include "task.h"
 
 #include "config.h"
-#include "uart3.h"
 #include "cli.h"
 
 void greenTask(void *param) {
@@ -35,9 +34,10 @@ void yellowTask(void *param) {
 int main() {
 
     Setup();
+
     CLI_Init();
 
-    // PA5
+    UART3_Init();
     RCC->AHB1ENR |=RCC_AHB1ENR_GPIOBEN;
     GPIOB->MODER |=GPIO_MODER_MODER15_0 | GPIO_MODER_MODER14_0;;
 

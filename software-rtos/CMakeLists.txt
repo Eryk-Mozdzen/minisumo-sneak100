@@ -31,12 +31,14 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfloat-abi=hard -mfpu=fpv4-sp-d16")
 set(SOURCES
 	"${BASE_DIR}/third-party/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c"
 	"${BASE_DIR}/third-party/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f405xx.s"
+
 	"${BASE_DIR}/third-party/FreeRTOS-Kernel/tasks.c"
 	"${BASE_DIR}/third-party/FreeRTOS-Kernel/queue.c"
 	"${BASE_DIR}/third-party/FreeRTOS-Kernel/list.c"
 	"${BASE_DIR}/third-party/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/port.c"
 	"${BASE_DIR}/third-party/FreeRTOS-Kernel/portable/MemMang/heap_1.c"
 	"${BASE_DIR}/third-party/FreeRTOS-Plus-CLI/FreeRTOS_CLI.c"
+
 	"${BASE_DIR}/core/src/main.c"
 	"${BASE_DIR}/core/src/config.c"
 	"${BASE_DIR}/cli/src/uart3.c"
@@ -47,9 +49,11 @@ set(SOURCES
 include_directories(
 	"${BASE_DIR}/third-party/CMSIS/Include"
 	"${BASE_DIR}/third-party/CMSIS/Device/ST/STM32F4xx/Include"
+
 	"${BASE_DIR}/third-party/FreeRTOS-Kernel/include"
 	"${BASE_DIR}/third-party/FreeRTOS-Kernel/portable/GCC/ARM_CM4F"
 	"${BASE_DIR}/third-party/FreeRTOS-Plus-CLI"
+
 	"${BASE_DIR}/core/inc"
 	"${BASE_DIR}/cli/inc"
 	"${BASE_DIR}/gui/inc"

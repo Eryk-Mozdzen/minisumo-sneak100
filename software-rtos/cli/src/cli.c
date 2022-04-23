@@ -34,8 +34,6 @@ static void listener(void *param) {
 
 void CLI_Init() {
 
-    UART3_Init();
-
 	FreeRTOS_CLIRegisterCommand(&__CLI_Command_Motor);
 
 	xTaskCreate(listener, "CLI listener", 1024, NULL, 4, NULL);
