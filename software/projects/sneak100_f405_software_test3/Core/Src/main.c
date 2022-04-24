@@ -719,8 +719,8 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED_Y_GPIO_Port, LED_Y_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PROX4_Pin PROX3_Pin */
-  GPIO_InitStruct.Pin = PROX4_Pin|PROX3_Pin;
+  /*Configure GPIO pins : PROX4_Pin PROX3_Pin SW2_Pin SW3_Pin */
+  GPIO_InitStruct.Pin = PROX4_Pin|PROX3_Pin|SW2_Pin|SW3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
@@ -750,8 +750,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(IMU_INT_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : BUTT1_Pin BUTT2_Pin BUTT3_Pin */
-  GPIO_InitStruct.Pin = BUTT1_Pin|BUTT2_Pin|BUTT3_Pin;
+  /*Configure GPIO pins : BUTT1_Pin BUTT2_Pin BUTT3_Pin SW1_Pin */
+  GPIO_InitStruct.Pin = BUTT1_Pin|BUTT2_Pin|BUTT3_Pin|SW1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);

@@ -13,16 +13,17 @@ ok	- add additional UART
 ok	- reset button
 
 version 1.2:
+version 2.0:
 	- capacitor footprint termo relief
-	- change polarity of battery input connector to flat side
-	- fix proximity sensor connector pinout and add pinout labels
-	- line sensor merged header
-	- remove HC-05 power control MOSFET
-	- add jumper from ST-Link 5V to supply or 5V rail
+ok	- change polarity of battery input connector to flat side
+	- fix proximity sensor connector pinout and add pinout labels / move sensor on the board
+ok	- line sensor merged header
+ok	- remove HC-05 power control MOSFET / remove HC-05
+ok	- add jumper from ST-Link 5V to supply or 5V rail
 	- add KoNaR symbol on silk layer
 	
 	- detachable screen
-	- detachable 9DOF / 9DOF onboard / 6DOF + 3DOF on board
+pass	- detachable 9DOF / 9DOF onboard / 6DOF + 3DOF on board
 
-	- use SWO interface for debug, use of real ST-LINK v2, change programming connector to header goldpin
+pass	- use SWO interface for debug, use of real ST-LINK v2, change programming connector to header goldpin
 	

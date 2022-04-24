@@ -104,10 +104,16 @@ void Error_Handler(void);
 #define BUTT2_GPIO_Port GPIOB
 #define BUTT3_Pin GPIO_PIN_14
 #define BUTT3_GPIO_Port GPIOB
+#define SW1_Pin GPIO_PIN_15
+#define SW1_GPIO_Port GPIOB
 #define MOT1_A_Pin GPIO_PIN_6
 #define MOT1_A_GPIO_Port GPIOC
 #define MOT1_B_Pin GPIO_PIN_7
 #define MOT1_B_GPIO_Port GPIOC
+#define SW2_Pin GPIO_PIN_8
+#define SW2_GPIO_Port GPIOC
+#define SW3_Pin GPIO_PIN_9
+#define SW3_GPIO_Port GPIOC
 #define MOT2_A_Pin GPIO_PIN_8
 #define MOT2_A_GPIO_Port GPIOA
 #define MOT2_B_Pin GPIO_PIN_9
