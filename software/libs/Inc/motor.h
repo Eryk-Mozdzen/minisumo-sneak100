@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define MOTOR_POWER_MAX		65535
+#define MOTOR_POWER_MAX		9999
 
 #define MIN(__A__, __B__) (((__A__)<=(__B__)) ? (__A__) : (__B__))
 #define MAX(__A__, __B__) (((__A__)>=(__B__)) ? (__A__) : (__B__))
