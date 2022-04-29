@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "sneak100_lib")(type "KiCad")(uri "${KIPRJMOD}/sneak100_lib.pretty")(options "")(descr ""))
+)
