@@ -121,7 +121,12 @@ void __GUI_Motors_Execute(void *data) {
 	GUI_DrawHeader(gui_ptr, "Motors");
 	GUI_DrawFooter(gui_ptr, "next", "prev", "esc");
 
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_1, "LF:%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LF].position);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_1, "LF:%+u", gui_ptr->sneak100_ptr->state.motor[MOTOR_LF].position_raw);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_2, "LB:%+u", gui_ptr->sneak100_ptr->state.motor[MOTOR_LB].position_raw);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_3, "RF:%+u", gui_ptr->sneak100_ptr->state.motor[MOTOR_RF].position_raw);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_4, "RB:%+u", gui_ptr->sneak100_ptr->state.motor[MOTOR_RB].position_raw);
+
+	/*Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_1, "LF:%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LF].position);
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_2, "LB:%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LB].position);
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_3, "RF:%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RF].position);
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 0,  GUI_CONTENT_LINE_4, "RB:%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RB].position);
@@ -134,7 +139,7 @@ void __GUI_Motors_Execute(void *data) {
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 92,  GUI_CONTENT_LINE_1, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LF].power);
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 92,  GUI_CONTENT_LINE_2, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_LB].power);
 	Display_DrawText(&gui_ptr->sneak100_ptr->display, 92,  GUI_CONTENT_LINE_3, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RF].power);
-	Display_DrawText(&gui_ptr->sneak100_ptr->display, 92,  GUI_CONTENT_LINE_4, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RB].power);
+	Display_DrawText(&gui_ptr->sneak100_ptr->display, 92,  GUI_CONTENT_LINE_4, "%+.2f", gui_ptr->sneak100_ptr->state.motor[MOTOR_RB].power);*/
 
 	Display_Update(&gui_ptr->sneak100_ptr->display);
 }
