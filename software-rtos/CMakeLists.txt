@@ -41,6 +41,7 @@ set(SOURCES
 
 	"${BASE_DIR}/core/src/main.c"
 	"${BASE_DIR}/core/src/config.c"
+	"${BASE_DIR}/core/src/i2c1.c"
 	"${BASE_DIR}/cli/src/uart3.c"
 	"${BASE_DIR}/cli/src/cli.c"
 	"${BASE_DIR}/cli/src/cli_apps.c"

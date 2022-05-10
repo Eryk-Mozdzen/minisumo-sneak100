@@ -8,10 +8,13 @@
 #include "task.h"
 #include "queue.h"
 
+#define UART3_TX_BUFFER_SIZE	128
+#define UART3_RX_BUFFER_SIZE	128
+
 void UART3_Init();
 
-uint8_t UART3_Transmit(void *, uint16_t);
-uint8_t UART3_Receive(void *, uint16_t);
+void UART3_Transmit(void *, uint16_t);
+uint8_t UART3_Receive(void *);
 
 void USART3_IRQHandler();
 

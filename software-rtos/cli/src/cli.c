@@ -3,30 +3,30 @@
 static void listener(void *param) {
 	(void)param;
 
-    char rx_buffer[CLI_RX_BUFFER_SIZE] = {0};
-    char tx_buffer[CLI_TX_BUFFER_SIZE] = {0};
+    char rx_buffer[UART3_RX_BUFFER_SIZE] = {0};
+    char tx_buffer[UART3_TX_BUFFER_SIZE] = {0};
     uint8_t rx_buffer_count = 0;
     BaseType_t result;
 
     while(1) {
 
-        if(UART3_Receive(&rx_buffer[rx_buffer_count], 1)) {
+        if(UART3_Receive(&rx_buffer[rx_buffer_count])) {
             rx_buffer_count++;
 
-            if(rx_buffer[rx_buffer_count-1]=='\r' || rx_buffer_count>=CLI_RX_BUFFER_SIZE) {
+            if(rx_buffer[rx_buffer_count-1]=='\r' || rx_buffer_count>=UART3_RX_BUFFER_SIZE) {
                 rx_buffer[rx_buffer_count-1] = '\0';
 
                 result = pdTRUE;
                 while(result) {
-                    result = FreeRTOS_CLIProcessCommand(rx_buffer, tx_buffer, CLI_TX_BUFFER_SIZE);
+                    result = FreeRTOS_CLIProcessCommand(rx_buffer, tx_buffer, UART3_TX_BUFFER_SIZE);
 
                     UART3_Transmit(tx_buffer, strlen(tx_buffer));
 
-                    memset(tx_buffer, 0, CLI_TX_BUFFER_SIZE);
+                    memset(tx_buffer, 0, UART3_TX_BUFFER_SIZE);
                 }
 
                 rx_buffer_count = 0;
-                memset(rx_buffer, 0, CLI_RX_BUFFER_SIZE);
+                memset(rx_buffer, 0, UART3_RX_BUFFER_SIZE);
             }
         }
     }
