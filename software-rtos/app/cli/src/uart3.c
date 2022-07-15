@@ -1,7 +1,7 @@
 #include "uart3.h"
 
-static QueueHandle_t buffer_rx;
 static QueueHandle_t buffer_tx;
+static cli_command_t command_rx;
 
 static void transmitter(void *param) {
 	(void)param;
@@ -36,7 +36,6 @@ void uart3_init() {
 
 	// --------------------------
 
-	buffer_rx = xQueueCreate(UART3_RX_BUFFER_SIZE, 1);
 	buffer_tx = xQueueCreate(UART3_TX_BUFFER_SIZE, 1);
 	
 	xTaskCreate(transmitter, "UART3 tx", 130, NULL, 4, NULL);
@@ -47,20 +46,25 @@ void uart3_init() {
 	NVIC_EnableIRQ(USART3_IRQn);
 }
 
-void uart3_transmit(void *buffer, uint16_t size) {
+void uart3_transmit(void *buffer, size_t size) {
 	for(uint32_t i=0; i<size; i++)
 		xQueueSend(buffer_tx, (void *)((uint32_t)buffer + i), portMAX_DELAY);
 }
 
-uint8_t uart3_receive(void *buffer) {
-	return xQueueReceive(buffer_rx, buffer, portMAX_DELAY);
-}
-
 void USART3_IRQHandler() {
 	if(USART3->SR & USART_SR_RXNE) {
-		uint8_t byte = USART3->DR;
+		const uint8_t byte = USART3->DR;
 
-		xQueueSendFromISR(buffer_rx, &byte, NULL);
+		if(command_rx.size<CLI_LINE_MAX_SIZE && byte!='\r') {
+			command_rx.buffer[command_rx.size] = byte;
+			command_rx.size++;
+		}
+
+		if(byte=='\r') {
+			command_rx.callback = uart3_transmit;
+			cli_send_isr(&command_rx);
+			memset(&command_rx, 0, sizeof(cli_command_t));
+		}
 	} else if(USART3->SR & USART_SR_TXE) {
 		uint8_t byte;
 

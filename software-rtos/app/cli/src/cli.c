@@ -1,40 +1,46 @@
 #include "cli.h"
 
+static QueueHandle_t commands;
+
 static void listener(void *param) {
 	(void)param;
 
-    char rx_buffer[UART3_RX_BUFFER_SIZE] = {0};
-    char tx_buffer[UART3_TX_BUFFER_SIZE] = {0};
-    uint8_t rx_buffer_count = 0;
-    BaseType_t result;
+	char tx_buffer[CLI_LINE_MAX_SIZE] = {0};
+	cli_command_t cmd = {0};
+	BaseType_t result;
 
     while(1) {
 
-        if(uart3_receive(&rx_buffer[rx_buffer_count])) {
-            rx_buffer_count++;
+        if(xQueueReceive(commands, &cmd, portMAX_DELAY)) {
 
-            if(rx_buffer[rx_buffer_count-1]=='\r' || rx_buffer_count>=UART3_RX_BUFFER_SIZE) {
-                rx_buffer[rx_buffer_count-1] = '\0';
+			result = pdTRUE;
+			while(result) {
+				result = FreeRTOS_CLIProcessCommand(cmd.buffer, tx_buffer, CLI_LINE_MAX_SIZE);
 
-                result = pdTRUE;
-                while(result) {
-                    result = FreeRTOS_CLIProcessCommand(rx_buffer, tx_buffer, UART3_TX_BUFFER_SIZE);
+				if(cmd.callback)
+					cmd.callback(tx_buffer, strlen(tx_buffer));
 
-                    uart3_transmit(tx_buffer, strlen(tx_buffer));
+				memset(tx_buffer, 0, CLI_LINE_MAX_SIZE);
+			}
 
-                    memset(tx_buffer, 0, UART3_TX_BUFFER_SIZE);
-                }
-
-                rx_buffer_count = 0;
-                memset(rx_buffer, 0, UART3_RX_BUFFER_SIZE);
-            }
+			memset(cmd.buffer, 0, sizeof(cli_command_t));
         }
     }
 }
 
 void cli_init() {
 
+	commands = xQueueCreate(CLI_QUEUE_SIZE, sizeof(cli_command_t));
+
 	FreeRTOS_CLIRegisterCommand(&cli_command_motor_vel);
 
 	xTaskCreate(listener, "CLI listener", 1024, NULL, 4, NULL);
+}
+
+void cli_send(const cli_command_t *cmd) {
+	xQueueSend(commands, cmd, 100);
+}
+
+void cli_send_isr(const cli_command_t *cmd) {
+	xQueueSendFromISR(commands, cmd, NULL);
 }
