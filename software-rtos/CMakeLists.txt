@@ -24,6 +24,7 @@ add_executable(${TARGET}
 	"app/core/src/main.c"
 	"app/core/src/motors.c"
 	#"app/core/src/i2c1.c"
+	"app/cli/src/uart2.c"
 	"app/cli/src/uart3.c"
 	"app/cli/src/cli_apps.c"
 	"app/cli/src/cli.c"

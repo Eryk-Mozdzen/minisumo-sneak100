@@ -3,6 +3,8 @@
 #include "task.h"
 
 #include "cli.h"
+#include "uart2.h"
+#include "uart3.h"
 #include "motors.h"
 
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName) {
@@ -68,6 +70,7 @@ int main() {
 
 	NVIC_SetPriorityGrouping(0);
 	clock_init();
+	uart2_init();
     uart3_init();
     
     cli_init();
