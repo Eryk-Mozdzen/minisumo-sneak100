@@ -1,81 +1,87 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(sneak100_rtos)
+set(CMAKE_TOOLCHAIN_FILE "toolchain/arm-none-eabi.cmake")
+
+project(sneak100-rtos)
 
 enable_language(C ASM)
 
-set(TARGET ${CMAKE_PROJECT_NAME})
-set(BASE_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(TARGET ${CMAKE_PROJECT_NAME}.elf)
 
-set(CC "arm-none-eabi-gcc")
-set(AS "arm-none-eabi-as")
-set(OBJCOPY "arm-none-eabi-objcopy")
-set(OBJDUMP "arm-none-eabi-objdump")
-set(SIZE "arm-none-eabi-size")
+add_executable(${TARGET}
+	"third-party/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c"
+	"third-party/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f405xx.s"
+	"third-party/CMSIS/DSP/Source/ControllerFunctions/arm_pid_init_f32.c"
+	"third-party/CMSIS/DSP/Source/ControllerFunctions/arm_pid_reset_f32.c"
 
-set(CMAKE_C_COMPILER ${CC})
-set(CMAKE_ASM_COMPILER  ${AS})
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L ${BASE_DIR}/linker")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T STM32F405RGTX_FLASH.ld")
+	"third-party/FreeRTOS-Kernel/tasks.c"
+	"third-party/FreeRTOS-Kernel/queue.c"
+	"third-party/FreeRTOS-Kernel/list.c"
+	"third-party/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/port.c"
+	"third-party/FreeRTOS-Kernel/portable/MemMang/heap_4.c"
+	"third-party/FreeRTOS-Plus-CLI/FreeRTOS_CLI.c"
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c17 -O -g")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wpedantic")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=cortex-m4 -DSTM32F405xx")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --specs=nosys.specs")
-
-# floating point arithmetic
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffast-math -fsingle-precision-constant")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wdouble-promotion")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfloat-abi=hard -mfpu=fpv4-sp-d16")
-
-set(SOURCES
-	"${BASE_DIR}/third-party/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c"
-	"${BASE_DIR}/third-party/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f405xx.s"
-
-	"${BASE_DIR}/third-party/FreeRTOS-Kernel/tasks.c"
-	"${BASE_DIR}/third-party/FreeRTOS-Kernel/queue.c"
-	"${BASE_DIR}/third-party/FreeRTOS-Kernel/list.c"
-	"${BASE_DIR}/third-party/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/port.c"
-	"${BASE_DIR}/third-party/FreeRTOS-Kernel/portable/MemMang/heap_1.c"
-	"${BASE_DIR}/third-party/FreeRTOS-Plus-CLI/FreeRTOS_CLI.c"
-
-	"${BASE_DIR}/core/src/main.c"
-	"${BASE_DIR}/core/src/config.c"
-	"${BASE_DIR}/core/src/i2c1.c"
-	"${BASE_DIR}/cli/src/uart3.c"
-	"${BASE_DIR}/cli/src/cli.c"
-	"${BASE_DIR}/cli/src/cli_apps.c"
+	"app/core/src/main.c"
+	"app/core/src/motors.c"
+	#"app/core/src/i2c1.c"
+	"app/cli/src/uart3.c"
+	"app/cli/src/cli_apps.c"
+	"app/cli/src/cli.c"
 )
 
-include_directories(
-	"${BASE_DIR}/third-party/CMSIS/Include"
-	"${BASE_DIR}/third-party/CMSIS/Device/ST/STM32F4xx/Include"
-
-	"${BASE_DIR}/third-party/FreeRTOS-Kernel/include"
-	"${BASE_DIR}/third-party/FreeRTOS-Kernel/portable/GCC/ARM_CM4F"
-	"${BASE_DIR}/third-party/FreeRTOS-Plus-CLI"
-
-	"${BASE_DIR}/core/inc"
-	"${BASE_DIR}/cli/inc"
-	"${BASE_DIR}/gui/inc"
-	"${BASE_DIR}/fight/inc"
+target_compile_definitions(${TARGET} PRIVATE
+	STM32F405xx
+	ARM_MATH_CM4
+	#__FPU_PRESENT=1
 )
 
-add_executable(${TARGET}.elf ${SOURCES})
+target_include_directories(${TARGET} PRIVATE
+	"third-party/CMSIS/Include"
+	"third-party/CMSIS/Device/ST/STM32F4xx/Include"
+	"third-party/CMSIS/DSP/Include"
 
-target_link_libraries(${TARGET}.elf m)
+	"third-party/FreeRTOS-Kernel/include"
+	"third-party/FreeRTOS-Kernel/portable/GCC/ARM_CM4F"
+	"third-party/FreeRTOS-Plus-CLI"
+	
+	"app/core/inc"
+	"app/cli/inc"
+)
+
+target_compile_options(${TARGET} PRIVATE
+	-O0 -g
+	
+	-Wall
+	-Wextra
+	-Wpedantic
+	-Wdouble-promotion
+	
+	-mcpu=cortex-m4
+	-mfloat-abi=hard
+	-mfpu=fpv4-sp-d16
+
+	-specs=nosys.specs
+)
+
+target_link_options(${TARGET} PRIVATE
+	-T ${CMAKE_SOURCE_DIR}/linker/STM32F405RGTX_FLASH.ld
+
+	-mthumb
+	-mcpu=cortex-m4
+	-mfpu=fpv4-sp-d16
+	-mfloat-abi=hard
+
+	-specs=nosys.specs
+)
+
+target_link_libraries(${TARGET} 
+	m
+	#arm_cortexM4lf_math ${CMAKE_SOURCE_DIR}/third-party/CMSIS/Lib/GCC/libarm_cortexM4lf_math.a
+)
 
 add_custom_command(
-	TARGET ${TARGET}.elf POST_BUILD
-	COMMAND ${OBJCOPY} -O ihex ${TARGET}.elf ${TARGET}.hex
-)
-
-add_custom_command(
-	TARGET ${TARGET}.elf POST_BUILD
-	COMMAND ${OBJCOPY} -O binary ${TARGET}.elf ${TARGET}.bin
-)
-
-add_custom_command(
-	TARGET ${TARGET}.elf POST_BUILD
-	COMMAND ${SIZE} ${TARGET}.elf
+	TARGET ${TARGET} POST_BUILD
+	COMMAND ${CMAKE_OBJCOPY} -O binary ${TARGET} ${CMAKE_PROJECT_NAME}.bin
+	COMMAND ${CMAKE_OBJCOPY} -O ihex ${TARGET} ${CMAKE_PROJECT_NAME}.hex
+	COMMAND ${CMAKE_SIZE} ${TARGET}
 )

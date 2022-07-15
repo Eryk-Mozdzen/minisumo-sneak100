@@ -10,7 +10,7 @@ static void listener(void *param) {
 
     while(1) {
 
-        if(UART3_Receive(&rx_buffer[rx_buffer_count])) {
+        if(uart3_receive(&rx_buffer[rx_buffer_count])) {
             rx_buffer_count++;
 
             if(rx_buffer[rx_buffer_count-1]=='\r' || rx_buffer_count>=UART3_RX_BUFFER_SIZE) {
@@ -20,7 +20,7 @@ static void listener(void *param) {
                 while(result) {
                     result = FreeRTOS_CLIProcessCommand(rx_buffer, tx_buffer, UART3_TX_BUFFER_SIZE);
 
-                    UART3_Transmit(tx_buffer, strlen(tx_buffer));
+                    uart3_transmit(tx_buffer, strlen(tx_buffer));
 
                     memset(tx_buffer, 0, UART3_TX_BUFFER_SIZE);
                 }
@@ -32,7 +32,7 @@ static void listener(void *param) {
     }
 }
 
-void CLI_Init() {
+void cli_init() {
 
 	FreeRTOS_CLIRegisterCommand(&__CLI_Command_Motor);
 
