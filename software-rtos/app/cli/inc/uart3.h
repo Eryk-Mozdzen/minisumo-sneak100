@@ -11,10 +11,10 @@
 #define UART3_TX_BUFFER_SIZE	128
 #define UART3_RX_BUFFER_SIZE	128
 
-void UART3_Init();
+void uart3_init();
 
-void UART3_Transmit(void *, uint16_t);
-uint8_t UART3_Receive(void *);
+void uart3_transmit(void *, uint16_t);
+uint8_t uart3_receive(void *);
 
 void USART3_IRQHandler();
 

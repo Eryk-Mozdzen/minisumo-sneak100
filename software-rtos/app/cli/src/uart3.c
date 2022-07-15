@@ -19,7 +19,7 @@ static void transmitter(void *param) {
     }
 }
 
-void UART3_Init() {
+void uart3_init() {
 	// PB10 = TX
     // PB11 = RX
     RCC->AHB1ENR |=RCC_AHB1ENR_GPIOBEN;
@@ -47,12 +47,12 @@ void UART3_Init() {
 	NVIC_EnableIRQ(USART3_IRQn);
 }
 
-void UART3_Transmit(void *buffer, uint16_t size) {
+void uart3_transmit(void *buffer, uint16_t size) {
 	for(uint32_t i=0; i<size; i++)
 		xQueueSend(buffer_tx, (void *)((uint32_t)buffer + i), portMAX_DELAY);
 }
 
-uint8_t UART3_Receive(void *buffer) {
+uint8_t uart3_receive(void *buffer) {
 	return xQueueReceive(buffer_rx, buffer, portMAX_DELAY);
 }
 

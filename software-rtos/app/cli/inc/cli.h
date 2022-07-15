@@ -10,6 +10,6 @@
 #include "uart3.h"
 #include "cli_apps.h"
 
-void CLI_Init();
+void cli_init();
 
 #endif
