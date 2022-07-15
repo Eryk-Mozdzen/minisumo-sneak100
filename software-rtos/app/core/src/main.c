@@ -49,7 +49,7 @@ void clock_init() {
     while((RCC->CFGR & RCC_CFGR_SW)!=RCC_CFGR_SW_PLL);
 }
 
-void blink(void *param) {
+static void blink(void *param) {
 	(void)param;
 	
 	RCC->AHB1ENR |=RCC_AHB1ENR_GPIOBEN;
@@ -60,9 +60,9 @@ void blink(void *param) {
 	while(1) {
 		GPIOB->ODR ^=GPIO_ODR_OD14;
 		GPIOB->ODR ^=GPIO_ODR_OD15;
-		vTaskDelay(1000);
+		vTaskDelay(100);
 	}
-} 
+}
 
 int main() {
 
