@@ -11,8 +11,8 @@ set(TARGET ${CMAKE_PROJECT_NAME}.elf)
 add_executable(${TARGET}
 	"third-party/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c"
 	"third-party/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f405xx.s"
-	"third-party/CMSIS/DSP/Source/ControllerFunctions/arm_pid_init_f32.c"
-	"third-party/CMSIS/DSP/Source/ControllerFunctions/arm_pid_reset_f32.c"
+	#"third-party/CMSIS/DSP/Source/ControllerFunctions/arm_pid_init_f32.c"
+	#"third-party/CMSIS/DSP/Source/ControllerFunctions/arm_pid_reset_f32.c"
 
 	"third-party/FreeRTOS-Kernel/tasks.c"
 	"third-party/FreeRTOS-Kernel/queue.c"
@@ -39,6 +39,7 @@ target_include_directories(${TARGET} PRIVATE
 	"third-party/CMSIS/Include"
 	"third-party/CMSIS/Device/ST/STM32F4xx/Include"
 	"third-party/CMSIS/DSP/Include"
+	#"third-party/CMSIS/Lib/GCC"
 
 	"third-party/FreeRTOS-Kernel/include"
 	"third-party/FreeRTOS-Kernel/portable/GCC/ARM_CM4F"
@@ -76,7 +77,7 @@ target_link_options(${TARGET} PRIVATE
 
 target_link_libraries(${TARGET} 
 	m
-	#arm_cortexM4lf_math ${CMAKE_SOURCE_DIR}/third-party/CMSIS/Lib/GCC/libarm_cortexM4lf_math.a
+	${CMAKE_SOURCE_DIR}/third-party/CMSIS/Lib/GCC/libarm_cortexM4lf_math.a
 )
 
 add_custom_command(

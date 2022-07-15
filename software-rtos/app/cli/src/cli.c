@@ -34,7 +34,7 @@ static void listener(void *param) {
 
 void cli_init() {
 
-	FreeRTOS_CLIRegisterCommand(&__CLI_Command_Motor);
+	FreeRTOS_CLIRegisterCommand(&cli_command_motor_vel);
 
 	xTaskCreate(listener, "CLI listener", 1024, NULL, 4, NULL);
 }
