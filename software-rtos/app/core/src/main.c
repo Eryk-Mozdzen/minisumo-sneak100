@@ -3,12 +3,13 @@
 #include "task.h"
 
 #include "adc.h"
+#include "i2c1.h"
 #include "uart2.h"
 #include "uart3.h"
 
 #include "cli.h"
 #include "motors.h"
-#include "sensors.h"
+#include "periph.h"
 
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName) {
 	(void)pcTaskName;
@@ -66,11 +67,20 @@ static void blink(void *param) {
 		GPIOB->ODR ^=GPIO_ODR_OD14;
 		GPIOB->ODR ^=GPIO_ODR_OD15;
 		
-		/*char buffer[64] = {0};
-		sprintf(buffer, "%f\t%f\n", (double)get_voltage(), (double)get_temperature());
-		uart2_transmit(buffer, strlen(buffer));*/
+		uint8_t result;
+		char buffer[256] = {0};
+
+		//uint8_t src[8] = {0x69, 0x01, 0x01, 0x02, 0x03, 0x05, 0x08, 0x0C};
+		//result = eeprom_write(0, 0, &src, 8);
+		//sprintf(buffer, "Write: %u\n", result);
+		//uart3_transmit(buffer, strlen(buffer));
 		
-		vTaskDelay(100);
+		uint8_t byte[8] = {0};
+		result = eeprom_read(0, 0, &byte, 8);
+		sprintf(buffer, "Read: %u\tData: 0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\n", result, byte[0], byte[1], byte[2], byte[3], byte[4], byte[5], byte[6], byte[7]);
+		uart3_transmit(buffer, strlen(buffer));
+		
+		vTaskDelay(1000);
 	}
 }
 
@@ -80,6 +90,7 @@ int main() {
 	clock_init();
 	uart2_init();
     uart3_init();
+	i2c1_init();
 	adc_init();
     
     cli_init();
