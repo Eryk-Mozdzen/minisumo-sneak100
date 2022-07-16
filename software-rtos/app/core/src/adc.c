@@ -26,11 +26,12 @@ void adc_init() {
 	NVIC_EnableIRQ(ADC_IRQn);
 
 	mutex = xSemaphoreCreateBinary();
+	xSemaphoreGive(mutex);
 }
 
-static uint16_t read(const adc_channel_t channel) {
+uint16_t adc_get_raw(const adc_channel_t channel) {
 	if(!xSemaphoreTake(mutex, 100))
-		return 0;
+		return -1;
 
 	ADC1->SQR3 &=~(0x1F<<ADC_SQR3_SQ1_Pos);
 	ADC1->SQR3 |=(channel<<ADC_SQR3_SQ1_Pos);
@@ -50,7 +51,7 @@ static uint16_t read(const adc_channel_t channel) {
 }
 
 float adc_get_voltage(const adc_channel_t channel) {
-	const uint16_t raw = read(channel);
+	const uint16_t raw = adc_get_raw(channel);
 	return ADC_REFERENCE*(((float)raw)/((float)ADC_RESOLUTION));
 }
 

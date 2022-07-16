@@ -1,6 +1,6 @@
 #include "sensors.h"
 
-static float analog_values[6] = {0};
+static uint16_t line_values[4] = {0};
 
 void proximity_init() {
 	// PB0  -> FL
@@ -24,29 +24,37 @@ static void reader(void *param) {
 
 	while(1) {
 
-		analog_values[0] = adc_get_voltage(ADC_CHANNEL_LINE_LL);
-		analog_values[1] = adc_get_voltage(ADC_CHANNEL_LINE_LM);
-		analog_values[2] = adc_get_voltage(ADC_CHANNEL_LINE_RM);
-		analog_values[3] = adc_get_voltage(ADC_CHANNEL_LINE_RR);
-		analog_values[4] = adc_get_voltage(ADC_CHANNEL_BATT_V);
-		analog_values[5] = adc_get_voltage(ADC_CHANNEL_TEMP_UC);
+		line_values[0] = adc_get_raw(ADC_CHANNEL_LINE_LL);
+		line_values[1] = adc_get_raw(ADC_CHANNEL_LINE_LM);
+		line_values[2] = adc_get_raw(ADC_CHANNEL_LINE_RM);
+		line_values[3] = adc_get_raw(ADC_CHANNEL_LINE_RR);
 
-		char buffer[128] = {0};
-		sprintf(buffer, "%f\t%f\t%f\t%f\n", (double)analog_values[0], (double)analog_values[1], (double)analog_values[2], (double)analog_values[3]);
-		uart2_transmit(buffer, strlen(buffer));
-
-		vTaskDelay(1000/ADC_READ_FREQ);
+		vTaskDelay(1000/LINE_READ_FREQ);
 	}
 }
 
 void line_init() {
 	
-	xTaskCreate(reader, "adc", 1024, NULL, 4, NULL);
+	xTaskCreate(reader, "line reader", 1024, NULL, 4, NULL);
 }
 
 void line_get_state(uint8_t *state) {
-	state[0] = (analog_values[0]<LINE_THRESHOLD);
-	state[1] = (analog_values[1]<LINE_THRESHOLD);
-	state[2] = (analog_values[2]<LINE_THRESHOLD);
-	state[3] = (analog_values[3]<LINE_THRESHOLD);
+	state[0] = (line_values[0]<LINE_THRESHOLD);
+	state[1] = (line_values[1]<LINE_THRESHOLD);
+	state[2] = 0;//(line_values[2]<LINE_THRESHOLD);
+	state[3] = 0;//(line_values[3]<LINE_THRESHOLD);
+}
+
+void line_get_raw(uint16_t *raw) {
+	memcpy(raw, line_values, 4*sizeof(uint16_t));
+}
+
+float get_voltage() {
+	const float adc = adc_get_voltage(ADC_CHANNEL_BATT_V);
+	return adc/BATT_SCALE;
+}
+
+float get_temperature() {
+	const float adc = adc_get_voltage(ADC_CHANNEL_TEMP_UC);
+	return ((adc - INTERNAL_V_25)/INTERNAL_AVG_SLOPE) + 25.f;
 }

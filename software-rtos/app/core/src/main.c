@@ -67,9 +67,7 @@ static void blink(void *param) {
 		GPIOB->ODR ^=GPIO_ODR_OD15;
 		
 		/*char buffer[64] = {0};
-		uint8_t prox[4] = {0};
-		line_get_state(prox);
-		sprintf(buffer, "%u%u%u%u\n", prox[0], prox[1], prox[2], prox[3]);
+		sprintf(buffer, "%f\t%f\n", (double)get_voltage(), (double)get_temperature());
 		uart2_transmit(buffer, strlen(buffer));*/
 		
 		vTaskDelay(100);
