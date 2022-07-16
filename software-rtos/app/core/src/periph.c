@@ -1,5 +1,6 @@
-#include "sensors.h"
+#include "periph.h"
 
+static uint32_t eeprom_last_write = 0;
 static uint16_t line_values[4] = {0};
 
 void proximity_init() {
@@ -57,4 +58,32 @@ float get_voltage() {
 float get_temperature() {
 	const float adc = adc_get_voltage(ADC_CHANNEL_TEMP_UC);
 	return ((adc - INTERNAL_V_25)/INTERNAL_AVG_SLOPE) + 25.f;
+}
+
+uint8_t eeprom_read(uint16_t page, uint8_t offset, void *dest, uint8_t size) {
+	xTaskDelayUntil(&eeprom_last_write, EEPROM_WRITE_CYCLE_TIME);
+
+	if(page>=EEPROM_PAGE_NUM)
+		page = EEPROM_PAGE_NUM - 1;
+	if(offset>=EEPROM_PAGE_SIZE)
+		offset = EEPROM_PAGE_SIZE - 1;
+	if(size>=(EEPROM_PAGE_SIZE - offset))
+		size = EEPROM_PAGE_SIZE - offset;
+
+	return i2c1_read_16(EEPROM_ADDRESS, (page<<EEPROM_PAGE_ADDRESS_BITS) | offset, dest, size, 100);
+}
+
+uint8_t eeprom_write(uint16_t page, uint8_t offset, const void *src, uint8_t size) {
+	xTaskDelayUntil(&eeprom_last_write, EEPROM_WRITE_CYCLE_TIME);
+	
+	eeprom_last_write = xTaskGetTickCount();
+
+	if(page>=EEPROM_PAGE_NUM)
+		page = EEPROM_PAGE_NUM - 1;
+	if(offset>=EEPROM_PAGE_SIZE)
+		offset = EEPROM_PAGE_SIZE - 1;
+	if(size>=(EEPROM_PAGE_SIZE - offset))
+		size = EEPROM_PAGE_SIZE - offset;
+
+	return i2c1_write_16(EEPROM_ADDRESS, (page<<EEPROM_PAGE_ADDRESS_BITS) | offset, src, size, 100);
 }
