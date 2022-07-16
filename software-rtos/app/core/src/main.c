@@ -62,11 +62,11 @@ static void blink(void *param) {
 	RCC->AHB1ENR |=RCC_AHB1ENR_GPIOBEN;
 	GPIOB->MODER |=(1<<GPIO_MODER_MODER14_Pos) | (1<<GPIO_MODER_MODER15_Pos);
 
-	GPIOB->ODR |=GPIO_ODR_OD14;
+	//GPIOB->ODR |=GPIO_ODR_OD14;
 
 	while(1) {
-		GPIOB->ODR ^=GPIO_ODR_OD14;
-		GPIOB->ODR ^=GPIO_ODR_OD15;
+		//GPIOB->ODR ^=GPIO_ODR_OD14;
+		//GPIOB->ODR ^=GPIO_ODR_OD15;
 		
 		//uint8_t result;
 		//char buffer[256] = {0};

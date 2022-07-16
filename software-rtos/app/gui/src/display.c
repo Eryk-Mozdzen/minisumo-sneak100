@@ -12,21 +12,7 @@ static inline void write_buffer(const void *src, const uint32_t size) {
 
 static void update(void *param) {
 	(void)param;
-
-	while(1) {
-
-		for(uint8_t i=0; i<DISPLAY_HEIGHT/8; i++) {
-			write_cmd(0xB0 + i);	// set current RAM page address
-			write_cmd(0x00);
-			write_cmd(0x10);
-			write_buffer(&buffer[DISPLAY_WIDTH*i], DISPLAY_WIDTH);
-		}
-
-		vTaskDelay(1000/DISPLAY_UPDATE_FREQ);
-	}
-}
-
-void display_init() {
+	
 	write_cmd(0xAE);	// display off
 	write_cmd(0x20);	// set memory addressing mode
 	write_cmd(0x00);	// horizontal addressing mode
@@ -58,6 +44,21 @@ void display_init() {
 	write_cmd(0x8D);	// set DC-DC enable
 	write_cmd(0x14);	// 
 	write_cmd(0xAF);	// set display on
+
+	while(1) {
+
+		for(uint8_t i=0; i<DISPLAY_HEIGHT/8; i++) {
+			write_cmd(0xB0 + i);	// set current RAM page address
+			write_cmd(0x00);
+			write_cmd(0x10);
+			write_buffer(&buffer[DISPLAY_WIDTH*i], DISPLAY_WIDTH);
+		}
+
+		vTaskDelay(1000/DISPLAY_UPDATE_FREQ);
+	}
+}
+
+void display_init() {
 	
 	display_fill(DISPLAY_COLOR_BLACK);
 
@@ -71,9 +72,14 @@ void display_fill(const display_color_t color) {
 		memset(buffer, 0x00, DISPLAY_WIDTH*DISPLAY_HEIGHT/8);
 }
 
-void display_set_pixel(const int16_t x, const int16_t y, const display_color_t color) {
+void display_set_pixel(int16_t x, int16_t y, const display_color_t color) {
 	if(x<0 || x>=DISPLAY_WIDTH || y<0 || y>=DISPLAY_HEIGHT)
 		return;
+
+	#ifdef DISPLAY_FLIP
+		x = DISPLAY_WIDTH - x;
+		y = DISPLAY_HEIGHT - y;
+	#endif
 	
 	if(color) {
 		buffer[x + (y/8)*DISPLAY_WIDTH] |=(1<<(y%8));
@@ -82,9 +88,14 @@ void display_set_pixel(const int16_t x, const int16_t y, const display_color_t c
 	}
 }
 
-display_color_t display_get_pixel(const int16_t x, const int16_t y) {
+display_color_t display_get_pixel(int16_t x, int16_t y) {
 	if(x<0 || x>=DISPLAY_WIDTH || y<0 || y>=DISPLAY_HEIGHT)
 		return DISPLAY_COLOR_BLACK;
+
+	#ifdef DISPLAY_FLIP
+		x = DISPLAY_WIDTH - x;
+		y = DISPLAY_HEIGHT - y;
+	#endif
 
 	return ((buffer[x + (y/8)*DISPLAY_WIDTH] & (1<<(y%8)))>0);
 }

@@ -11,6 +11,7 @@
 #define DISPLAY_WIDTH			128		// px
 #define DISPLAY_HEIGHT			64		// px
 #define DISPLAY_UPDATE_FREQ		20		// Hz
+#define DISPLAY_FLIP
 
 typedef enum {
 	DISPLAY_COLOR_BLACK,
@@ -19,8 +20,8 @@ typedef enum {
 
 void display_init();
 void display_fill(const display_color_t);
-void display_set_pixel(const int16_t, const int16_t, const display_color_t);
-display_color_t display_get_pixel(const int16_t, const int16_t);
+void display_set_pixel(int16_t, int16_t, const display_color_t);
+display_color_t display_get_pixel(int16_t, int16_t);
 void display_line(int16_t, int16_t, const int16_t, const int16_t, const display_color_t);
 void display_rect(const int16_t, const int16_t, const int16_t, const int16_t, const display_color_t);
 void display_inverse(const int16_t, const int16_t, const int16_t, const int16_t);
