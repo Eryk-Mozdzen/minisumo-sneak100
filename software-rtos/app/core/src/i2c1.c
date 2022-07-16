@@ -37,56 +37,48 @@ void i2c1_init() {
 	xSemaphoreGive(mutex);
 }
 
-uint8_t i2c1_write_8(const uint8_t dev_address, const uint8_t reg_address, const void *data_src, const uint8_t data_size, const uint32_t timeout) {
-	if(!xSemaphoreTake(mutex, timeout))
-		return 0;
-	
-	uint32_t reg;
+uint8_t i2c1_write_8(const uint8_t dev_address, const uint8_t reg_address, const void *data_src, const uint32_t data_size, const uint32_t timeout) {
+	//if(!xSemaphoreTake(mutex, timeout))
+	//	return 0;
 
-	// start
 	I2C1->CR1 &=~I2C_CR1_POS;
+
 	I2C1->CR1 |=I2C_CR1_START;
-	//while(!(I2C1->SR1 & I2C_SR1_SB));
 	if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_SB, timeout))
-		return 0;
-	reg = I2C1->SR1;
+		return 1;
 
-	// device address
 	I2C1->DR = (dev_address<<1) | 0x00;
-	//while(!(I2C1->SR1 & I2C_SR1_ADDR));
 	if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_ADDR, timeout))
-		return 0;
-	reg = I2C1->SR1;
-	reg = I2C1->SR2;
-	//while(!(I2C1->SR1 & I2C_SR1_TXE));
-	if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_TXE, timeout))
-		return 0;
+		return 2;
+	(void)I2C1->SR1;
+	(void)I2C1->SR2;
 
-	I2C1->CR1 |=I2C_CR1_ACK;
+	I2C1->DR = reg_address;
+	if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_BTF, timeout))
+		return 3;
+	(void)I2C1->SR1;
+	(void)I2C1->SR2;
 
-	for(uint8_t i=0; i<data_size; i++) {
-		// control byte
-		I2C1->DR = reg_address + i;
-		//while(!(I2C1->SR1 & I2C_SR1_TXE));
-		if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_TXE, timeout))
-			return 0;
-
-		// data byte
+	for(uint32_t i=0; i<data_size; i++) {
 		I2C1->DR = ((uint8_t *)data_src)[i];
-		while(!(I2C1->SR1 & I2C_SR1_TXE));
+		if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_TXE, timeout))
+			return 5;
+		(void)I2C1->SR1;
+		(void)I2C1->SR2;
 	}
 
-	// stop
 	I2C1->CR1 |=I2C_CR1_STOP;
+	if(!wait_for_flag_set(&I2C1->SR2, I2C_SR2_BUSY, timeout))
+		return 6;
+	(void)I2C1->SR1;
+	(void)I2C1->SR2;
 
-	(void)reg;
-
-	xSemaphoreGive(mutex);
+	//xSemaphoreGive(mutex);
 	
 	return 1;
 }
 
-uint8_t i2c1_read_8(const uint8_t dev_address, const uint8_t reg_address, void *data_dest, const uint8_t data_size, const uint32_t timeout) {
+uint8_t i2c1_read_8(const uint8_t dev_address, const uint8_t reg_address, void *data_dest, const uint32_t data_size, const uint32_t timeout) {
 	if(!xSemaphoreTake(mutex, timeout))
 		return 0;
 	
@@ -137,7 +129,7 @@ uint8_t i2c1_read_8(const uint8_t dev_address, const uint8_t reg_address, void *
 	reg = I2C1->SR2;
 	//while(!(I2C1->SR1 & I2C_SR1_TXE));
 
-	for(uint8_t i=0; i<data_size; i++) {
+	for(uint32_t i=0; i<data_size; i++) {
 
 		if(i==data_size-1) {
 			//nack
@@ -159,13 +151,11 @@ uint8_t i2c1_read_8(const uint8_t dev_address, const uint8_t reg_address, void *
 	return 1;
 }
 
-uint8_t i2c1_write_16(const uint8_t dev_address, const uint16_t reg_address, const void *data_src, const uint8_t data_size, const uint32_t timeout) {
+uint8_t i2c1_write_16(const uint8_t dev_address, const uint16_t reg_address, const void *data_src, const uint32_t data_size, const uint32_t timeout) {
 	//if(!xSemaphoreTake(mutex, timeout))
 	//	return 0;
 
 	I2C1->CR1 &=~I2C_CR1_POS;
-
-	//ack();
 
 	I2C1->CR1 |=I2C_CR1_START;
 	if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_SB, timeout))
@@ -189,7 +179,7 @@ uint8_t i2c1_write_16(const uint8_t dev_address, const uint16_t reg_address, con
 	(void)I2C1->SR1;
 	(void)I2C1->SR2;
 
-	for(int8_t i=0; i<data_size; i++) {
+	for(uint32_t i=0; i<data_size; i++) {
 		I2C1->DR = ((uint8_t *)data_src)[i];
 		if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_TXE, timeout))
 			return 5;
@@ -208,7 +198,7 @@ uint8_t i2c1_write_16(const uint8_t dev_address, const uint16_t reg_address, con
 	return 0;
 }
 
-uint8_t i2c1_read_16(const uint8_t dev_address, const uint16_t reg_address, void *data_dest, const uint8_t data_size, const uint32_t timeout) {
+uint8_t i2c1_read_16(const uint8_t dev_address, const uint16_t reg_address, void *data_dest, const uint32_t data_size, const uint32_t timeout) {
 	//if(!xSemaphoreTake(mutex, timeout))
 	//	return 0;
 
@@ -248,7 +238,7 @@ uint8_t i2c1_read_16(const uint8_t dev_address, const uint16_t reg_address, void
 	(void)I2C1->SR1;
 	(void)I2C1->SR2;
 
-	for(uint8_t i=0; i<data_size; i++) {
+	for(uint32_t i=0; i<data_size; i++) {
 		if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_RXNE, timeout))
 			return 7;
 		((uint8_t *)data_dest)[i] = I2C1->DR;
