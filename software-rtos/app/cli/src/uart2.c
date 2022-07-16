@@ -32,7 +32,7 @@ void uart2_init() {
     RCC->APB1ENR |=RCC_APB1ENR_USART2EN;
 
 	USART2->CR1 |=USART_CR1_UE | USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE;
-	USART2->BRR |=(13<<USART_BRR_DIV_Fraction_Pos) | (22<<USART_BRR_DIV_Mantissa_Pos);
+	USART2->BRR |=(7<<USART_BRR_DIV_Fraction_Pos) | (68<<USART_BRR_DIV_Mantissa_Pos);
 
 	// --------------------------
 
