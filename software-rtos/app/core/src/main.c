@@ -2,10 +2,13 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "cli.h"
+#include "adc.h"
 #include "uart2.h"
 #include "uart3.h"
+
+#include "cli.h"
 #include "motors.h"
+#include "sensors.h"
 
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName) {
 	(void)pcTaskName;
@@ -62,6 +65,13 @@ static void blink(void *param) {
 	while(1) {
 		GPIOB->ODR ^=GPIO_ODR_OD14;
 		GPIOB->ODR ^=GPIO_ODR_OD15;
+		
+		/*char buffer[64] = {0};
+		uint8_t prox[4] = {0};
+		line_get_state(prox);
+		sprintf(buffer, "%u%u%u%u\n", prox[0], prox[1], prox[2], prox[3]);
+		uart2_transmit(buffer, strlen(buffer));*/
+		
 		vTaskDelay(100);
 	}
 }
@@ -72,11 +82,14 @@ int main() {
 	clock_init();
 	uart2_init();
     uart3_init();
+	adc_init();
     
     cli_init();
+	line_init();
 	motors_init();
+	proximity_init();
 
-	xTaskCreate(blink, "blink", 130, NULL, 4, NULL);
+	xTaskCreate(blink, "blink", 512, NULL, 4, NULL);
 
     vTaskStartScheduler();
 

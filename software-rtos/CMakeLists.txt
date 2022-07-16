@@ -11,8 +11,6 @@ set(TARGET ${CMAKE_PROJECT_NAME}.elf)
 add_executable(${TARGET}
 	"third-party/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c"
 	"third-party/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/startup_stm32f405xx.s"
-	#"third-party/CMSIS/DSP/Source/ControllerFunctions/arm_pid_init_f32.c"
-	#"third-party/CMSIS/DSP/Source/ControllerFunctions/arm_pid_reset_f32.c"
 
 	"third-party/FreeRTOS-Kernel/tasks.c"
 	"third-party/FreeRTOS-Kernel/queue.c"
@@ -22,8 +20,9 @@ add_executable(${TARGET}
 	"third-party/FreeRTOS-Plus-CLI/FreeRTOS_CLI.c"
 
 	"app/core/src/main.c"
+	"app/core/src/adc.c"
 	"app/core/src/motors.c"
-	#"app/core/src/i2c1.c"
+	"app/core/src/sensors.c"
 	"app/cli/src/uart2.c"
 	"app/cli/src/uart3.c"
 	"app/cli/src/cli_apps.c"
@@ -33,14 +32,12 @@ add_executable(${TARGET}
 target_compile_definitions(${TARGET} PRIVATE
 	STM32F405xx
 	ARM_MATH_CM4
-	#__FPU_PRESENT=1
 )
 
 target_include_directories(${TARGET} PRIVATE
 	"third-party/CMSIS/Include"
 	"third-party/CMSIS/Device/ST/STM32F4xx/Include"
 	"third-party/CMSIS/DSP/Include"
-	#"third-party/CMSIS/Lib/GCC"
 
 	"third-party/FreeRTOS-Kernel/include"
 	"third-party/FreeRTOS-Kernel/portable/GCC/ARM_CM4F"
