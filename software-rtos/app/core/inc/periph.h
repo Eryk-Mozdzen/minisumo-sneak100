@@ -20,11 +20,6 @@
 #define EEPROM_ADDRESS				0x50
 #define EEPROM_WRITE_CYCLE_TIME		10		// ms
 
-#define DISPLAY_ADDRESS				0x3C
-
-#define display_read(address, dest, len)	i2c1_read_8(DISPLAY_ADDRESS, (address), (dest), (len), 100)
-#define display_write(address, src, len)	i2c1_write_8(DISPLAY_ADDRESS, (address), (src), (len), 100)
-
 void proximity_init();
 void proximity_get_state(uint8_t *);
 

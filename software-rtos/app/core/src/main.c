@@ -10,6 +10,7 @@
 #include "cli.h"
 #include "motors.h"
 #include "periph.h"
+#include "display.h"
 
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName) {
 	(void)pcTaskName;
@@ -67,20 +68,31 @@ static void blink(void *param) {
 		GPIOB->ODR ^=GPIO_ODR_OD14;
 		GPIOB->ODR ^=GPIO_ODR_OD15;
 		
-		uint8_t result;
-		char buffer[256] = {0};
+		//uint8_t result;
+		//char buffer[256] = {0};
 
 		//uint8_t src[8] = {0x69, 0x01, 0x01, 0x02, 0x03, 0x05, 0x08, 0x0C};
 		//result = eeprom_write(0, 0, &src, 8);
 		//sprintf(buffer, "Write: %u\n", result);
 		//uart3_transmit(buffer, strlen(buffer));
 		
-		uint8_t byte[8] = {0};
-		result = eeprom_read(0, 0, &byte, 8);
-		sprintf(buffer, "Read: %u\tData: 0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\n", result, byte[0], byte[1], byte[2], byte[3], byte[4], byte[5], byte[6], byte[7]);
-		uart3_transmit(buffer, strlen(buffer));
+		//uint8_t byte[8] = {0};
+		//result = eeprom_read(0, 0, &byte, 8);
+		//sprintf(buffer, "Read: %u\tData: 0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\n", result, byte[0], byte[1], byte[2], byte[3], byte[4], byte[5], byte[6], byte[7]);
+		//uart3_transmit(buffer, strlen(buffer));
+
+		display_set_pixel(32, 32, DISPLAY_COLOR_WHITE);
+		display_set_pixel(64, 32, DISPLAY_COLOR_WHITE);
+		display_set_pixel(92, 32, DISPLAY_COLOR_WHITE);
+		display_set_pixel(120, 32, DISPLAY_COLOR_WHITE);
+
+		display_line(0, 0, 127, 63, DISPLAY_COLOR_WHITE);
+		display_line(0, 32, 64, 12, DISPLAY_COLOR_WHITE);
+
+		display_rect(20, 40, 30, 10, DISPLAY_COLOR_WHITE);
+		display_inverse(25, 45, 20, 10);
 		
-		vTaskDelay(1000);
+		vTaskDelay(200);
 	}
 }
 
@@ -96,6 +108,7 @@ int main() {
     cli_init();
 	line_init();
 	motors_init();
+	display_init();
 	proximity_init();
 
 	xTaskCreate(blink, "blink", 512, NULL, 4, NULL);

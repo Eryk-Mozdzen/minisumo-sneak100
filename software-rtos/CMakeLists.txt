@@ -28,6 +28,7 @@ add_executable(${TARGET}
 	"app/cli/src/uart3.c"
 	"app/cli/src/cli_apps.c"
 	"app/cli/src/cli.c"
+	"app/gui/src/display.c"
 )
 
 target_compile_definitions(${TARGET} PRIVATE
@@ -46,6 +47,7 @@ target_include_directories(${TARGET} PRIVATE
 	
 	"app/core/inc"
 	"app/cli/inc"
+	"app/gui/inc"
 )
 
 target_compile_options(${TARGET} PRIVATE
