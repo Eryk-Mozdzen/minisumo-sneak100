@@ -1,5 +1,6 @@
 #include "display.h"
 
+static SemaphoreHandle_t buffer_mutex;
 static uint8_t buffer[DISPLAY_WIDTH*DISPLAY_HEIGHT/8] = {0};
 
 static inline void write_cmd(const uint8_t byte) {
@@ -8,6 +9,34 @@ static inline void write_cmd(const uint8_t byte) {
 
 static inline void write_buffer(const void *src, const uint32_t size) {
 	i2c1_write_8(DISPLAY_ADDRESS, 0x40, src, size, 100);
+}
+
+static void set(int16_t x, int16_t y, const display_color_t color) {
+	if(x<0 || x>=DISPLAY_WIDTH || y<0 || y>=DISPLAY_HEIGHT)
+		return;
+
+	#ifdef DISPLAY_FLIP
+		x = DISPLAY_WIDTH - x - 1;
+		y = DISPLAY_HEIGHT - y - 1;
+	#endif
+	
+	if(color) {
+		buffer[x + (y/8)*DISPLAY_WIDTH] |=(1<<(y%8));
+	} else {
+		buffer[x + (y/8)*DISPLAY_WIDTH] &=~(1<<(y%8));
+	}
+}
+
+static display_color_t get(int16_t x, int16_t y) {
+	if(x<0 || x>=DISPLAY_WIDTH || y<0 || y>=DISPLAY_HEIGHT)
+		return DISPLAY_COLOR_BLACK;
+
+	#ifdef DISPLAY_FLIP
+		x = DISPLAY_WIDTH - x - 1;
+		y = DISPLAY_HEIGHT - y - 1;
+	#endif
+
+	return ((buffer[x + (y/8)*DISPLAY_WIDTH] & (1<<(y%8)))>0);
 }
 
 static void update(void *param) {
@@ -47,6 +76,8 @@ static void update(void *param) {
 
 	while(1) {
 
+		xSemaphoreTake(buffer_mutex, portMAX_DELAY);
+
 		for(uint8_t i=0; i<DISPLAY_HEIGHT/8; i++) {
 			write_cmd(0xB0 + i);	// set current RAM page address
 			write_cmd(0x00);
@@ -54,11 +85,16 @@ static void update(void *param) {
 			write_buffer(&buffer[DISPLAY_WIDTH*i], DISPLAY_WIDTH);
 		}
 
+		xSemaphoreGive(buffer_mutex);
+
 		vTaskDelay(1000/DISPLAY_UPDATE_FREQ);
 	}
 }
 
 void display_init() {
+
+	buffer_mutex = xSemaphoreCreateBinary();
+	xSemaphoreGive(buffer_mutex);
 	
 	display_fill(DISPLAY_COLOR_BLACK);
 
@@ -66,38 +102,15 @@ void display_init() {
 }
 
 void display_fill(const display_color_t color) {
+	if(!xSemaphoreTake(buffer_mutex, 100))
+		return;
+
 	if(color)
 		memset(buffer, 0xFF, DISPLAY_WIDTH*DISPLAY_HEIGHT/8);
 	else
 		memset(buffer, 0x00, DISPLAY_WIDTH*DISPLAY_HEIGHT/8);
-}
 
-void display_set_pixel(int16_t x, int16_t y, const display_color_t color) {
-	if(x<0 || x>=DISPLAY_WIDTH || y<0 || y>=DISPLAY_HEIGHT)
-		return;
-
-	#ifdef DISPLAY_FLIP
-		x = DISPLAY_WIDTH - x;
-		y = DISPLAY_HEIGHT - y;
-	#endif
-	
-	if(color) {
-		buffer[x + (y/8)*DISPLAY_WIDTH] |=(1<<(y%8));
-	} else {
-		buffer[x + (y/8)*DISPLAY_WIDTH] &=~(1<<(y%8));
-	}
-}
-
-display_color_t display_get_pixel(int16_t x, int16_t y) {
-	if(x<0 || x>=DISPLAY_WIDTH || y<0 || y>=DISPLAY_HEIGHT)
-		return DISPLAY_COLOR_BLACK;
-
-	#ifdef DISPLAY_FLIP
-		x = DISPLAY_WIDTH - x;
-		y = DISPLAY_HEIGHT - y;
-	#endif
-
-	return ((buffer[x + (y/8)*DISPLAY_WIDTH] & (1<<(y%8)))>0);
+	xSemaphoreGive(buffer_mutex);
 }
 
 void display_line(int16_t x0, int16_t y0, const int16_t x1, const int16_t y1, const display_color_t color) {
@@ -110,8 +123,11 @@ void display_line(int16_t x0, int16_t y0, const int16_t x1, const int16_t y1, co
 	int16_t error = dx + dy;
 	int16_t e2;
 
+	if(!xSemaphoreTake(buffer_mutex, 100))
+		return;
+
 	while(1) {
-		display_set_pixel(x0, y0, color);
+		set(x0, y0, color);
 
 		if(x0==x1 && y0==y1)
 			break;
@@ -131,20 +147,85 @@ void display_line(int16_t x0, int16_t y0, const int16_t x1, const int16_t y1, co
 			y0 +=sy;
 		}
 	}
+
+	xSemaphoreGive(buffer_mutex);
 }
 
 void display_rect(const int16_t x, const int16_t y, const int16_t w, const int16_t h, const display_color_t color) {
+	if(!xSemaphoreTake(buffer_mutex, 100))
+		return;
+
 	for(int16_t i=0; i<w; i++) {
 		for(int16_t j=0; j<h; j++) {
-			display_set_pixel(i + x, j + y, color);
+			set(i + x, j + y, color);
+		}
+	}
+
+	xSemaphoreGive(buffer_mutex);
+}
+
+void display_inverse(const int16_t x, const int16_t y, const int16_t w, const int16_t h) {
+	if(!xSemaphoreTake(buffer_mutex, 100))
+		return;
+	
+	for(int16_t i=0; i<w; i++) {
+		for(int16_t j=0; j<h; j++) {
+			set(i + x, j + y, !get(i + x, j + y));
+		}
+	}
+
+	xSemaphoreGive(buffer_mutex);
+}
+
+void display_bitmap(const int16_t x, const int16_t y, const display_color_t color, const void *src, const int16_t w, const int16_t h) {
+	const uint16_t byte_per_row = ceilf((float)w/8.f);
+
+	if(!xSemaphoreTake(buffer_mutex, 100))
+		return;
+
+	for(int16_t i=0; i<h; i++) {
+		for(int16_t j=0; j<w; j++) {
+
+			if(((uint8_t *)src)[i*byte_per_row + j/8] & (1<<(7 - j%8)))
+				set(j + x, i + y, color);
+			else
+				set(j + x, i + y, !color);
+		}
+	}
+
+	xSemaphoreGive(buffer_mutex);
+}
+
+static void character(const int16_t x, const int16_t y, const display_color_t color, const display_font_t font, const char c) {
+	const void *src = &font.data[(c - ' ')*font.height];
+	const uint16_t byte_per_row = ceilf((float)font.width/16.f);
+
+	for(int16_t i=0; i<font.height; i++) {
+		for(int16_t j=0; j<font.width; j++) {
+
+			if(((uint16_t *)src)[i*byte_per_row + j/16] & (1<<(15 - j%16)))
+				set(j + x, i + y, color);
+			else
+				set(j + x, i + y, !color);
 		}
 	}
 }
 
-void display_inverse(const int16_t x, const int16_t y, const int16_t w, const int16_t h) {
-	for(int16_t i=0; i<w; i++) {
-		for(int16_t j=0; j<h; j++) {
-			display_set_pixel(i + x, j + y, !display_get_pixel(i + x, j + y));
-		}
+void display_printf(const int16_t x, const int16_t y, const display_color_t color, const display_font_t font, const char *format, ...) {
+	va_list valist;
+	va_start(valist, format);
+
+	char buffer[22] = {0};
+	vsnprintf(buffer, 22, format, valist);
+
+	const size_t n = strlen(buffer);
+
+	if(!xSemaphoreTake(buffer_mutex, 100))
+		return;
+
+	for(size_t i=0; i<n; i++) {
+		character(x + i*font.width, y, color, font, buffer[i]);
 	}
+
+	xSemaphoreGive(buffer_mutex);
 }

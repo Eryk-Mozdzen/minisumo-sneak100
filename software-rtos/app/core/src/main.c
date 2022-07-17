@@ -12,6 +12,8 @@
 #include "periph.h"
 #include "display.h"
 
+#include "sprites.h"
+
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName) {
 	(void)pcTaskName;
 	(void)pxTask;
@@ -74,24 +76,28 @@ static void blink(void *param) {
 		//uint8_t src[8] = {0x69, 0x01, 0x01, 0x02, 0x03, 0x05, 0x08, 0x0C};
 		//result = eeprom_write(0, 0, &src, 8);
 		//sprintf(buffer, "Write: %u\n", result);
-		//uart3_transmit(buffer, strlen(buffer));
+		//uart2_transmit(buffer, strlen(buffer));
 		
 		//uint8_t byte[8] = {0};
 		//result = eeprom_read(0, 0, &byte, 8);
 		//sprintf(buffer, "Read: %u\tData: 0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\t0x%02X\n", result, byte[0], byte[1], byte[2], byte[3], byte[4], byte[5], byte[6], byte[7]);
-		//uart3_transmit(buffer, strlen(buffer));
+		//uart2_transmit(buffer, strlen(buffer));
 
-		display_set_pixel(32, 32, DISPLAY_COLOR_WHITE);
-		display_set_pixel(64, 32, DISPLAY_COLOR_WHITE);
-		display_set_pixel(92, 32, DISPLAY_COLOR_WHITE);
-		display_set_pixel(120, 32, DISPLAY_COLOR_WHITE);
+		//display_fill(DISPLAY_COLOR_BLACK);
 
-		display_line(0, 0, 127, 63, DISPLAY_COLOR_WHITE);
-		display_line(0, 32, 64, 12, DISPLAY_COLOR_WHITE);
+		display_printf(0, 0, DISPLAY_COLOR_WHITE, display_font_6x8, "                 7.4V");
+		display_line(0, 9, 127, 9, DISPLAY_COLOR_WHITE);
 
-		display_rect(20, 40, 30, 10, DISPLAY_COLOR_WHITE);
-		display_inverse(25, 45, 20, 10);
-		
+		display_printf(0, 16, DISPLAY_COLOR_WHITE, display_font_6x8, "view");
+		display_printf(0, 26, DISPLAY_COLOR_WHITE, display_font_6x8, "settings");
+		display_printf(0, 36, DISPLAY_COLOR_WHITE, display_font_6x8, "fight");
+		display_inverse(30, 30, 32, 10);
+
+		display_line(0, 54, 127, 54, DISPLAY_COLOR_WHITE);
+		display_printf(0, 56, DISPLAY_COLOR_WHITE, display_font_6x8, "next     prev     esc");
+
+		//display_bitmap(0, 0, DISPLAY_COLOR_WHITE, bitmap_sneak100_128_64, 128, 64);
+
 		vTaskDelay(200);
 	}
 }

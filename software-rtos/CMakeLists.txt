@@ -29,6 +29,8 @@ add_executable(${TARGET}
 	"app/cli/src/cli_apps.c"
 	"app/cli/src/cli.c"
 	"app/gui/src/display.c"
+	"app/gui/src/display_fonts.c"
+	"app/gui/src/sprites.c"
 )
 
 target_compile_definitions(${TARGET} PRIVATE
