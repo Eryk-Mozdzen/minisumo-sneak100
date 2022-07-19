@@ -8,3 +8,6 @@
 [submodule "software-rtos/third-party/FreeRTOS-Kernel"]
 	path = software-rtos/third-party/FreeRTOS-Kernel
 	url = git@github.com:FreeRTOS/FreeRTOS-Kernel.git
+[submodule "software-rtos/third-party/state-machine-c"]
+	path = software-rtos/third-party/state-machine-c
+	url = git@github.com:Eryk-Mozdzen/state-machine-c.git

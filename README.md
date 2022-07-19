@@ -33,7 +33,7 @@
 +  9 apr 2022 - Robotic Tournament, Rybnik, Poland
 # 13 may 2022 - Baltic Robot Battles, Gdansk, Poland (canceled)
 + 18 jun 2022 - XIII Robotic Arena, Wroclaw, Poland
-+  2 jul 2022 - Drones And Robots Tournament, Krakow, Poland
+-  2 jul 2022 - Drones And Robots Tournament, Krakow, Poland (missed)
 ```
 
 ### Planned features:
