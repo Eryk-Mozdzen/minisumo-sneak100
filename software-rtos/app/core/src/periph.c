@@ -2,6 +2,8 @@
 
 static uint32_t eeprom_last_write = 0;
 static uint16_t line_values[4] = {0};
+static float temp = 25;
+static float batt = 7.4;
 
 void proximity_init() {
 	// PB0  -> FL
@@ -42,8 +44,8 @@ void line_init() {
 void line_get_state(uint8_t *state) {
 	state[0] = (line_values[0]<LINE_THRESHOLD);
 	state[1] = (line_values[1]<LINE_THRESHOLD);
-	state[2] = 0;//(line_values[2]<LINE_THRESHOLD);
-	state[3] = 0;//(line_values[3]<LINE_THRESHOLD);
+	state[2] = (line_values[2]<LINE_THRESHOLD);
+	state[3] = (line_values[3]<LINE_THRESHOLD);
 }
 
 void line_get_raw(uint16_t *raw) {
@@ -52,12 +54,20 @@ void line_get_raw(uint16_t *raw) {
 
 float get_voltage() {
 	const float adc = adc_get_voltage(ADC_CHANNEL_BATT_V);
-	return adc/BATT_SCALE;
+	const float b = adc/BATT_SCALE;
+
+	batt = (1.f - BATT_ALPHA)*batt + BATT_ALPHA*b;
+
+	return batt;
 }
 
 float get_temperature() {
 	const float adc = adc_get_voltage(ADC_CHANNEL_TEMP_UC);
-	return ((adc - INTERNAL_V_25)/INTERNAL_AVG_SLOPE) + 25.f;
+	const float t = ((adc - INTERNAL_V_25)/INTERNAL_AVG_SLOPE) + 25.f;
+
+	temp = (1.f - INTERNAL_ALPHA)*temp + INTERNAL_ALPHA*t;
+
+	return temp;
 }
 
 uint8_t eeprom_read(uint16_t page, uint8_t offset, void *dest, uint8_t size) {

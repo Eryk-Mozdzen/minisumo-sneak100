@@ -89,9 +89,24 @@ static void menu_exit_credits(void *buffer) {
 static void motors_execute(void *buffer) {
 	(void)buffer;
 
+	int32_t pos[4] = {0};
+	motors_get_position(pos);
+
+	float vel[4] = {0};
+	motors_get_velocity(vel);
+
+	float pwr[4] = {0};
+	motors_get_power(pwr);
+
 	display_fill(DISPLAY_COLOR_BLACK);
 
-	display_printf(0, 0, DISPLAY_COLOR_WHITE, display_font_6x8, "motors");
+	display_printf(48, 1, DISPLAY_COLOR_WHITE, display_font_6x8, "motors");
+	display_inverse(0, 0, 128, 10);
+
+	display_printf(0, 15, DISPLAY_COLOR_WHITE, display_font_6x8, "FL: %-5lu %+.2f %+4d%%", pos[0], (double)vel[0], (int16_t)(100.f*pwr[0]));
+	display_printf(0, 25, DISPLAY_COLOR_WHITE, display_font_6x8, "FR: %-5lu %+.2f %+4d%%", pos[1], (double)vel[1], (int16_t)(100.f*pwr[1]));
+	display_printf(0, 35, DISPLAY_COLOR_WHITE, display_font_6x8, "BR: %-5lu %+.2f %+4d%%", pos[2], (double)vel[2], (int16_t)(100.f*pwr[2]));
+	display_printf(0, 45, DISPLAY_COLOR_WHITE, display_font_6x8, "BL: %-5lu %+.2f %+4d%%", pos[3], (double)vel[3], (int16_t)(100.f*pwr[3]));
 
 	display_render();
 }
@@ -99,9 +114,21 @@ static void motors_execute(void *buffer) {
 static void line_execute(void *buffer) {
 	(void)buffer;
 
+	uint8_t line[4] = {0};
+	line_get_state(line);
+
+	uint16_t raw[4] = {0};
+	line_get_raw(raw);
+
 	display_fill(DISPLAY_COLOR_BLACK);
 
-	display_printf(0, 0, DISPLAY_COLOR_WHITE, display_font_6x8, "line");
+	display_printf(52, 1, DISPLAY_COLOR_WHITE, display_font_6x8, "line");
+	display_inverse(0, 0, 128, 10);
+
+	display_printf(0, 15, DISPLAY_COLOR_WHITE, display_font_6x8, "LL: %-6u %u", raw[0], line[0]);
+	display_printf(0, 25, DISPLAY_COLOR_WHITE, display_font_6x8, "LM: %-6u %u", raw[1], line[1]);
+	display_printf(0, 35, DISPLAY_COLOR_WHITE, display_font_6x8, "RM: %-6u %u", raw[2], line[2]);
+	display_printf(0, 45, DISPLAY_COLOR_WHITE, display_font_6x8, "RR: %-6u %u", raw[3], line[3]);
 
 	display_render();
 }
@@ -109,9 +136,18 @@ static void line_execute(void *buffer) {
 static void prox_execute(void *buffer) {
 	(void)buffer;
 
+	uint8_t prox[4] = {0};
+	proximity_get_state(prox);
+
 	display_fill(DISPLAY_COLOR_BLACK);
 
-	display_printf(0, 0, DISPLAY_COLOR_WHITE, display_font_6x8, "prox");
+	display_printf(40, 1, DISPLAY_COLOR_WHITE, display_font_6x8, "proximity");
+	display_inverse(0, 0, 128, 10);
+
+	display_printf(0, 15, DISPLAY_COLOR_WHITE, display_font_6x8, "LL: %u", prox[0]);
+	display_printf(0, 25, DISPLAY_COLOR_WHITE, display_font_6x8, "LF: %u", prox[1]);
+	display_printf(0, 35, DISPLAY_COLOR_WHITE, display_font_6x8, "RF: %u", prox[2]);
+	display_printf(0, 45, DISPLAY_COLOR_WHITE, display_font_6x8, "RR: %u", prox[3]);
 
 	display_render();
 }
@@ -119,9 +155,18 @@ static void prox_execute(void *buffer) {
 static void other_execute(void *buffer) {
 	(void)buffer;
 
+	const float temp = get_temperature();
+	const float batt = get_voltage();
+
 	display_fill(DISPLAY_COLOR_BLACK);
 
-	display_printf(0, 0, DISPLAY_COLOR_WHITE, display_font_6x8, "other");
+	display_printf(52, 1, DISPLAY_COLOR_WHITE, display_font_6x8, "other");
+	display_inverse(0, 0, 128, 10);
+
+	display_printf(0, 15, DISPLAY_COLOR_WHITE, display_font_6x8, "temp: %u  *C", (int8_t)temp);
+	display_printf(0, 25, DISPLAY_COLOR_WHITE, display_font_6x8, "batt: %.2f V", (double)batt);
+	//display_printf(0, 35, DISPLAY_COLOR_WHITE, display_font_6x8, "RC5: ");
+	//display_printf(0, 45, DISPLAY_COLOR_WHITE, display_font_6x8, "");
 
 	display_render();
 }
