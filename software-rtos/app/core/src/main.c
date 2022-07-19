@@ -59,15 +59,14 @@ void clock_init() {
 
 static void blink(void *param) {
 	(void)param;
-	
-	RCC->AHB1ENR |=RCC_AHB1ENR_GPIOBEN;
-	GPIOB->MODER |=(1<<GPIO_MODER_MODER14_Pos) | (1<<GPIO_MODER_MODER15_Pos);
 
-	GPIOB->ODR |=GPIO_ODR_OD14;
+	uint8_t state = 0;
 
 	while(1) {
-		GPIOB->ODR ^=GPIO_ODR_OD14;
-		GPIOB->ODR ^=GPIO_ODR_OD15;
+		led_set_green(state);
+		led_set_yellow(!state);
+
+		state = !state;
 
 		vTaskDelay(200);
 	}
@@ -84,11 +83,10 @@ int main() {
     
     cli_init();
 	gui_init();
-	line_init();
 	motors_init();
-	proximity_init();
+	periph_init();
 
-	xTaskCreate(blink, "blink", 512, NULL, 4, NULL);
+	xTaskCreate(blink, "blink", 130, NULL, 4, NULL);
 
     vTaskStartScheduler();
 
