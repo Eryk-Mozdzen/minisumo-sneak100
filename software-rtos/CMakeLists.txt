@@ -19,6 +19,8 @@ add_executable(${TARGET}
 	"third-party/FreeRTOS-Kernel/portable/MemMang/heap_4.c"
 	"third-party/FreeRTOS-Plus-CLI/FreeRTOS_CLI.c"
 
+	"third-party/state-machine-c/lib/src/finite_state_machine.c"
+
 	"app/core/src/main.c"
 	"app/core/src/adc.c"
 	"app/core/src/motors.c"
@@ -31,6 +33,7 @@ add_executable(${TARGET}
 	"app/gui/src/display.c"
 	"app/gui/src/display_fonts.c"
 	"app/gui/src/sprites.c"
+	"app/gui/src/gui.c"
 )
 
 target_compile_definitions(${TARGET} PRIVATE
@@ -46,6 +49,8 @@ target_include_directories(${TARGET} PRIVATE
 	"third-party/FreeRTOS-Kernel/include"
 	"third-party/FreeRTOS-Kernel/portable/GCC/ARM_CM4F"
 	"third-party/FreeRTOS-Plus-CLI"
+
+	"third-party/state-machine-c/lib/inc"
 	
 	"app/core/inc"
 	"app/cli/inc"

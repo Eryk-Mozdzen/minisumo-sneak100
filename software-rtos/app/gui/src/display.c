@@ -39,9 +39,8 @@ static display_color_t get(int16_t x, int16_t y) {
 	return ((buffer[x + (y/8)*DISPLAY_WIDTH] & (1<<(y%8)))>0);
 }
 
-static void update(void *param) {
-	(void)param;
-	
+void display_init() {
+
 	write_cmd(0xAE);	// display off
 	write_cmd(0x20);	// set memory addressing mode
 	write_cmd(0x00);	// horizontal addressing mode
@@ -74,31 +73,10 @@ static void update(void *param) {
 	write_cmd(0x14);	// 
 	write_cmd(0xAF);	// set display on
 
-	while(1) {
-
-		xSemaphoreTake(buffer_mutex, portMAX_DELAY);
-
-		for(uint8_t i=0; i<DISPLAY_HEIGHT/8; i++) {
-			write_cmd(0xB0 + i);	// set current RAM page address
-			write_cmd(0x00);
-			write_cmd(0x10);
-			write_buffer(&buffer[DISPLAY_WIDTH*i], DISPLAY_WIDTH);
-		}
-
-		xSemaphoreGive(buffer_mutex);
-
-		vTaskDelay(1000/DISPLAY_UPDATE_FREQ);
-	}
-}
-
-void display_init() {
-
 	buffer_mutex = xSemaphoreCreateBinary();
 	xSemaphoreGive(buffer_mutex);
 	
 	display_fill(DISPLAY_COLOR_BLACK);
-
-	xTaskCreate(update, "display", 1024, NULL, 4, NULL);
 }
 
 void display_fill(const display_color_t color) {
@@ -109,6 +87,19 @@ void display_fill(const display_color_t color) {
 		memset(buffer, 0xFF, DISPLAY_WIDTH*DISPLAY_HEIGHT/8);
 	else
 		memset(buffer, 0x00, DISPLAY_WIDTH*DISPLAY_HEIGHT/8);
+
+	xSemaphoreGive(buffer_mutex);
+}
+
+void display_render() {
+	xSemaphoreTake(buffer_mutex, portMAX_DELAY);
+
+	for(uint8_t i=0; i<DISPLAY_HEIGHT/8; i++) {
+		write_cmd(0xB0 + i);	// set current RAM page address
+		write_cmd(0x00);
+		write_cmd(0x10);
+		write_buffer(&buffer[DISPLAY_WIDTH*i], DISPLAY_WIDTH);
+	}
 
 	xSemaphoreGive(buffer_mutex);
 }
