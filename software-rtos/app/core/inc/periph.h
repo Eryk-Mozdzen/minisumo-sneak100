@@ -10,9 +10,13 @@
 
 #define LINE_READ_FREQ				50
 #define LINE_THRESHOLD				1500
+
 #define BATT_SCALE					0.357f
+#define BATT_ALPHA					0.1f
+
 #define INTERNAL_V_25				0.76f
 #define INTERNAL_AVG_SLOPE			0.0025f
+#define INTERNAL_ALPHA				0.05f
 
 #define EEPROM_PAGE_NUM				512
 #define EEPROM_PAGE_SIZE			64

@@ -1,6 +1,7 @@
 #ifndef GUI_H
 #define GUI_H
 
+#include <math.h>
 #include "stm32f4xx.h"
 #include "FreeRTOS.h"
 #include "task.h"
@@ -8,8 +9,10 @@
 
 #include "display.h"
 #include "sprites.h"
+#include "motors.h"
+#include "periph.h"
 
-#define GUI_UPDATE_FREQ		50
+#define GUI_UPDATE_FREQ		20
 
 typedef enum {
 	GUI_STATE_MENU,

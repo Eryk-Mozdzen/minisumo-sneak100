@@ -2,6 +2,8 @@
 
 static arm_pid_instance_f32 pid[4] = {0};
 static float vel_setpoint[4] = {0};
+static float vel_curr[4] = {0};
+static float pwr_ctrl[4] = {0};
 
 static float calculate_vel(const int32_t pos_curr, const int32_t pos_last) {
 	int32_t delta = pos_curr - pos_last;
@@ -20,8 +22,8 @@ static void update(void *param) {
 
 	int32_t pos_last[4] = {0};
 	int32_t pos_curr[4] = {0};
-	float vel_curr[4] = {0};
-	float pwr_ctrl[4] = {0};
+
+	motors_set_power(pwr_ctrl);
 
 	while(1) {
 		motors_get_position(pos_curr);
@@ -38,7 +40,7 @@ static void update(void *param) {
 
 		motors_set_power(pwr_ctrl);
 
-		memcpy(pos_last, pos_curr, 4*sizeof(float));
+		memcpy(pos_last, pos_curr, 4*sizeof(int32_t));
 
 		vTaskDelay(1000/MOTORS_PID_FREQ);
 	}
@@ -212,4 +214,12 @@ void motors_get_position(int32_t *pos_dest) {
 	pos_dest[1] = TIM4->CNT;
 	pos_dest[2] = TIM5->CNT;
 	pos_dest[3] = TIM3->CNT;
+}
+
+void motors_get_velocity(float *vel_dest) {
+	memcpy(vel_dest, vel_curr, 4*sizeof(float));
+}
+
+void motors_get_power(float *pwr_dest) {
+	memcpy(pwr_dest, pwr_ctrl, 4*sizeof(float));
 }
