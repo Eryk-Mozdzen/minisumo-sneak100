@@ -48,6 +48,7 @@ static void menu_enter(void *buffer) {
 
 	display_fill(DISPLAY_COLOR_BLACK);
 
+	//display_bitmap(128/6 - 32/2, 8, DISPLAY_COLOR_WHITE, bitmap_minecraft_eye_of_ender_32_32, 32, 32);
 	display_bitmap(128/6 - 32/2, 8, DISPLAY_COLOR_WHITE, bitmap_minecraft_night_vision_32_32, 32, 32);
 	display_bitmap(128/2 - 32/2, 8, DISPLAY_COLOR_WHITE, bitmap_minecraft_sword_32_32, 32, 32);
 	display_bitmap(5*128/6 - 32/2, 8, DISPLAY_COLOR_WHITE, bitmap_minecraft_book_32_32, 32, 32);

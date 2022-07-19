@@ -18,16 +18,22 @@
 #define INTERNAL_AVG_SLOPE			0.0025f
 #define INTERNAL_ALPHA				0.05f
 
+#define GET_SUPPLY_VOLTAGE(adc)		((adc)/BATT_SCALE)
+#define GET_TEMPERATURE(adc)		(((adc - INTERNAL_V_25)/INTERNAL_AVG_SLOPE) + 25.f)
+
 #define EEPROM_PAGE_NUM				512
 #define EEPROM_PAGE_SIZE			64
 #define EEPROM_PAGE_ADDRESS_BITS	6		// log(EEPROM_PAGE_SIZE)/log(2)
 #define EEPROM_ADDRESS				0x50
 #define EEPROM_WRITE_CYCLE_TIME		10		// ms
 
-void proximity_init();
+void periph_init();
+
 void proximity_get_state(uint8_t *);
 
-void line_init();
+void led_set_yellow(uint8_t);
+void led_set_green(uint8_t);
+
 void line_get_state(uint8_t *);
 void line_get_raw(uint16_t *);
 

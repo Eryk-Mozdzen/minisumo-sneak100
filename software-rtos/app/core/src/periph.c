@@ -2,28 +2,14 @@
 
 static uint32_t eeprom_last_write = 0;
 static uint16_t line_values[4] = {0};
-static float temp = 25;
-static float batt = 7.4;
-
-void proximity_init() {
-	// PB0  -> FL
-	// PB1  -> LL
-	// PC14 -> FR
-	// PC15 -> RR
-	RCC->AHB1ENR |=RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOCEN;
-	GPIOB->MODER &=~((3<<GPIO_MODER_MODE0_Pos) | (3<<GPIO_MODER_MODE1_Pos));
-	GPIOC->MODER &=~((3<<GPIO_MODER_MODE14_Pos) | (3<<GPIO_MODER_MODE15_Pos));
-}
-
-void proximity_get_state(uint8_t *state) {
-	state[0] = (GPIOB->IDR & GPIO_IDR_ID1)==0;
-	state[1] = (GPIOB->IDR & GPIO_IDR_ID0)==0;
-	state[2] = (GPIOC->IDR & GPIO_IDR_ID14)==0;
-	state[3] = (GPIOC->IDR & GPIO_IDR_ID15)==0;
-}
+static float temp;
+static float batt;
 
 static void reader(void *param) {
 	(void)param;
+
+	batt = GET_SUPPLY_VOLTAGE(adc_get_voltage(ADC_CHANNEL_BATT_V));
+	temp = GET_TEMPERATURE(adc_get_voltage(ADC_CHANNEL_TEMP_UC));
 
 	while(1) {
 
@@ -36,9 +22,42 @@ static void reader(void *param) {
 	}
 }
 
-void line_init() {
-	
-	xTaskCreate(reader, "line reader", 1024, NULL, 4, NULL);
+void periph_init() {
+	// PB0  -> FL
+	// PB1  -> LL
+	// PC14 -> FR
+	// PC15 -> RR
+	RCC->AHB1ENR |=RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOCEN;
+	GPIOB->MODER &=~((3<<GPIO_MODER_MODE0_Pos) | (3<<GPIO_MODER_MODE1_Pos));
+	GPIOC->MODER &=~((3<<GPIO_MODER_MODE14_Pos) | (3<<GPIO_MODER_MODE15_Pos));
+
+	// PB14 -> yellow led
+	// PB15 -> green led
+	RCC->AHB1ENR |=RCC_AHB1ENR_GPIOBEN;
+	GPIOB->MODER |=(1<<GPIO_MODER_MODER14_Pos) | (1<<GPIO_MODER_MODER15_Pos);
+
+	xTaskCreate(reader, "periph reader", 1024, NULL, 4, NULL);
+}
+
+void proximity_get_state(uint8_t *state) {
+	state[0] = (GPIOB->IDR & GPIO_IDR_ID1)==0;
+	state[1] = (GPIOB->IDR & GPIO_IDR_ID0)==0;
+	state[2] = (GPIOC->IDR & GPIO_IDR_ID14)==0;
+	state[3] = (GPIOC->IDR & GPIO_IDR_ID15)==0;
+}
+
+void led_set_yellow(uint8_t state) {
+	if(state)
+		GPIOB->ODR |=GPIO_ODR_OD14;
+	else
+		GPIOB->ODR &=~GPIO_ODR_OD14;
+}
+
+void led_set_green(uint8_t state) {
+	if(state)
+		GPIOB->ODR |=GPIO_ODR_OD15;
+	else
+		GPIOB->ODR &=~GPIO_ODR_OD15;
 }
 
 void line_get_state(uint8_t *state) {
@@ -53,8 +72,7 @@ void line_get_raw(uint16_t *raw) {
 }
 
 float get_voltage() {
-	const float adc = adc_get_voltage(ADC_CHANNEL_BATT_V);
-	const float b = adc/BATT_SCALE;
+	const float b = GET_SUPPLY_VOLTAGE(adc_get_voltage(ADC_CHANNEL_BATT_V));
 
 	batt = (1.f - BATT_ALPHA)*batt + BATT_ALPHA*b;
 
@@ -62,8 +80,7 @@ float get_voltage() {
 }
 
 float get_temperature() {
-	const float adc = adc_get_voltage(ADC_CHANNEL_TEMP_UC);
-	const float t = ((adc - INTERNAL_V_25)/INTERNAL_AVG_SLOPE) + 25.f;
+	const float t = GET_TEMPERATURE(adc_get_voltage(ADC_CHANNEL_TEMP_UC));
 
 	temp = (1.f - INTERNAL_ALPHA)*temp + INTERNAL_ALPHA*t;
 
