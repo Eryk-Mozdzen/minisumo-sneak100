@@ -33,32 +33,32 @@
 		<link>
 			<name>cli</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/cli</locationURI>
+			<location>/home/emozdzen/Desktop/repos/minisumo-sneak100/software/cli</location>
 		</link>
 		<link>
 			<name>core</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/core</locationURI>
+			<location>/home/emozdzen/Desktop/repos/minisumo-sneak100/software/core</location>
 		</link>
 		<link>
 			<name>external</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/external</locationURI>
+			<location>/home/emozdzen/Desktop/repos/minisumo-sneak100/software/external</location>
 		</link>
 		<link>
 			<name>gui</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/gui</locationURI>
+			<location>/home/emozdzen/Desktop/repos/minisumo-sneak100/software/gui</location>
 		</link>
 		<link>
 			<name>libs</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/libs</locationURI>
+			<location>/home/emozdzen/Desktop/repos/minisumo-sneak100/software/libs</location>
 		</link>
 		<link>
 			<name>utils</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/utils</locationURI>
+			<location>/home/emozdzen/Desktop/repos/minisumo-sneak100/software/utils</location>
 		</link>
 	</linkedResources>
 </projectDescription>
