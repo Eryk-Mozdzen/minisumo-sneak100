@@ -9,10 +9,7 @@
 #include "i2c1.h"
 
 #define LINE_READ_FREQ				50
-#define LINE_THRESHOLD_LL			1500
-#define LINE_THRESHOLD_LM			1500
-#define LINE_THRESHOLD_RM			1500
-#define LINE_THRESHOLD_RR			200
+#define LINE_THRESHOLD				1500
 
 #define BATT_SCALE					0.357f
 #define BATT_ALPHA					0.1f

@@ -15,8 +15,10 @@ static void reader(void *param) {
 
 		line_values[0] = adc_get_raw(ADC_CHANNEL_LINE_LL);
 		line_values[1] = adc_get_raw(ADC_CHANNEL_LINE_LM);
-		line_values[2] = adc_get_raw(ADC_CHANNEL_LINE_RM);
-		line_values[3] = adc_get_raw(ADC_CHANNEL_LINE_RR);
+		//line_values[2] = adc_get_raw(ADC_CHANNEL_LINE_RM);
+		//line_values[3] = adc_get_raw(ADC_CHANNEL_LINE_RR);
+		line_values[2] = LINE_THRESHOLD;
+		line_values[3] = adc_get_raw(ADC_CHANNEL_LINE_RM);
 
 		vTaskDelay(1000/LINE_READ_FREQ);
 	}
@@ -61,10 +63,10 @@ void led_set_green(uint8_t state) {
 }
 
 void line_get_state(uint8_t *state) {
-	state[0] = (line_values[0]<LINE_THRESHOLD_LL);
-	state[1] = (line_values[1]<LINE_THRESHOLD_LM);
-	state[2] = (line_values[2]<LINE_THRESHOLD_RM);
-	state[3] = (line_values[3]<LINE_THRESHOLD_RR);
+	state[0] = (line_values[0]<LINE_THRESHOLD);
+	state[1] = (line_values[1]<LINE_THRESHOLD);
+	state[2] = (line_values[2]<LINE_THRESHOLD);
+	state[3] = (line_values[3]<LINE_THRESHOLD);
 }
 
 void line_get_raw(uint16_t *raw) {
