@@ -83,16 +83,16 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="external/state-machine-c/lib"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="cli"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="libs"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="gui"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="utils"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="core"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="fight"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="cli"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="core"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="external/state-machine-c/lib"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="external/stm32-ssd1306/ssd1306"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="fight"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="gui"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="libs"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="utils"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

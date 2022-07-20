@@ -61,10 +61,10 @@ void led_set_green(uint8_t state) {
 }
 
 void line_get_state(uint8_t *state) {
-	state[0] = (line_values[0]<LINE_THRESHOLD);
-	state[1] = (line_values[1]<LINE_THRESHOLD);
-	state[2] = (line_values[2]<LINE_THRESHOLD);
-	state[3] = (line_values[3]<LINE_THRESHOLD);
+	state[0] = (line_values[0]<LINE_THRESHOLD_LL);
+	state[1] = (line_values[1]<LINE_THRESHOLD_LM);
+	state[2] = (line_values[2]<LINE_THRESHOLD_RM);
+	state[3] = (line_values[3]<LINE_THRESHOLD_RR);
 }
 
 void line_get_raw(uint16_t *raw) {
