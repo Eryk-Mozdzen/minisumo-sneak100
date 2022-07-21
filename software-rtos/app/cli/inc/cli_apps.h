@@ -10,6 +10,9 @@
 #include "periph.h"
 
 extern const CLI_Command_Definition_t cli_command_motor_vel;
-extern const CLI_Command_Definition_t cli_command_proximity_state;
+extern const CLI_Command_Definition_t cli_command_motor;
+extern const CLI_Command_Definition_t cli_command_prox;
+extern const CLI_Command_Definition_t cli_command_line;
+extern const CLI_Command_Definition_t cli_command_batt;
 
 #endif

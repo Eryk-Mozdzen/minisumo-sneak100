@@ -33,7 +33,10 @@ void cli_init() {
 	commands = xQueueCreate(CLI_QUEUE_SIZE, sizeof(cli_command_t));
 
 	FreeRTOS_CLIRegisterCommand(&cli_command_motor_vel);
-	FreeRTOS_CLIRegisterCommand(&cli_command_proximity_state);
+	FreeRTOS_CLIRegisterCommand(&cli_command_motor);
+	FreeRTOS_CLIRegisterCommand(&cli_command_prox);
+	FreeRTOS_CLIRegisterCommand(&cli_command_line);
+	FreeRTOS_CLIRegisterCommand(&cli_command_batt);
 
 	xTaskCreate(listener, "CLI listener", 1024, NULL, 4, NULL);
 }
