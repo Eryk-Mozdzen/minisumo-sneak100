@@ -1,0 +1,12 @@
+#ifndef FIGHT_H
+#define FIGHT_H
+
+typedef enum {
+	FIGHT_STATE_BEGIN,
+	FIGHT_STATE_FOLLOW,
+	FIGHT_STATE_EXPLORE,
+	FIGHT_STATE_FIGHT,
+	FIGHT_STATE_TURN
+} fight_state_t;
+
+#endif

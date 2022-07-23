@@ -12,6 +12,9 @@
 #include "motors.h"
 #include "periph.h"
 #include "display.h"
+#include "rc5.h"
+
+#include "main_sm.h"
 
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName) {
 	(void)pcTaskName;
@@ -64,7 +67,7 @@ static void blink(void *param) {
 
 	while(1) {
 		led_set_green(state);
-		led_set_yellow(!state);
+		//led_set_yellow(!state);
 
 		state = !state;
 
@@ -85,6 +88,9 @@ int main() {
 	gui_init();
 	motors_init();
 	periph_init();
+	rc5_init();
+
+	main_sm_init();
 
 	xTaskCreate(blink, "blink", 130, NULL, 4, NULL);
 
