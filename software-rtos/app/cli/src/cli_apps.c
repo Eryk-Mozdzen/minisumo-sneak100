@@ -5,7 +5,7 @@ static BaseType_t motor_vel(char *pcWriteBuffer, size_t xWriteBufferLen, const c
 
 	float vel[4] = {0};
 
-	if(sscanf(&pcCommandString[6], "%f%f%f%f", &vel[0], &vel[1], &vel[2], &vel[3])!=4) {
+	if(sscanf(&pcCommandString[10], "%f%f%f%f", &vel[0], &vel[1], &vel[2], &vel[3])!=4) {
 		sprintf(pcWriteBuffer, "Unknown parameters\n");
 		return pdFALSE;
 	}
