@@ -10,7 +10,6 @@
 #include "rc5.h"
 #include "periph.h"
 #include "motors.h"
-#include "uart2.h"
 
 #define ROBOT_DATA_EEPROM_PAGE		0
 #define ROBOT_DATA_EEPROM_OFFSET	0
@@ -21,7 +20,8 @@ typedef enum {
 	ROBOT_STATE_READY,
 	ROBOT_STATE_PROGRAM,
 	ROBOT_STATE_RUN,
-	ROBOT_STATE_STOP
+	ROBOT_STATE_STOP1,
+	ROBOT_STATE_STOP2
 } robot_state_t;
 
 void robot_init();

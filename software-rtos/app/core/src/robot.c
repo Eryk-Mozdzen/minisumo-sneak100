@@ -51,7 +51,8 @@ static void loop(void *param) {
 		case ROBOT_STATE_READY:
 		case ROBOT_STATE_PROGRAM:
 		case ROBOT_STATE_RUN:
-		case ROBOT_STATE_STOP: break;
+		case ROBOT_STATE_STOP1:
+		case ROBOT_STATE_STOP2: break;
 		default: eeprom_data.sm_state = ROBOT_STATE_READY; break;
 	}
 
@@ -118,14 +119,34 @@ static void run_enter(void *buffer) {
 	eeprom_write(ROBOT_DATA_EEPROM_PAGE, ROBOT_DATA_EEPROM_OFFSET, &eeprom_data, sizeof(eeprom_data));
 }
 
-static void stop_enter(void *buffer) {
+static void run_execute(void *buffer) {
+	(void)buffer;
+
+	// fight algorithm
+	// fight state machine update & execute
+}
+
+static void stop1_enter(void *buffer) {
+	(void)buffer;
+
+	led_set_yellow(0);
+
+	eeprom_data.sm_state = ROBOT_STATE_STOP1;
+	eeprom_write(ROBOT_DATA_EEPROM_PAGE, ROBOT_DATA_EEPROM_OFFSET, &eeprom_data, sizeof(eeprom_data));
+
+	// stop motors
+
+	vTaskDelay(1000);
+}
+
+static void stop2_enter(void *buffer) {
 	(void)buffer;
 
 	eeprom_data.sm_state = ROBOT_STATE_READY;
 	eeprom_write(ROBOT_DATA_EEPROM_PAGE, ROBOT_DATA_EEPROM_OFFSET, &eeprom_data, sizeof(eeprom_data));
 }
 
-static void stop_execute(void *buffer) {
+static void stop2_execute(void *buffer) {
 	(void)buffer;
 
 	led_set_yellow(flags.flash_led_state);
@@ -141,14 +162,16 @@ void robot_init() {
 
 	FiniteStateMachine_DefineState(&fsm, ROBOT_STATE_READY,		ready_enter,	NULL,			NULL);
 	FiniteStateMachine_DefineState(&fsm, ROBOT_STATE_PROGRAM,	program_enter,	NULL,			NULL);
-	FiniteStateMachine_DefineState(&fsm, ROBOT_STATE_RUN,		run_enter,		NULL,			NULL);
-	FiniteStateMachine_DefineState(&fsm, ROBOT_STATE_STOP,		stop_enter,		stop_execute,	NULL);
+	FiniteStateMachine_DefineState(&fsm, ROBOT_STATE_RUN,		run_enter,		run_execute,	NULL);
+	FiniteStateMachine_DefineState(&fsm, ROBOT_STATE_STOP1,		stop1_enter,	NULL,			NULL);
+	FiniteStateMachine_DefineState(&fsm, ROBOT_STATE_STOP2,		stop2_enter,	stop2_execute,	NULL);
 
 	FiniteStateMachine_DefineTransition(&fsm, ROBOT_STATE_READY,	ROBOT_STATE_PROGRAM,	0, NULL, get_program);
 	FiniteStateMachine_DefineTransition(&fsm, ROBOT_STATE_PROGRAM,	ROBOT_STATE_READY,		0, NULL, NULL);
 	FiniteStateMachine_DefineTransition(&fsm, ROBOT_STATE_READY,	ROBOT_STATE_RUN,		0, NULL, get_start);
-	FiniteStateMachine_DefineTransition(&fsm, ROBOT_STATE_RUN,		ROBOT_STATE_STOP,		0, NULL, get_stop);
 	FiniteStateMachine_DefineTransition(&fsm, ROBOT_STATE_RUN,		ROBOT_STATE_PROGRAM,	0, NULL, get_program);
+	FiniteStateMachine_DefineTransition(&fsm, ROBOT_STATE_RUN,		ROBOT_STATE_STOP1,		0, NULL, get_stop);
+	FiniteStateMachine_DefineTransition(&fsm, ROBOT_STATE_STOP1,	ROBOT_STATE_STOP2,		0, NULL, NULL);
 
 	xTaskCreate(loop, "robot loop", 256, NULL, 4, NULL);
 }
