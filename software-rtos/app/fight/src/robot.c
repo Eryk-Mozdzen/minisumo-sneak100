@@ -124,6 +124,7 @@ static void run_execute(void *buffer) {
 
 	// fight algorithm
 	// fight state machine update & execute
+	fight_update();
 }
 
 static void stop1_enter(void *buffer) {
@@ -174,4 +175,6 @@ void robot_init() {
 	FiniteStateMachine_DefineTransition(&fsm, ROBOT_STATE_STOP1,	ROBOT_STATE_STOP2,		0, NULL, NULL);
 
 	xTaskCreate(loop, "robot loop", 256, NULL, 4, NULL);
+
+	fight_init();
 }

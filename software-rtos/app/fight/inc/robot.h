@@ -9,7 +9,8 @@
 
 #include "rc5.h"
 #include "periph.h"
-#include "motors.h"
+
+#include "fight.h"
 
 #define ROBOT_DATA_EEPROM_PAGE		0
 #define ROBOT_DATA_EEPROM_OFFSET	0
