@@ -27,7 +27,6 @@ add_executable(${TARGET}
 	"app/core/src/periph.c"
 	"app/core/src/i2c1.c"
 	"app/core/src/rc5.c"
-	"app/core/src/robot.c"
 	"app/cli/src/uart2.c"
 	"app/cli/src/uart3.c"
 	"app/cli/src/cli_apps.c"
@@ -36,13 +35,16 @@ add_executable(${TARGET}
 	"app/gui/src/display_fonts.c"
 	"app/gui/src/sprites.c"
 	"app/gui/src/gui.c"
+	"app/fight/src/robot.c"
 	"app/fight/src/fight.c"
 )
 
 target_compile_definitions(${TARGET} PRIVATE
 	STM32F405xx
 	ARM_MATH_CM4
+
 	#EEPROM_DEBUG
+	#FIGHT_DEBUG
 )
 
 target_include_directories(${TARGET} PRIVATE
