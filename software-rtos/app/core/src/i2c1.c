@@ -91,7 +91,7 @@ uint8_t i2c1_write_8(const uint8_t dev_address, const uint8_t reg_address, const
 
 uint8_t i2c1_read_8(const uint8_t dev_address, const uint8_t reg_address, void *data_dest, const uint32_t data_size, const uint32_t timeout) {
 	if(!xSemaphoreTake(mutex, timeout))
-		return 0;
+		return 1;
 	
 	uint32_t reg;
 
@@ -100,7 +100,7 @@ uint8_t i2c1_read_8(const uint8_t dev_address, const uint8_t reg_address, void *
 	I2C1->CR1 |=I2C_CR1_START;
 	if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_SB, timeout)) {
 		xSemaphoreGive(mutex);
-		return 1;
+		return 2;
 	}
 	reg = I2C1->SR1;
 	
@@ -109,33 +109,33 @@ uint8_t i2c1_read_8(const uint8_t dev_address, const uint8_t reg_address, void *
 	I2C1->DR = (dev_address<<1) | 0x00;
 	if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_ADDR, timeout)) {
 		xSemaphoreGive(mutex);
-		return 2;
+		return 3;
 	}
 	reg = I2C1->SR1;
 	reg = I2C1->SR2;
 	if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_TXE, timeout)) {
 		xSemaphoreGive(mutex);
-		return 3;
+		return 4;
 	}
 
 	I2C1->DR = reg_address;
 	if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_TXE, timeout)) {
 		xSemaphoreGive(mutex);
-		return 4;
+		return 5;
 	}
 
 	I2C1->CR1 &=~I2C_CR1_POS;
 	I2C1->CR1 |=I2C_CR1_START;
 	if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_SB, timeout)) {
 		xSemaphoreGive(mutex);
-		return 5;
+		return 6;
 	}
 	reg = I2C1->SR1;
 
 	I2C1->DR = (dev_address<<1) | 0x01;
 	if(!wait_for_flag_set(&I2C1->SR1, I2C_SR1_ADDR, timeout)) {
 		xSemaphoreGive(mutex);
-		return 6;
+		return 7;
 	}
 	reg = I2C1->SR1;
 	reg = I2C1->SR2;

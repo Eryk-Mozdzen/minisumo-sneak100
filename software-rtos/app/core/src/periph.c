@@ -99,7 +99,16 @@ uint8_t eeprom_read(uint16_t page, uint8_t offset, void *dest, uint8_t size) {
 	if(size>=(EEPROM_PAGE_SIZE - offset))
 		size = EEPROM_PAGE_SIZE - offset;
 
-	return i2c1_read_16(EEPROM_ADDRESS, (page<<EEPROM_PAGE_ADDRESS_BITS) | offset, dest, size, 100);
+	#ifndef EEPROM_DEBUG
+		return i2c1_read_16(EEPROM_ADDRESS, (page<<EEPROM_PAGE_ADDRESS_BITS) | offset, dest, size, 100);
+	#else
+		uint8_t status = i2c1_read_16(EEPROM_ADDRESS, (page<<EEPROM_PAGE_ADDRESS_BITS) | offset, dest, size, 100);
+		char buffer[32] = {0};
+		snprintf(buffer, 32, "EEPROM debug: read\t%u\n", status);
+		uart2_transmit(buffer, strlen(buffer));
+		uart3_transmit(buffer, strlen(buffer));
+		return status;
+	#endif
 }
 
 uint8_t eeprom_write(uint16_t page, uint8_t offset, const void *src, uint8_t size) {
@@ -114,5 +123,14 @@ uint8_t eeprom_write(uint16_t page, uint8_t offset, const void *src, uint8_t siz
 	if(size>=(EEPROM_PAGE_SIZE - offset))
 		size = EEPROM_PAGE_SIZE - offset;
 
-	return i2c1_write_16(EEPROM_ADDRESS, (page<<EEPROM_PAGE_ADDRESS_BITS) | offset, src, size, 100);
+	#ifndef EEPROM_DEBUG
+		return i2c1_write_16(EEPROM_ADDRESS, (page<<EEPROM_PAGE_ADDRESS_BITS) | offset, src, size, 100);
+	#else
+		uint8_t status = i2c1_write_16(EEPROM_ADDRESS, (page<<EEPROM_PAGE_ADDRESS_BITS) | offset, src, size, 100);
+		char buffer[32] = {0};
+		snprintf(buffer, 32, "EEPROM debug: write\t%u\n", status);
+		uart2_transmit(buffer, strlen(buffer));
+		uart3_transmit(buffer, strlen(buffer));
+		return status;
+	#endif
 }

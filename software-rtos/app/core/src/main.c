@@ -14,7 +14,7 @@
 #include "display.h"
 #include "rc5.h"
 
-#include "main_sm.h"
+#include "robot.h"
 
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName) {
 	(void)pcTaskName;
@@ -90,7 +90,7 @@ int main() {
 	periph_init();
 	rc5_init();
 
-	main_sm_init();
+	robot_init();
 
 	xTaskCreate(blink, "blink", 130, NULL, 4, NULL);
 

@@ -8,6 +8,13 @@
 #include "adc.h"
 #include "i2c1.h"
 
+#define EEPROM_DEBUG
+
+#ifdef EEPROM_DEBUG
+	#include "uart2.h"
+	#include "uart3.h"
+#endif
+
 #define LINE_READ_FREQ				50
 #define LINE_THRESHOLD				1500
 
