@@ -42,6 +42,7 @@ add_executable(${TARGET}
 target_compile_definitions(${TARGET} PRIVATE
 	STM32F405xx
 	ARM_MATH_CM4
+	#EEPROM_DEBUG
 )
 
 target_include_directories(${TARGET} PRIVATE

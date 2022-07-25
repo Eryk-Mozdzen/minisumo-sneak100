@@ -85,7 +85,7 @@ int main() {
 	adc_init();
     
     cli_init();
-	gui_init();
+	//gui_init();
 	motors_init();
 	periph_init();
 	rc5_init();
