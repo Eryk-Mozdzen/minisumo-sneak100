@@ -94,10 +94,20 @@ static void ready_enter(void *buffer) {
 
 	eeprom_data.sm_state = ROBOT_STATE_READY;
 	eeprom_write(ROBOT_DATA_EEPROM_PAGE, ROBOT_DATA_EEPROM_OFFSET, &eeprom_data, sizeof(eeprom_data));
+
+	motors_set_control_type(MOTORS_OPEN_LOOP);
+
+	float pwr[4] = {0};
+	motors_set_power(pwr);
 }
 
 static void program_enter(void *buffer) {
 	(void)buffer;
+
+	motors_set_control_type(MOTORS_OPEN_LOOP);
+
+	float pwr[4] = {0};
+	motors_set_power(pwr);
 
 	led_set_yellow(1);
 	vTaskDelay(250);
@@ -117,6 +127,8 @@ static void run_enter(void *buffer) {
 
 	eeprom_data.sm_state = ROBOT_STATE_RUN;
 	eeprom_write(ROBOT_DATA_EEPROM_PAGE, ROBOT_DATA_EEPROM_OFFSET, &eeprom_data, sizeof(eeprom_data));
+
+	fight_init();
 }
 
 static void run_execute(void *buffer) {
@@ -135,7 +147,10 @@ static void stop1_enter(void *buffer) {
 	eeprom_data.sm_state = ROBOT_STATE_STOP1;
 	eeprom_write(ROBOT_DATA_EEPROM_PAGE, ROBOT_DATA_EEPROM_OFFSET, &eeprom_data, sizeof(eeprom_data));
 
-	// stop motors
+	motors_set_control_type(MOTORS_OPEN_LOOP);
+
+	float pwr[4] = {0};
+	motors_set_power(pwr);
 
 	vTaskDelay(1000);
 }
@@ -145,6 +160,11 @@ static void stop2_enter(void *buffer) {
 
 	eeprom_data.sm_state = ROBOT_STATE_READY;
 	eeprom_write(ROBOT_DATA_EEPROM_PAGE, ROBOT_DATA_EEPROM_OFFSET, &eeprom_data, sizeof(eeprom_data));
+
+	motors_set_control_type(MOTORS_OPEN_LOOP);
+
+	float pwr[4] = {0};
+	motors_set_power(pwr);
 }
 
 static void stop2_execute(void *buffer) {
@@ -175,6 +195,4 @@ void robot_init() {
 	FiniteStateMachine_DefineTransition(&fsm, ROBOT_STATE_STOP1,	ROBOT_STATE_STOP2,		0, NULL, NULL);
 
 	xTaskCreate(loop, "robot loop", 1024, NULL, 4, NULL);
-
-	fight_init();
 }
