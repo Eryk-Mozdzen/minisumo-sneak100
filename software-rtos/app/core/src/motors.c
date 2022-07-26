@@ -7,13 +7,7 @@ static float pwr_ctrl[4] = {0};
 static motors_control_type_t control = MOTORS_CLOSE_LOOP;
 
 static float calculate_vel(const int32_t pos_curr, const int32_t pos_last) {
-	int32_t delta = pos_curr - pos_last;
-
-    if(delta>32768) {
-		delta -=65536;
-    } else if(delta<-32768) {
-        delta +=65536;
-	}
+	const int32_t delta = motors_get_position_delta(pos_last, pos_curr);
 
 	return (float)delta*MOTORS_PID_FREQ/MOTORS_ENCODER_CPR;
 }
@@ -236,4 +230,16 @@ void motors_get_velocity(float *vel_dest) {
 
 void motors_get_power(float *pwr_dest) {
 	memcpy(pwr_dest, pwr_ctrl, 4*sizeof(float));
+}
+
+int32_t motors_get_position_delta(int32_t pos1, int32_t pos2) {
+	int32_t delta = pos2 - pos1;
+
+    if(delta>32768) {
+		delta -=65536;
+    } else if(delta<-32768) {
+        delta +=65536;
+	}
+
+	return delta;
 }

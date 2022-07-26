@@ -28,6 +28,4 @@ typedef enum {
 void fight_init();
 void fight_update();
 
-fight_state_t fight_get_state();
-
 #endif
