@@ -12,8 +12,14 @@
 #define MOTORS_PID_FREQ		50		// Hz
 #define MOTORS_ENCODER_CPR	512
 
+typedef enum {
+	MOTORS_OPEN_LOOP,
+	MOTORS_CLOSE_LOOP
+} motors_control_type_t;
+
 void motors_init();
 
+void motors_set_control_type(motors_control_type_t);
 void motors_set_power(float *);
 void motors_set_velocity(float *);
 void motors_get_position(int32_t *);

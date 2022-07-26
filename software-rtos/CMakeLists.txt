@@ -44,7 +44,7 @@ target_compile_definitions(${TARGET} PRIVATE
 	ARM_MATH_CM4
 
 	#EEPROM_DEBUG
-	#FIGHT_DEBUG
+	FIGHT_DEBUG
 )
 
 target_include_directories(${TARGET} PRIVATE
