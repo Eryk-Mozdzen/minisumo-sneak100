@@ -288,26 +288,25 @@ void turn_execute(void *buffer) {
 void fight_init() {
 	FiniteStateMachine_Init(&fsm, NULL);
 
-	//FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_FOLLOW,	follow_enter,	NULL,			NULL);
-	//FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_FIGHT,		fight_enter,	fight_execute,	NULL);
+	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_FOLLOW,	follow_enter,	NULL,			NULL);
+	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_FIGHT,		fight_enter,	fight_execute,	NULL);
 	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_EXPLORE,	explore_enter,	NULL,			NULL);
 	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_MEASURE,	measure_enter,	NULL,			measure_exit);
 	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_TURN,		turn_enter,		turn_execute,	NULL);
 
-	//FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_FOLLOW,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
-	//FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_EXPLORE,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
-	//FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_MEASURE,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
-	//FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_TURN,		FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
+	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_FOLLOW,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
+	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_EXPLORE,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
+	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_MEASURE,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
+	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_TURN,		FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
 
-	//FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_FIGHT,	FIGHT_STATE_FOLLOW,		0, NULL, get_enemy_lost);
+	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_FIGHT,	FIGHT_STATE_FOLLOW,		0, NULL, get_enemy_lost);
 	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_FOLLOW,	FIGHT_STATE_EXPLORE,	0, NULL, get_timeout);
 	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_FOLLOW,	FIGHT_STATE_MEASURE,	0, NULL, get_line_external);
 	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_EXPLORE,	FIGHT_STATE_MEASURE,	0, NULL, get_line_external);
 	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_MEASURE,	FIGHT_STATE_TURN,		0, NULL, get_line_internal);
 	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_TURN,		FIGHT_STATE_EXPLORE,	0, NULL, get_turn_complete);
 
-	//FiniteStateMachine_Start(&fsm, FIGHT_STATE_FOLLOW);
-	FiniteStateMachine_Start(&fsm, FIGHT_STATE_EXPLORE);
+	FiniteStateMachine_Start(&fsm, FIGHT_STATE_FOLLOW);
 
 	fight_pid.Kp = FIGHT_PID_KP;
 	fight_pid.Ki = 0.f;

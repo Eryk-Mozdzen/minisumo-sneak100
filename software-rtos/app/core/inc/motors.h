@@ -6,11 +6,14 @@
 #include "task.h"
 #include "arm_math.h"
 
-#define MOTORS_PID_KP			0.4f
-#define MOTORS_PID_KI			0.001f
+#define MOTORS_PID_KP			0.1f
+#define MOTORS_PID_KI			0.01f
 #define MOTORS_PID_KD			0.f
 #define MOTORS_PID_FREQ			50		// Hz
 #define MOTORS_ENCODER_CPR		360
+
+#define MOTORS_PWR_COMP_EPS		0.01f
+#define MOTORS_PWR_COMP_VAL		0.55f
 
 #define MOTORS_WHEEL_READIUS	0.0145f	// m
 #define MOTORS_TRACK_WIDTH		0.085f	// m

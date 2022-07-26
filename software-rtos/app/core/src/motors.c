@@ -12,6 +12,23 @@ static float calculate_vel(const int32_t pos_curr, const int32_t pos_last) {
 	return (float)delta*MOTORS_PID_FREQ/MOTORS_ENCODER_CPR;
 }
 
+static float compensate_power(const float input) {
+	if(input>=-MOTORS_PWR_COMP_EPS && input<=MOTORS_PWR_COMP_EPS)
+		return 0.f;
+
+	if(input>MOTORS_PWR_COMP_EPS) {
+		const float a = (MOTORS_PWR_COMP_VAL - 1.f)/(MOTORS_PWR_COMP_EPS - 1.f);
+		const float b = (MOTORS_PWR_COMP_EPS - MOTORS_PWR_COMP_VAL)/(MOTORS_PWR_COMP_EPS - 1.f);
+		
+		return a*input + b;
+	}
+
+	const float a = (MOTORS_PWR_COMP_VAL - 1.f)/(MOTORS_PWR_COMP_EPS - 1.f);
+	const float b = -(MOTORS_PWR_COMP_EPS - MOTORS_PWR_COMP_VAL)/(MOTORS_PWR_COMP_EPS - 1.f);
+	
+	return a*input + b;
+}
+
 static void update(void *param) {
 	(void)param;
 
@@ -176,6 +193,10 @@ void motors_set_power(float *power) {
 	}
 	
 	memcpy(pwr_ctrl, power, 4*sizeof(float));
+
+	for(uint8_t i=0; i<4; i++) {
+		power[i] = compensate_power(power[i]);
+	}
 
 	if(power[0]>0.f) {
         TIM1->CCR3 = 0;

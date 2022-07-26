@@ -9,6 +9,7 @@
 #include "motors.h"
 #include "periph.h"
 
+extern const CLI_Command_Definition_t cli_command_motor_pwr;
 extern const CLI_Command_Definition_t cli_command_motor_vel;
 extern const CLI_Command_Definition_t cli_command_motor;
 extern const CLI_Command_Definition_t cli_command_prox;
