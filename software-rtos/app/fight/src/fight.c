@@ -15,6 +15,7 @@ static int32_t pos[4] = {0};
 static int32_t measurement_1[4] = {0};
 static int32_t measurement_2[4] = {0};
 static float angle_to_rot;
+static int32_t turn_end[4] = {0};
 
 static struct {
 	uint8_t follow_direction : 1;		// 0 = left, 1 = right
@@ -51,8 +52,15 @@ uint8_t get_line_internal(void *buffer) {
 
 uint8_t get_turn_complete(void *buffer) {
 	(void)buffer;
+
 	// check if end wheel position is reached
-	return 0;
+	int32_t delta[4] = {0};
+	delta[0] = abs(motors_get_position_delta(pos[0], turn_end[0]));
+	delta[1] = abs(motors_get_position_delta(pos[1], turn_end[1]));
+	delta[2] = abs(motors_get_position_delta(pos[2], turn_end[2]));
+	delta[3] = abs(motors_get_position_delta(pos[3], turn_end[3]));
+
+	return (delta[0]<=TURN_POS_EPSILON && delta[1]<=TURN_POS_EPSILON && delta[2]<=TURN_POS_EPSILON && delta[3]<=TURN_POS_EPSILON);
 }
 
 // -------------------------------------------------------
@@ -216,28 +224,60 @@ void turn_enter(void *buffer) {
 	(void)buffer;
 
 	// calculate end wheel position
+	const float arc = angle_to_rot*MOTORS_TRACK_WIDTH/2.f;	// m
+	const float rot = arc/(MOTORS_WHEEL_READIUS*2.f*PI)*sqrtf(2.f);	// rotations
+	const int32_t delta = rot*MOTORS_ENCODER_CPR;
+
+	if(flags.turn_direction) {
+		turn_end[0] = (pos[0] - delta + 65536)%65536;
+		turn_end[1] = (pos[1] - delta + 65536)%65536;
+		turn_end[2] = (pos[2] - delta + 65536)%65536;
+		turn_end[3] = (pos[3] - delta + 65536)%65536;
+	} else {
+		turn_end[0] = (pos[0] + delta)%65536;
+		turn_end[1] = (pos[1] + delta)%65536;
+		turn_end[2] = (pos[2] + delta)%65536;
+		turn_end[3] = (pos[3] + delta)%65536;
+	}
 
 	motors_set_control_type(MOTORS_CLOSE_LOOP);
 
+	#ifdef FIGHT_DEBUG
+		char b[32] = {0};
+		snprintf(b, 32, "turn start delta: %lu\n", delta);
+		uart2_transmit(b, strlen(b));
+		uart3_transmit(b, strlen(b));
+	#endif
+}
+
+void turn_execute(void *buffer) {
+	(void)buffer;
+
+	int32_t delta[4] = {0};
+	delta[0] = abs(motors_get_position_delta(pos[0], turn_end[0]));
+	delta[1] = abs(motors_get_position_delta(pos[1], turn_end[1]));
+	delta[2] = abs(motors_get_position_delta(pos[2], turn_end[2]));
+	delta[3] = abs(motors_get_position_delta(pos[3], turn_end[3]));
+
 	float vel[4] = {0};
 
-	if(flags.turn_direction) {
-		vel[0] = TURN_VEL;
-		vel[1] = -TURN_VEL;
-		vel[2] = -TURN_VEL;
-		vel[3] = TURN_VEL;
-	} else {
-		vel[0] = -TURN_VEL;
-		vel[1] = TURN_VEL;
-		vel[2] = TURN_VEL;
-		vel[3] = -TURN_VEL;
-	}
+	if(delta[0]>TURN_POS_EPSILON)
+		vel[0] = (flags.turn_direction ? TURN_VEL : -TURN_VEL);
+
+	if(delta[1]>TURN_POS_EPSILON)
+		vel[1] = (flags.turn_direction ? -TURN_VEL : TURN_VEL);
+
+	if(delta[2]>TURN_POS_EPSILON)
+		vel[2] = (flags.turn_direction ? -TURN_VEL : TURN_VEL);
+
+	if(delta[3]>TURN_POS_EPSILON)
+		vel[3] = (flags.turn_direction ? TURN_VEL : -TURN_VEL);
 	
 	motors_set_velocity(vel);
 
 	#ifdef FIGHT_DEBUG
 		char b[32] = {0};
-		snprintf(b, 32, "turn start\n");
+		snprintf(b, 32, "turn %lu %lu %lu %lu\n", delta[0], delta[1], delta[2], delta[3]);
 		uart2_transmit(b, strlen(b));
 		uart3_transmit(b, strlen(b));
 	#endif
@@ -252,7 +292,7 @@ void fight_init() {
 	//FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_FIGHT,		fight_enter,	fight_execute,	NULL);
 	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_EXPLORE,	explore_enter,	NULL,			NULL);
 	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_MEASURE,	measure_enter,	NULL,			measure_exit);
-	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_TURN,		turn_enter,		NULL,			NULL);
+	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_TURN,		turn_enter,		turn_execute,	NULL);
 
 	//FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_FOLLOW,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
 	//FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_EXPLORE,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);

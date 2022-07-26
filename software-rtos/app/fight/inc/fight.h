@@ -13,9 +13,10 @@
 #define FIGHT_PID_KP		0.011f
 #define FIGHT_PWR			0.75f		// [-1; 1]
 #define FOLLOW_TIMEOUT		2000		// ms
-#define EXPLORE_VEL			5			// RPS
-#define MEASURE_VEL			2			// RPS
-#define TURN_VEL			2			// RPS
+#define EXPLORE_VEL			1			// RPS
+#define MEASURE_VEL			1			// RPS
+#define TURN_VEL			1			// RPS
+#define TURN_POS_EPSILON	50
 
 typedef enum {
 	FIGHT_STATE_FOLLOW,

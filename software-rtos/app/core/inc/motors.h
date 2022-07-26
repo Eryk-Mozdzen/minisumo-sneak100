@@ -6,7 +6,7 @@
 #include "task.h"
 #include "arm_math.h"
 
-#define MOTORS_PID_KP			0.6f
+#define MOTORS_PID_KP			0.4f
 #define MOTORS_PID_KI			0.001f
 #define MOTORS_PID_KD			0.f
 #define MOTORS_PID_FREQ			50		// Hz
