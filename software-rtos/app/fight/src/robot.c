@@ -174,7 +174,7 @@ void robot_init() {
 	FiniteStateMachine_DefineTransition(&fsm, ROBOT_STATE_RUN,		ROBOT_STATE_STOP1,		0, NULL, get_stop);
 	FiniteStateMachine_DefineTransition(&fsm, ROBOT_STATE_STOP1,	ROBOT_STATE_STOP2,		0, NULL, NULL);
 
-	xTaskCreate(loop, "robot loop", 256, NULL, 4, NULL);
+	xTaskCreate(loop, "robot loop", 1024, NULL, 4, NULL);
 
 	fight_init();
 }

@@ -14,18 +14,13 @@ static uint32_t follow_start_time = 0;
 static int32_t pos[4] = {0};
 static int32_t measurement_1[4] = {0};
 static int32_t measurement_2[4] = {0};
+static float angle_to_rot;
 
 static struct {
 	uint8_t follow_direction : 1;		// 0 = left, 1 = right
 	uint8_t turn_direction : 1;			// 0 = left, 1 = right
 	uint8_t unused : 6;
 } flags = {0};
-
-static struct {
-	uint8_t line_internal_spotted : 1;
-	uint8_t line_external_spotted : 1;
-	uint8_t unused : 6;
-} events = {0};
 
 // ------------------------------------------------------
 
@@ -46,12 +41,12 @@ uint8_t get_timeout(void *buffer) {
 
 uint8_t get_line_external(void *buffer) {
 	(void)buffer;
-	return events.line_external_spotted;
+	return (line[0] || line[3]);
 }
 
 uint8_t get_line_internal(void *buffer) {
 	(void)buffer;
-	return events.line_internal_spotted;
+	return (line[1] || line[2]);
 }
 
 uint8_t get_turn_complete(void *buffer) {
@@ -190,15 +185,28 @@ void measure_exit(void *buffer) {
 	memcpy(measurement_2, pos, 4*sizeof(int32_t));
 
 	// calculate angle
-	// calculate end wheel position
+	int32_t delta[4] = {0};
+	delta[0] = -motors_get_position_delta(measurement_1[0], measurement_2[0]);
+	delta[1] = motors_get_position_delta(measurement_1[1], measurement_2[1]);
+	delta[2] = motors_get_position_delta(measurement_1[2], measurement_2[2]);
+	delta[3] = -motors_get_position_delta(measurement_1[3], measurement_2[3]);
+
+	const float delta_avg = (delta[0] + delta[1] + delta[2] + delta[3])/4.f;
+	const float wheel_dist = (delta_avg/((float)MOTORS_ENCODER_CPR))*MOTORS_WHEEL_READIUS*2.f*PI;
+	const float sensor_dist = flags.turn_direction ? 0.023f : 0.064f;
+
+	const float angle_to_edge = atan2f(wheel_dist, sensor_dist);
+	angle_to_rot = PI - angle_to_edge;
 
 	float vel[4] = {0};
 	
 	motors_set_velocity(vel);
 
 	#ifdef FIGHT_DEBUG
-		char b[32] = {0};
-		snprintf(b, 32, "measure stop\n");
+		char b[128] = {0};
+		snprintf(b, 128, "measure stop %ld %ld %ld %ld\navg: %+.2f dist: %+.5fm angle: %+.2f* dir: %u\n", 
+			delta[0], delta[1], delta[2], delta[3], 
+			(double)delta_avg, (double)wheel_dist, (double)angle_to_edge*180./((double)PI), flags.turn_direction);
 		uart2_transmit(b, strlen(b));
 		uart3_transmit(b, strlen(b));
 	#endif
@@ -206,6 +214,8 @@ void measure_exit(void *buffer) {
 
 void turn_enter(void *buffer) {
 	(void)buffer;
+
+	// calculate end wheel position
 
 	motors_set_control_type(MOTORS_CLOSE_LOOP);
 
@@ -238,25 +248,26 @@ void turn_enter(void *buffer) {
 void fight_init() {
 	FiniteStateMachine_Init(&fsm, NULL);
 
-	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_FOLLOW,	follow_enter,	NULL,			NULL);
-	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_FIGHT,		fight_enter,	fight_execute,	NULL);
+	//FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_FOLLOW,	follow_enter,	NULL,			NULL);
+	//FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_FIGHT,		fight_enter,	fight_execute,	NULL);
 	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_EXPLORE,	explore_enter,	NULL,			NULL);
 	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_MEASURE,	measure_enter,	NULL,			measure_exit);
 	FiniteStateMachine_DefineState(&fsm, FIGHT_STATE_TURN,		turn_enter,		NULL,			NULL);
 
-	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_FOLLOW,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
-	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_EXPLORE,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
-	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_MEASURE,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
-	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_TURN,		FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
+	//FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_FOLLOW,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
+	//FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_EXPLORE,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
+	//FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_MEASURE,	FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
+	//FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_TURN,		FIGHT_STATE_FIGHT,		0, NULL, get_enemy_spotted);
 
-	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_FIGHT,	FIGHT_STATE_FOLLOW,		0, NULL, get_enemy_lost);
+	//FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_FIGHT,	FIGHT_STATE_FOLLOW,		0, NULL, get_enemy_lost);
 	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_FOLLOW,	FIGHT_STATE_EXPLORE,	0, NULL, get_timeout);
 	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_FOLLOW,	FIGHT_STATE_MEASURE,	0, NULL, get_line_external);
 	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_EXPLORE,	FIGHT_STATE_MEASURE,	0, NULL, get_line_external);
 	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_MEASURE,	FIGHT_STATE_TURN,		0, NULL, get_line_internal);
 	FiniteStateMachine_DefineTransition(&fsm, FIGHT_STATE_TURN,		FIGHT_STATE_EXPLORE,	0, NULL, get_turn_complete);
 
-	FiniteStateMachine_Start(&fsm, FIGHT_STATE_FOLLOW);
+	//FiniteStateMachine_Start(&fsm, FIGHT_STATE_FOLLOW);
+	FiniteStateMachine_Start(&fsm, FIGHT_STATE_EXPLORE);
 
 	fight_pid.Kp = FIGHT_PID_KP;
 	fight_pid.Ki = 0.f;
@@ -276,22 +287,12 @@ void fight_update() {
 	else if(prox[2] || prox[3])
 		flags.follow_direction = 1;
 
-	if((line[0] || line[3]) && (!last_line[0] && !last_line[3])) {
-		events.line_external_spotted = 1;
+	if((line[0] || line[3]) && (!last_line[0] && !last_line[3]))
 		flags.turn_direction = line[0];
-	}
-
-	if((line[1] || line[2]) && (!last_line[1] && !last_line[2]))
-		events.line_internal_spotted = 1;
 
 	FiniteStateMachine_Update(&fsm);
 	FiniteStateMachine_Execute(&fsm);
 
-	memset(&events, 0, sizeof(events));
 	memcpy(last_prox, prox, 4*sizeof(uint8_t));
 	memcpy(last_line, line, 4*sizeof(uint8_t));
-}
-
-fight_state_t fight_get_state() {
-	return fsm.states[fsm.curr_state_index].id;
 }
