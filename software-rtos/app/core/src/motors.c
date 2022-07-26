@@ -4,6 +4,7 @@ static arm_pid_instance_f32 pid[4] = {0};
 static float vel_setpoint[4] = {0};
 static float vel_curr[4] = {0};
 static float pwr_ctrl[4] = {0};
+static motors_control_type_t control = MOTORS_CLOSE_LOOP;
 
 static float calculate_vel(const int32_t pos_curr, const int32_t pos_last) {
 	int32_t delta = pos_curr - pos_last;
@@ -33,12 +34,14 @@ static void update(void *param) {
 		vel_curr[2] = calculate_vel(pos_curr[2], pos_last[2]);
 		vel_curr[3] = calculate_vel(pos_curr[3], pos_last[3]);
 
-		pwr_ctrl[0] = -arm_pid_f32(&pid[0], vel_curr[0] - vel_setpoint[0]);
-		pwr_ctrl[1] = -arm_pid_f32(&pid[1], vel_curr[1] - vel_setpoint[1]);
-		pwr_ctrl[2] = -arm_pid_f32(&pid[2], vel_curr[2] - vel_setpoint[2]);
-		pwr_ctrl[3] = -arm_pid_f32(&pid[3], vel_curr[3] - vel_setpoint[3]);
+		if(control==MOTORS_CLOSE_LOOP) {
+			pwr_ctrl[0] = -arm_pid_f32(&pid[0], vel_curr[0] - vel_setpoint[0]);
+			pwr_ctrl[1] = -arm_pid_f32(&pid[1], vel_curr[1] - vel_setpoint[1]);
+			pwr_ctrl[2] = -arm_pid_f32(&pid[2], vel_curr[2] - vel_setpoint[2]);
+			pwr_ctrl[3] = -arm_pid_f32(&pid[3], vel_curr[3] - vel_setpoint[3]);
 
-		motors_set_power(pwr_ctrl);
+			motors_set_power(pwr_ctrl);
+		}
 
 		memcpy(pos_last, pos_curr, 4*sizeof(int32_t));
 
@@ -159,6 +162,15 @@ void motors_init() {
     TIM3->CR1 |=TIM_CR1_CEN;
 }
 
+void motors_set_control_type(motors_control_type_t c) {
+	control = c;
+
+	arm_pid_reset_f32(&pid[0]);
+	arm_pid_reset_f32(&pid[1]);
+	arm_pid_reset_f32(&pid[2]);
+	arm_pid_reset_f32(&pid[3]);
+}
+
 void motors_set_power(float *power) {
 
 	for(uint8_t i=0; i<4; i++) {
@@ -168,6 +180,8 @@ void motors_set_power(float *power) {
 			power[i] = -1.f;
 		}
 	}
+	
+	memcpy(pwr_ctrl, power, 4*sizeof(float));
 
 	if(power[0]>0.f) {
         TIM1->CCR3 = 0;
