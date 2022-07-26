@@ -1,5 +1,22 @@
 #include "cli_apps.h"
 
+static BaseType_t motor_pwr(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString) {
+	(void)xWriteBufferLen;
+
+	float pwr[4] = {0};
+
+	if(sscanf(&pcCommandString[10], "%f%f%f%f", &pwr[0], &pwr[1], &pwr[2], &pwr[3])!=4) {
+		sprintf(pcWriteBuffer, "Unknown parameters\n");
+		return pdFALSE;
+	}
+
+	motors_set_control_type(MOTORS_OPEN_LOOP);
+
+	motors_set_power(pwr);
+
+	return pdFALSE;
+}
+
 static BaseType_t motor_vel(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString) {
 	(void)xWriteBufferLen;
 
@@ -9,6 +26,8 @@ static BaseType_t motor_vel(char *pcWriteBuffer, size_t xWriteBufferLen, const c
 		sprintf(pcWriteBuffer, "Unknown parameters\n");
 		return pdFALSE;
 	}
+
+	motors_set_control_type(MOTORS_CLOSE_LOOP);
 
 	motors_set_velocity(vel);
 
@@ -85,6 +104,13 @@ static BaseType_t batt(char *pcWriteBuffer, size_t xWriteBufferLen, const char *
 
 	return pdFALSE;
 }
+
+const CLI_Command_Definition_t cli_command_motor_pwr = {
+	"motor-pwr",
+	"motor-pwr <lf> <rf> <rb> <lb>: set motor power in range [-1; 1]\n",
+	motor_pwr,
+	4
+};
 
 const CLI_Command_Definition_t cli_command_motor_vel = {
 	"motor-vel",
