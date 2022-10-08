@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(CMAKE_TOOLCHAIN_FILE "toolchain/arm-none-eabi.cmake")
+set(CMAKE_TOOLCHAIN_FILE "arm-none-eabi.cmake")
 
 project(sneak100-rtos)
 
@@ -65,7 +65,9 @@ target_include_directories(${TARGET} PRIVATE
 )
 
 target_compile_options(${TARGET} PRIVATE
-	-O0 -g
+	#-O0
+	-O3
+	#-g
 	
 	-Wall
 	-Wextra
@@ -80,7 +82,7 @@ target_compile_options(${TARGET} PRIVATE
 )
 
 target_link_options(${TARGET} PRIVATE
-	-T ${CMAKE_SOURCE_DIR}/linker/STM32F405RGTX_FLASH.ld
+	-T ${CMAKE_SOURCE_DIR}/STM32F405RGTX_FLASH.ld
 
 	-mthumb
 	-mcpu=cortex-m4
@@ -100,4 +102,9 @@ add_custom_command(
 	COMMAND ${CMAKE_OBJCOPY} -O binary ${TARGET} ${CMAKE_PROJECT_NAME}.bin
 	COMMAND ${CMAKE_OBJCOPY} -O ihex ${TARGET} ${CMAKE_PROJECT_NAME}.hex
 	COMMAND ${CMAKE_SIZE} ${TARGET}
+)
+
+add_custom_target(flash
+	st-flash --reset write ${CMAKE_PROJECT_NAME}.bin 0x08000000;
+	DEPENDS ${TARGET}
 )

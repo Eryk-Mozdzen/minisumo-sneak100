@@ -23,7 +23,7 @@ static void listener(void *param) {
 				memset(tx_buffer, 0, CLI_LINE_MAX_SIZE);
 			}
 
-			memset(cmd.buffer, 0, sizeof(cli_command_t));
+			memset(cmd.buffer, 0, CLI_LINE_MAX_SIZE);
         }
     }
 }
