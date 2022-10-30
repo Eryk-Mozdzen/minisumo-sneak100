@@ -40,10 +40,10 @@ static void update(void *param) {
 	while(1) {
 		motors_get_position(pos_curr);
 
-		vel_curr[0] = calculate_vel(pos_curr[0], pos_last[0]);
+		vel_curr[0] = -calculate_vel(pos_curr[0], pos_last[0]);
 		vel_curr[1] = calculate_vel(pos_curr[1], pos_last[1]);
 		vel_curr[2] = calculate_vel(pos_curr[2], pos_last[2]);
-		vel_curr[3] = calculate_vel(pos_curr[3], pos_last[3]);
+		vel_curr[3] = -calculate_vel(pos_curr[3], pos_last[3]);
 
 		if(control==MOTORS_CLOSE_LOOP) {
 			pwr_ctrl[0] = -arm_pid_f32(&pid[0], vel_curr[0] - vel_setpoint[0]);
@@ -55,6 +55,15 @@ static void update(void *param) {
 		}
 
 		memcpy(pos_last, pos_curr, 4*sizeof(int32_t));
+
+		#ifdef MOTOR_DEBUG
+			char b[64] = {0};
+			snprintf(b, 64, "pos %+ld\t%+ld\t%+ld\t%+ld\n", pos_curr[0], pos_curr[1], pos_curr[2], pos_curr[3]);
+			//snprintf(b, 64, "vel %+.2f\t%+.2f\t%+.2f\t%+.2f\n", (double)vel_curr[0], (double)vel_curr[1], (double)vel_curr[2], (double)vel_curr[3]);
+			//snprintf(b, 64, "pwr %+.2f\t%+.2f\t%+.2f\t%+.2f\n", (double)pwr[0], (double)pwr[1], (double)pwr[2], (double)pwr[3]);
+			uart2_transmit(b, strlen(b));
+			uart3_transmit(b, strlen(b));
+		#endif
 
 		vTaskDelay(1000/MOTORS_PID_FREQ);
 	}
@@ -199,11 +208,11 @@ void motors_set_power(float *power) {
 	}
 
 	if(power[0]>0.f) {
-        TIM1->CCR3 = 0;
-        TIM1->CCR4 = power[0]*TIM1->ARR;
-    } else {
-        TIM1->CCR3 = -power[0]*TIM1->ARR;
+        TIM1->CCR3 = power[0]*TIM1->ARR;
         TIM1->CCR4 = 0;
+    } else {
+        TIM1->CCR3 = 0;
+        TIM1->CCR4 = -power[0]*TIM1->ARR;
     }
 
 	if(power[1]>0.f) {
@@ -223,19 +232,16 @@ void motors_set_power(float *power) {
     }
 
 	if(power[3]>0.f) {
-        TIM1->CCR1 = 0;
-        TIM1->CCR2 = power[3]*TIM1->ARR;
-    } else {
-        TIM1->CCR1 = -power[3]*TIM1->ARR;
+        TIM1->CCR1 = power[3]*TIM1->ARR;
         TIM1->CCR2 = 0;
+    } else {
+        TIM1->CCR1 = 0;
+        TIM1->CCR2 = -power[3]*TIM1->ARR;
     }
 }
 
 void motors_set_velocity(float *vel_sp) {
-	vel_setpoint[0] = -vel_sp[0];
-	vel_setpoint[1] = vel_sp[1];
-	vel_setpoint[2] = vel_sp[2];
-	vel_setpoint[3] = -vel_sp[3];
+	memcpy(vel_setpoint, vel_sp, 4*sizeof(float));
 }
 
 void motors_get_position(int32_t *pos_dest) {

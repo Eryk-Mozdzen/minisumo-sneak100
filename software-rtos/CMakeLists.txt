@@ -45,6 +45,7 @@ target_compile_definitions(${TARGET} PRIVATE
 
 	#EEPROM_DEBUG
 	#FIGHT_DEBUG
+	#MOTOR_DEBUG
 )
 
 target_include_directories(${TARGET} PRIVATE
@@ -66,8 +67,9 @@ target_include_directories(${TARGET} PRIVATE
 
 target_compile_options(${TARGET} PRIVATE
 	#-O0
-	-O3
-	#-g
+	-O1
+	#-O3
+	-g
 	
 	-Wall
 	-Wextra

@@ -6,6 +6,11 @@
 #include "task.h"
 #include "arm_math.h"
 
+#ifdef MOTOR_DEBUG
+	#include "uart2.h"
+	#include "uart3.h"
+#endif
+
 #define MOTORS_PID_KP			0.1f
 #define MOTORS_PID_KI			0.01f
 #define MOTORS_PID_KD			0.f
