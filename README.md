@@ -29,6 +29,7 @@
 # 13 may 2022 - Baltic Robot Battles, Gdansk, Poland (canceled)
 + 18 jun 2022 - XIII Robotic Arena, Wroclaw, Poland
 -  2 jul 2022 - Drones And Robots Tournament, Krakow, Poland (missed)
++  4 nov 2022 - Robochalleng 2022, Bucharest, Romania
 # 26 nov 2022 - ROBOmotion 2022, Rzeszow, Poland
 #  6 apr 2023 - RoboGames 2023, Pleasanton, California, USA
 ```
