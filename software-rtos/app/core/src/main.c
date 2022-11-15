@@ -60,7 +60,7 @@ void clock_init() {
     while((RCC->CFGR & RCC_CFGR_SW)!=RCC_CFGR_SW_PLL);
 }
 
-static void blink(void *param) {
+/*static void blink(void *param) {
 	(void)param;
 
 	uint8_t state = 0;
@@ -73,7 +73,7 @@ static void blink(void *param) {
 
 		vTaskDelay(200);
 	}
-}
+}*/
 
 int main() {
 
@@ -85,14 +85,14 @@ int main() {
 	adc_init();
     
     cli_init();
-	//gui_init();
+	gui_init();
 	motors_init();
 	periph_init();
 	rc5_init();
 
 	robot_init();
 
-	xTaskCreate(blink, "blink", 130, NULL, 4, NULL);
+	//xTaskCreate(blink, "blink", 130, NULL, 4, NULL);
 
     vTaskStartScheduler();
 
