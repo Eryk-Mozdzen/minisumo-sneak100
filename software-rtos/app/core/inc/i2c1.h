@@ -13,7 +13,6 @@
 void i2c1_init();
 
 uint8_t i2c1_write_8(const uint8_t, const uint8_t, const void *, const uint32_t, const uint32_t);
-uint8_t i2c1_read_8(const uint8_t, const uint8_t, void *, const uint32_t, const uint32_t);
 
 uint8_t i2c1_write_16(const uint8_t, const uint16_t, const void *, const uint32_t, const uint32_t);
 uint8_t i2c1_read_16(const uint8_t, const uint16_t, void *, const uint32_t, const uint32_t);
