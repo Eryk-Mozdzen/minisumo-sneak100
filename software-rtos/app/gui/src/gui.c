@@ -211,31 +211,31 @@ void gui_init() {
 	FiniteStateMachine_DefineState(&fsm, GUI_STATE_ROBOT,	robot_enter,	NULL,			NULL);
 	FiniteStateMachine_DefineState(&fsm, GUI_STATE_KONAR,	konar_enter,	NULL,			NULL);
 
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_MENU,	GUI_STATE_MOTORS,	0, menu_exit_view,		button_l_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_MENU,	GUI_STATE_MOTORS,	0, menu_exit_view,		button_r_click);
 	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_MENU,	GUI_STATE_FIGHT,	0, menu_exit_fight,		button_c_click);
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_MENU,	GUI_STATE_ROBOT,	0, menu_exit_credits,	button_r_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_MENU,	GUI_STATE_ROBOT,	0, menu_exit_credits,	button_l_click);
 
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_MOTORS,	GUI_STATE_LINE,		0, NULL, button_l_click);
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_LINE,	GUI_STATE_PROX,		0, NULL, button_l_click);
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_PROX,	GUI_STATE_OTHER,	0, NULL, button_l_click);
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_OTHER,	GUI_STATE_MOTORS,	0, NULL, button_l_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_MOTORS,	GUI_STATE_LINE,		0, NULL, button_r_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_LINE,	GUI_STATE_PROX,		0, NULL, button_r_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_PROX,	GUI_STATE_OTHER,	0, NULL, button_r_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_OTHER,	GUI_STATE_MOTORS,	0, NULL, button_r_click);
 	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_MOTORS,	GUI_STATE_OTHER,	0, NULL, button_c_click);
 	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_OTHER,	GUI_STATE_PROX,		0, NULL, button_c_click);
 	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_PROX,	GUI_STATE_LINE,		0, NULL, button_c_click);
 	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_LINE,	GUI_STATE_MOTORS,	0, NULL, button_c_click);
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_MOTORS,	GUI_STATE_MENU,		0, NULL, button_r_click);
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_LINE,	GUI_STATE_MENU,		0, NULL, button_r_click);
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_PROX,	GUI_STATE_MENU,		0, NULL, button_r_click);
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_OTHER,	GUI_STATE_MENU,		0, NULL, button_r_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_MOTORS,	GUI_STATE_MENU,		0, NULL, button_l_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_LINE,	GUI_STATE_MENU,		0, NULL, button_l_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_PROX,	GUI_STATE_MENU,		0, NULL, button_l_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_OTHER,	GUI_STATE_MENU,		0, NULL, button_l_click);
 
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_FIGHT, 	GUI_STATE_MENU,		0, NULL, button_r_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_FIGHT, 	GUI_STATE_MENU,		0, NULL, button_l_click);
 
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_ROBOT, 	GUI_STATE_KONAR,	0, NULL, button_l_click);
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_KONAR, 	GUI_STATE_ROBOT,	0, NULL, button_l_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_ROBOT, 	GUI_STATE_KONAR,	0, NULL, button_r_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_KONAR, 	GUI_STATE_ROBOT,	0, NULL, button_r_click);
 	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_KONAR, 	GUI_STATE_ROBOT,	0, NULL, button_c_click);
 	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_ROBOT, 	GUI_STATE_KONAR,	0, NULL, button_c_click);
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_ROBOT, 	GUI_STATE_MENU,		0, NULL, button_r_click);
-	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_KONAR, 	GUI_STATE_MENU,		0, NULL, button_r_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_ROBOT, 	GUI_STATE_MENU,		0, NULL, button_l_click);
+	FiniteStateMachine_DefineTransition(&fsm, GUI_STATE_KONAR, 	GUI_STATE_MENU,		0, NULL, button_l_click);
 
 	xTaskCreate(update, "GUI update", 1024, NULL, 4, NULL);
 }
