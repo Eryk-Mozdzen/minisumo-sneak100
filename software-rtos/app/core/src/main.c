@@ -4,17 +4,18 @@
 
 #include "adc.h"
 #include "i2c1.h"
-#include "uart2.h"
 #include "uart3.h"
 
 #include "cli.h"
 #include "gui.h"
 #include "motors.h"
 #include "periph.h"
+#include "servos.h"
 #include "display.h"
 #include "rc5.h"
 
 #include "robot.h"
+#include <math.h>
 
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName) {
 	(void)pcTaskName;
@@ -75,11 +76,30 @@ void clock_init() {
 	}
 }*/
 
+static void wave(void *param) {
+	(void)param;
+
+	const float freq = 1.f;
+	const float pi = 3.1415f;
+	uint16_t timings[2];
+
+	while(1) {
+
+		const float time = xTaskGetTickCount()*0.001f;
+		
+		timings[0] = sinf(2*pi*freq*time);
+		timings[1] = 0;
+
+		servos_set_signal_us(timings);
+
+		vTaskDelay(100);
+	}
+}
+
 int main() {
 
 	NVIC_SetPriorityGrouping(0);
 	clock_init();
-	uart2_init();
     uart3_init();
 	i2c1_init();
 	adc_init();
@@ -88,11 +108,13 @@ int main() {
 	gui_init();
 	motors_init();
 	periph_init();
+	servos_init();
 	rc5_init();
 
 	robot_init();
 
 	//xTaskCreate(blink, "blink", 130, NULL, 4, NULL);
+	xTaskCreate(wave, "wave", 130, NULL, 4, NULL);
 
     vTaskStartScheduler();
 

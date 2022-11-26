@@ -27,7 +27,7 @@ add_executable(${TARGET}
 	"app/core/src/periph.c"
 	"app/core/src/i2c1.c"
 	"app/core/src/rc5.c"
-	"app/cli/src/uart2.c"
+	"app/core/src/servos.c"
 	"app/cli/src/uart3.c"
 	"app/cli/src/cli_apps.c"
 	"app/cli/src/cli.c"
