@@ -17,8 +17,6 @@
 
 ### To do:
 - cast better silicon tires
-- buy new OLED display & line sensor
-- parameters adjustment
 
 ### DEADLINE:
 ```diff
@@ -30,15 +28,10 @@
 + 18 jun 2022 - XIII Robotic Arena, Wroclaw, Poland
 -  2 jul 2022 - Drones And Robots Tournament, Krakow, Poland (missed)
 +  4 nov 2022 - Robochalleng 2022, Bucharest, Romania
-# 26 nov 2022 - ROBOmotion 2022, Rzeszow, Poland
-#  6 apr 2023 - RoboGames 2023, Pleasanton, California, USA
++ 26 nov 2022 - ROBOmotion 2022, Rzeszow, Poland
 ```
 
 ### Next version:     
 - develop spring for blade
-- proximity sensors: turn to front
+- proximity sensors: turn to more front
 - hide power switch
-
-### Planned features:
-- clever fight algorithms
-- omniwheels
