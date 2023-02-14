@@ -21,7 +21,7 @@ static void update(void *param) {
 
 static uint8_t button_l_click(void *buffer) {
 	(void)buffer;
-	const uint8_t curr = !(GPIOC->IDR & GPIO_IDR_ID12);
+	const uint8_t curr = !(GPIOC->IDR & GPIO_IDR_ID10);
 	const uint8_t prev = button_last[0];
 	button_last[0] = curr;
 	return (curr!=prev && curr);
@@ -37,7 +37,7 @@ static uint8_t button_c_click(void *buffer) {
 
 static uint8_t button_r_click(void *buffer) {
 	(void)buffer;
-	const uint8_t curr = !(GPIOC->IDR & GPIO_IDR_ID10);
+	const uint8_t curr = !(GPIOC->IDR & GPIO_IDR_ID12);
 	const uint8_t prev = button_last[2];
 	button_last[2] = curr;
 	return (curr!=prev && curr);

@@ -15,9 +15,6 @@
   <img src="/docs/readme/real_board.jpg" width="49%" />
 </p>
 
-### To do:
-- cast better silicon tires
-
 ### DEADLINE:
 ```diff
 #  4 sep 2021 - Baltic Robot Battles, Gdansk, Poland (canceled)

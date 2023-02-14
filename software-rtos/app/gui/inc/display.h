@@ -17,7 +17,7 @@
 #define DISPLAY_ADDRESS			0x3C
 #define DISPLAY_WIDTH			128		// px
 #define DISPLAY_HEIGHT			64		// px
-//#define DISPLAY_FLIP
+#define DISPLAY_FLIP
 
 typedef enum {
 	DISPLAY_COLOR_BLACK,
